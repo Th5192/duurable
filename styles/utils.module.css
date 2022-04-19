@@ -1,0 +1,173 @@
+.heading2Xl {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: -0.05rem;
+    margin: 1rem 0;
+  }
+  
+  .headingXl {
+    font-size: 2rem;
+    line-height: 1.3;
+    font-weight: 800;
+    letter-spacing: -0.05rem;
+    margin: 1rem 0;
+  }
+  
+  .headingLg {
+    font-size: 1.5rem;
+    line-height: 1.4;
+    margin: 1rem 0;
+  }
+  
+  .headingMd {
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  
+  .borderCircle {
+    border-radius: 9999px;
+  }
+  
+  .colorInherit {
+    color: inherit;
+  }
+  
+  .padding1px {
+    padding-top: 1px;
+  }
+  
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .listItem {
+    margin: 0 0 1.25rem;
+  }
+  
+  .lightText {
+    color: #666;
+  }
+  
+  .signedIn{
+    text-align: right;
+    margin: 2em;
+  }
+  
+  .containerForSignUpButtonandCreateAccountButton {
+    align-self: stretch;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  .signInButton {
+    background-color: var(--very-peri);
+    border-color: var(--very-peri);
+    border-width: 1px;
+    border-radius: 10px;
+    border-style: solid;
+    text-align: center;
+    color: white;
+    padding: 10px 20px 10px 20px;
+    margin: 20px 10px 10px 10px;
+  }
+  
+  .createAccountButton {
+    background-color: lightgray;
+    border-color: lightgray;
+    border-width: 1px;
+    border-radius: 10px;
+    border-style: solid;
+    text-align: center;
+    color: black;
+    padding: 10px 20px 10px 20px;
+    margin: 20px 20px 10px 10px;
+  }
+  
+  
+  .signInOrSignUpFlexBox {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 3px;
+  }
+  
+  .signInOrSignUpComponent {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    border-color: grey;
+    border-width: 1px;
+    border-radius: 10px;
+    border-style: solid;
+    text-align: center;
+    margin: 20px 0px 20px 0px;
+    padding: 10px 10px 10px 10px;
+    width: 300px;
+  }
+  
+  .closeSignInOrSignUpFlexBoxButtonContainer {
+    align-self: stretch;
+    display: flex;
+    flex-flow: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+  
+  .closeSignInOrSignUpFlexBoxButtonContainer button {
+    background-color:lightgray;
+    color: black;
+    border-radius: 50%;
+    border-color: lightgray;
+    border-width: 1px;
+    border-style: solid;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .signInOrSignUpComponent hr {
+    border: 0px;
+    height: 1px;
+    background-color: grey;
+    margin-top: 50px;
+  }
+  
+  .signInOrSignUpComponent a {
+    color: black;
+  }
+  
+  .signInOrSignUpComponentLegal {
+    font-size: 12px;
+    padding-bottom: 10px;
+  }
+  
+  .signInOrSignUpComponentToggleAccountExistsStatusButton {
+    border: none;
+    background-color: white;
+    color: var(--very-peri);
+    font-size: 20px;
+  
+  }
+  
+  .waitingForFirebase {
+    display: flex;
+    flex-flow: column;
+    min-width: 100vw;
+    min-height: 100vh;
+    align-items: center;
+    vertical-align: center;
+    justify-content: center;
+    text-align: center;
+    background-color: white;
+    color: red;
+  }
+  
+  
+  

@@ -1,15 +1,15 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
+import Link from 'next/link'
 
 // React core.
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
-import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider } from "firebase/auth";
+import { getApp, getApps, initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged, signInWithPopup, signOut, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Source: https://github.com/firebase/firebaseui-web-react
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import utilStyles from '../styles/utils.module.css';
 
 // Styles required by StyledFirebaseAuth
 import '../styles/firebaseui-styling.global.css'; // Import globally.
@@ -29,93 +29,102 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+
+const app = !getApps().length ? initializeApp( firebaseConfig ) : getApp()
+
 const auth = getAuth(app);
 
 
-// Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
+const DuuurableAuthUI = () => {
 
-class Authui extends React.Component {
+  const[isSignedIn, setIsSignedIn] = useState(false);
+  const[showCreateAccountOrSignInUI, setShowCreateAccountOrSignInUI] = useState(true);
+  const[showCreateAccountUI, setShowCreateAccountUI] = useState(true);
+  const[showSignInUI, setShowSignInUI] = useState(false);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      showCreateAccountOrSignInUI: true,
-      showCreateAccountUI: true,
-      showSignInUI:false
-    };
-  }
+    
+  useEffect( () => {
+    const unregisterAuthObserver = onAuthStateChanged(auth, user => {
+      setIsSignedIn(!!user);
+    });
 
-    uiConfig = {
-        signInFlow: 'popup',
-        signInOptions: [
-          GoogleAuthProvider.PROVIDER_ID,
-        ],
-        callbacks: {
-          signInSuccessWithAuthResult: () => false,
-        },
-      };
-    
-      state = {
-        isSignedIn: undefined,
-      };
-    
-      /**
-       * @inheritDoc
-       */
-      componentDidMount() {
-        this.unregisterAuthObserver = onAuthStateChanged(auth, user => {
-          this.setState({isSignedIn: !!user});
-        });
-      }
-    
-      /**
-       * @inheritDoc
-       */
-      componentWillUnmount() {
-        this.unregisterAuthObserver();
-      }
+    return () => { 
+      unregisterAuthObserver(); 
+    }
+  });  
+  
+  const provider = new GoogleAuthProvider();
+
+  function showSignInWithPopUp() {
+    signInWithPopup(auth, provider)
+     .then((result) => {
+         // This gives you a Google Access Token. You can use it to access the Google API.
+         const credential = GoogleAuthProvider.credentialFromResult(result);
+         //const token = credential.accessToken;
+         // The signed-in user info.
+         const user = result.user;
+         // ...
+     }).catch((error) => {
+         // Handle Errors here.
+         const errorCode = error.code;
+         const errorMessage = error.message;
+         // The email of the user's account used.
+         const email = error.email;
+         // The AuthCredential type that was used.
+         const credential = GoogleAuthProvider.credentialFromError(error);
+         // ...
+     });
+ }
       
   /**
    * @inheritDoc
    */
-  render() {
     return (
       <div>
         <div>
           <i></i>
         </div>
         {/* <div className={styles.caption}>This is a cool demo app</div> */}
-        {this.state.isSignedIn !== undefined && !this.state.isSignedIn &&
+        {isSignedIn !== undefined && !isSignedIn &&
           <div>
-            {(this.state.showCreateAccountOrSignInUI===false) &&
+            {(showCreateAccountOrSignInUI===false) &&
               <div className={utilStyles.containerForSignUpButtonandCreateAccountButton}>
-                <button className={utilStyles.signInButton} onClick={()=>{this.setState({showCreateAccountOrSignInUI:true, showSignInUI:true, showCreateAccountUI:false})}}>Sign In</button>
-                <button className={utilStyles.createAccountButton} onClick={()=>{this.setState({showCreateAccountOrSignInUI:true, showSignInUI:false, showCreateAccountUI:true})}}>Create Account</button>
+                <button className={utilStyles.signInButton} onClick={()=>{
+                    setShowCreateAccountOrSignInUI(true), 
+                    setShowSignInUI(true), 
+                    setShowCreateAccountUI(false)
+                  }}>Sign In</button>
+                <button className={utilStyles.createAccountButton} onClick={()=>{
+                    setShowCreateAccountOrSignInUI(true),
+                    setShowSignInUI(false), 
+                    setShowCreateAccountUI(true)
+                  }}>Create Account</button>
               </div>
             }
-            {(this.state.showCreateAccountOrSignInUI===true) &&
+            {(showCreateAccountOrSignInUI===true) &&
             <div className={utilStyles.signInOrSignUpFlexBox}>
               <div className={utilStyles.signInOrSignUpComponent}>
                 <div className={utilStyles.closeSignInOrSignUpFlexBoxButtonContainer}>
-                  <button onClick={()=>{this.setState({showCreateAccountOrSignInUI:false, showSignInUI:false, showCreateAccountUI:false})}}><span className="material-icons">close</span></button>
+                  <button onClick={()=>{
+                    setShowCreateAccountOrSignInUI(false), 
+                    setShowSignInUI(false), 
+                    setShowCreateAccountUI(false)
+                  }}><span className="material-icons">close</span></button>
                 </div>
                 <div>
-                  {(this.state.showCreateAccountUI === true) && 
+                  {(showCreateAccountUI === true) && 
                     <h2>Create Account</h2>
                   }
                 </div>
                 <div>
-                  {(this.state.showSignInUI === true) && 
+                  {(showSignInUI === true) && 
                     <h2>Sign In</h2>
                   }
                 </div>
                 <div>
-                  <StyledFirebaseAuth uiConfig={this.uiConfig}
-                                      firebaseAuth={auth}/>
+                  <button onClick={() => {showSignInWithPopUp()}}>Sign In With Google</button>
                 </div>
-                {(this.state.showCreateAccountUI === true) &&
+                {(showCreateAccountUI === true) &&
                   <div className={utilStyles.signInOrSignUpComponentLegal}>
                     <span>By continuing you agree to our </span>
                     <span>
@@ -134,23 +143,23 @@ class Authui extends React.Component {
                 <div>
                   <hr></hr>
                   <div>
-                    {(this.state.showCreateAccountUI === true) && 
+                    {(showCreateAccountUI === true) && 
                       <div>
                         <p>Already have an account?</p>
                         <button className={utilStyles.signInOrSignUpComponentToggleAccountExistsStatusButton} onClick={()=> {
-                          this.setState({showCreateAccountUI:false});
-                          this.setState({showSignInUI:true});
+                          setShowCreateAccountUI(false),
+                          setShowSignInUI(true)
                           }}>Sign In</button>
                       </div>
                     }
                   </div>
                   <div>
-                    {(this.state.showSignInUI === true) && 
+                    {(showSignInUI === true) && 
                       <div>
                         <p>Don&#39;t have an account?</p>
                         <button className={utilStyles.signInOrSignUpComponentToggleAccountExistsStatusButton} onClick={()=> {
-                          this.setState({showCreateAccountUI:true});
-                          this.setState({showSignInUI:false});
+                            setShowCreateAccountUI(true),
+                            setShowSignInUI(false)
                           }}>Create Account</button>
                       </div>
                     }
@@ -160,9 +169,9 @@ class Authui extends React.Component {
             </div>}
            </div>
         }
-        {this.state.isSignedIn &&
+        {isSignedIn &&
           <div className={utilStyles.signedIn}>
-            Welcome {auth.currentUser.displayName}. 
+            NEED TO ADD USER NAME HERE
             <br></br>
             <a onClick={() => signOut(auth)}>Sign-out</a>
           </div>
@@ -170,11 +179,15 @@ class Authui extends React.Component {
       </div>
     );
   }
-}
 
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+          <div>
+            <DuuurableAuthUI/>
+            <Component {...pageProps} />
+          </div>
+          )
 }
 
 export default MyApp
