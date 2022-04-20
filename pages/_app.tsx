@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Link from 'next/link'
+import Image from 'next/image'
 
 // React core.
 import React, {useState, useEffect} from 'react';
@@ -126,7 +127,14 @@ const DuuurableAuthUI = () => {
                   }
                 </div>
                 <div>
-                  <button onClick={() => {showSignInWithPopUp()}}>Sign In With Google</button>
+                  <button className={utilStyles.googleSignInButton} onClick={() => {showSignInWithPopUp()}}>
+                      <div>
+                        <Image src="/btn_google_light_normal_ios.svg" alt="Sign In With Google" height={30} width={30}/>
+                      </div>
+                      <div>
+                        <p>Continue with Google</p>
+                      </div>
+                  </button>  
                 </div>
                 {(showCreateAccountUI === true) &&
                   <div className={utilStyles.signInOrSignUpComponentLegal}>
