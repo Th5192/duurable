@@ -176,9 +176,10 @@ function DataPointEditingForm(props: DataPointEditingFormProps) {
 
     const dataPointUID = newOrEditedDataPointRef.id
 
-    await setDoc(doc(collection(db,'products', 'durabilityInDaysSortedByBrandAndItem', gTIN)), {
+    const durabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', brand, gTIN)
+    await setDoc(durabilityBrandGTINRef, {
       [dataPointUID]: timeToReplaceInDays
-    })
+    }, {merge: true});
 
   }
 
