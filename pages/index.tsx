@@ -181,6 +181,17 @@ function DataPointEditingForm(props: DataPointEditingFormProps) {
       [dataPointUID]: timeToReplaceInDays
     }, {merge: true});
 
+    const brandRouteParametersRef = doc(db, 'products', 'brandRouteParameters')
+    await setDoc(brandRouteParametersRef, {
+      [brand]:true
+    }, {merge: true})
+
+    const itemRouteParametersRef = doc(db, 'products', 'itemRouteParameters', brand, 'itemRouteParameters')
+    await setDoc(itemRouteParametersRef, {
+      [gTIN]:true
+    }, {merge: true})
+
+
   }
 
   const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
