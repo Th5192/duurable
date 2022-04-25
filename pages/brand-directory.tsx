@@ -34,11 +34,11 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
           
 }
 
-function ListOfBrandLinks({temporaryMap}:{temporaryMap:string[]}) {
+function ListOfBrandLinks({brandStringArray}:{brandStringArray:string[]}) {
     return (
         <div>
             <ul>
-                {temporaryMap.map((brand) => (
+                {brandStringArray.map((brand) => (
                     <li key={brand}>
                         <a href={`/brands/${brand}`}>{brand}</a>
                     </li>
@@ -53,7 +53,7 @@ function BrandDirectoryPage(props: InferGetServerSidePropsType<typeof getServerS
 
     return(
         <div>
-            <ListOfBrandLinks temporaryMap={props.brandStringArray}></ListOfBrandLinks>
+            <ListOfBrandLinks brandStringArray={props.brandStringArray}></ListOfBrandLinks>
         </div>        
     )
 
