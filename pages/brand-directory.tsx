@@ -40,7 +40,7 @@ function ListOfBrandLinks({brandStringArray}:{brandStringArray:string[]}) {
             <ul>
                 {brandStringArray.map((brand) => (
                     <li key={brand}>
-                        <a href={`/brands/${brand}`}>{brand}</a>
+                        <a href={`/${brand}`}>{brand}</a>
                     </li>
                 ))}
             </ul>

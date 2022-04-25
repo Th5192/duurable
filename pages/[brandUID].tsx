@@ -34,19 +34,20 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
         
         return {
             props: {
+                brandUID: brandUID,
                 itemStringArray: itemStringArray
             }
         }
           
 }
 
-function ListOfBrandLinks({itemStringArray}:{itemStringArray:string[]}) {
+function ListOfBrandLinks({brandUID, itemStringArray}:{brandUID:string, itemStringArray:string[]}) {
     return (
         <div>
             <ul>
                 {itemStringArray.map((item) => (
                     <li key={item}>
-                        <a href={`/brands/${item}`}>{item}</a>
+                        <a href={`/${brandUID}/${item}`}>{brandUID} {item}</a>
                     </li>
                 ))}
             </ul>
@@ -59,7 +60,7 @@ function BrandDirectoryPage(props: InferGetServerSidePropsType<typeof getServerS
 
     return(
         <div>
-            <ListOfBrandLinks itemStringArray={props.itemStringArray}></ListOfBrandLinks>
+            <ListOfBrandLinks brandUID={props.brandUID} itemStringArray={props.itemStringArray}></ListOfBrandLinks>
         </div>        
     )
 
