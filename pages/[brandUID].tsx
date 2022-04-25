@@ -9,17 +9,23 @@ import {db} from '../pages/_app'
 
 export const getServerSideProps:GetServerSideProps = async (context: GetServerSidePropsContext ) => {
 
-        const docRef = doc(db, 'products', 'brandRouteParameters');
+        let brandUID:string = 'error'
+        if (context.params !== undefined) {
+            let brandUIDASString:string = context.params.brandUID as string
+            brandUID = brandUIDASString ?? 'error'
+        }
+
+        const docRef = doc(db, 'products', 'itemRouteParameters', brandUID, 'itemRouteParameters');
         const docSnap = await getDoc(docRef);
-        let brandDirectoryData:DocumentData = {}
-        let brandStringArray:String[] = []
+        let data:DocumentData = {}
+        let itemStringArray:String[] = []
 
         if (docSnap.exists()) {
 
-            brandDirectoryData = docSnap.data();
-            Object.keys(brandDirectoryData).forEach((name) => {
-              console.log(name, brandDirectoryData[name]);
-              brandStringArray.push(name)
+            data = docSnap.data();
+            Object.keys(data).forEach((item) => {
+              console.log(item, data[item]);
+              itemStringArray.push(item)
             });
         
         } else {
@@ -28,19 +34,19 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
         
         return {
             props: {
-                brandStringArray: brandStringArray
+                itemStringArray: itemStringArray
             }
         }
           
 }
 
-function ListOfBrandLinks({brandStringArray}:{brandStringArray:string[]}) {
+function ListOfBrandLinks({itemStringArray}:{itemStringArray:string[]}) {
     return (
         <div>
             <ul>
-                {brandStringArray.map((brand) => (
-                    <li key={brand}>
-                        <a href={`/brands/${brand}`}>{brand}</a>
+                {itemStringArray.map((item) => (
+                    <li key={item}>
+                        <a href={`/brands/${item}`}>{item}</a>
                     </li>
                 ))}
             </ul>
@@ -53,7 +59,7 @@ function BrandDirectoryPage(props: InferGetServerSidePropsType<typeof getServerS
 
     return(
         <div>
-            <ListOfBrandLinks brandStringArray={props.brandStringArray}></ListOfBrandLinks>
+            <ListOfBrandLinks itemStringArray={props.itemStringArray}></ListOfBrandLinks>
         </div>        
     )
 
