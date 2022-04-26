@@ -47,6 +47,9 @@ function MonitorUserLoginStatus() {
         <div>
           <p>The current user uid is:</p>
           <p>{currentUserUID}</p>
+          <div>
+            <DataPointEditingForm brand={''} title={''} identifierExists={false} gTIN={''} itemModelNumber={''} timeToReplaceInDays={0} youTubeURL={''} comments={''} dataPointUID={''}/>
+          </div>
         </div>
       }
       {(user==undefined) &&
@@ -262,9 +265,7 @@ function DataPointEditingForm(props: DataPointEditingFormProps) {
 const Home: NextPage = () => {
   return (
     <div>
-      <p>Hello, world!</p>
       <MonitorUserLoginStatus/>
-      <DataPointEditingForm brand={''} title={''} identifierExists={false} gTIN={''} itemModelNumber={''} timeToReplaceInDays={0} youTubeURL={''} comments={''} dataPointUID={''}/>
     </div>
   )
 }
