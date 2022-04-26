@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -195,10 +196,21 @@ const DuuurableAuthUI = () => {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
+        <div>
+          <div>
+            <Head>
+                <meta name="viewport" content="width=device-width,initial-scale=1"/>
+                <link 
+                    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+                    rel="stylesheet">
+                </link>
+            </Head>
+          </div>
           <div>
             <DuuurableAuthUI/>
             <Component {...pageProps} />
           </div>
+        </div>
           )
 }
 
