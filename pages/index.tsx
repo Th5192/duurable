@@ -71,13 +71,6 @@ function MonitorUserLoginStatus() {
 }
 
 
-// Collection: Products
-//   Document: ItemsSortedByBrand
-//     Collection: BOSE
-//        Document: GTIN: 123ABC
-//          Collection: DataPoints
-//             Document: DataPoint001
-//     Collection: NIKE
 interface DataPointEditingFormProps {
   brand: string;
   title: string;
@@ -161,7 +154,7 @@ function DataPointEditingForm(props: DataPointEditingFormProps) {
 
   async function pushToFirebase() {
     
-    const newOrEditedDataPointRef = doc(collection(db, 'products', 'itemsSortedByBrand', brand));
+    const newOrEditedDataPointRef = doc(collection(db, 'dataPoints'));
     
     await setDoc(newOrEditedDataPointRef, {
       brand: brand,
@@ -191,6 +184,10 @@ function DataPointEditingForm(props: DataPointEditingFormProps) {
       [gTIN]:true
     }, {merge: true})
 
+    const dataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', brand, gTIN)
+    await setDoc(dataPointRouteParametersRef, {
+      [dataPointUID]:true
+    }, {merge: true})
 
   }
 

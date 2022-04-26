@@ -1,4 +1,4 @@
-import productPageStyles from '../../styles/product-page.module.css';
+import productPageStyles from '../../../styles/product-page.module.css';
 import { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 
 // React core.
@@ -6,21 +6,19 @@ import React from 'react';
 
 import { doc, getDoc } from "firebase/firestore";
 
-import {db} from '../_app'
+import {db} from '../../_app'
 
 export const getServerSideProps:GetServerSideProps = async (context: GetServerSidePropsContext ) => {
-    
-    if (context.params !== undefined) {
-        const brandUIDRouteParam = context.params.brandUID
-        const productUIDRouteParam = context.params.productUID
 
-        const brandRouteParamAsString = brandUIDRouteParam?.toString() ?? ''
-        const gTINRouteParamAsString = productUIDRouteParam?.toString() ?? ''
+
+    if (context.params !== undefined) {
+        const dataPointUIDRouteParam = context.params.dataPointUID;
+
+        const dataPointRouteParamAsString = dataPointUIDRouteParam?.toString() ?? ''
 
         
-        const docRef = doc(db, "products", "itemsSortedByBrand", brandRouteParamAsString, gTINRouteParamAsString);
+        const docRef = doc(db, 'dataPoints', dataPointRouteParamAsString);
         const docSnap = await getDoc(docRef);
-        let productDetailsExistOnFirebase:boolean = false
         let brandName:string = 'Error';
         let comments:string = 'Error';
         let gTIN:string = 'Error';
@@ -31,7 +29,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
         let youTubeURL:string = 'Error';
 
         if (docSnap.exists()) {
-            productDetailsExistOnFirebase = true
+            console.log('dataPointUID.tsx reached and docSnap.exists()')
             brandName = docSnap.data().brand ?? 'error'
             comments = docSnap.data().comments ?? 'error'
             gTIN = docSnap.data().gTIN ?? 'error'
@@ -52,11 +50,9 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
             youTubeURL = docSnap.data().youTubeURL ?? 'error'
 
         } else {
-            productDetailsExistOnFirebase = false
             console.log("No such document!");
         }
         
-        if(productDetailsExistOnFirebase===true) {
             return {
                 props: {
                     brandName: brandName,
@@ -69,12 +65,9 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
                     youTubeURL: youTubeURL
                 }
             }
-        } else {
-            return {
-                notFound: true
-            }      
-        }
+
     } else {
+        console.log('context.params === undefined so point to 404')
         return {
             notFound: true
         }
@@ -83,7 +76,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
 
 
 
-function ProductPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
     return(
         <div className={productPageStyles.wrapper}>
@@ -93,9 +86,9 @@ function ProductPage(props: InferGetServerSidePropsType<typeof getServerSideProp
                 <iframe
                     src={props.youTubeURL}
                     frameBorder='0'
-                    allow='autoplay; encrypted-media'
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowFullScreen
-                    title='Video showing durability test.'
+                    title='YouTube video player.'
                 />
             </div>
             <h3>How long did it last before you needed a new one?</h3>
@@ -113,4 +106,4 @@ function ProductPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 }
 
 
-export default ProductPage
+export default DataPointPage
