@@ -2,7 +2,9 @@
 
 
 import type { NextPage } from 'next'
-import Image from 'next/image'
+
+import Layout from '../components/layout'
+
 import productPageStyles from '../styles/product-page.module.css'
 
 // React core.
@@ -265,7 +267,9 @@ function DataPointEditingForm(props: DataPointEditingFormProps) {
 const Home: NextPage = () => {
   return (
     <div>
-      <MonitorUserLoginStatus/>
+      <Layout>
+        <MonitorUserLoginStatus/>
+      </Layout>
     </div>
   )
 }
