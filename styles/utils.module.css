@@ -203,3 +203,95 @@
     white-space: nowrap;
     color: gray;
   }
+
+
+
+
+
+
+.fullWidthContainerWhite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100vw;
+  min-height: 200px;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  color: black;
+  padding: 100px 20px 20px 20px;
+}
+
+.heroHeadline {
+  font-size: 48px;
+  padding: 0px;
+}
+
+.heroSubHeadline {
+  font-size: 30px;
+}
+
+.fullWidthContainerVeryPeri {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  min-height: 500px;
+  background-color: var(--very-peri);
+  color: white;
+  padding: 30px 20px 30px 20px;
+  text-align: center;
+}
+
+.fullWidthContainerVeriPeriAmusementsOrange {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  min-height: 500px;
+  background-color: var(--very-peri-amusements-orange);
+  color: white;
+  padding: 0px 20px 0px 20px;
+  text-align: center;
+}
+
+.landingPageFeaturesWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0px 20px 0px;
+}
+
+.landingPageFeatureWrapper {
+  min-width: 200px;
+  max-width: 250px;
+  padding: 20px;
+  border-color: var(--very-peri-amusements-orange);
+  border-width: 1px;
+  border-radius: 10px;
+  border-style: solid;
+  text-align: center;
+  color: var(--very-peri-amusements-red);
+  margin: 20px;
+}
+
+.landingPageFeatureWrapper p {
+  color: var(--very-peri-amusements-red);
+}

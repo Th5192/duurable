@@ -6,6 +6,7 @@ import type { NextPage } from 'next'
 import Layout from '../components/layout'
 
 import productPageStyles from '../styles/product-page.module.css'
+import utilStyles from '../styles/utils.module.css'
 
 // React core.
 import React, {useState, useEffect} from 'react';
@@ -56,13 +57,60 @@ function MonitorUserLoginStatus() {
       }
       {(user==undefined) &&
        <div>
-         <p>No user is logged in.</p>
+         <LandingPage/>
         </div>
       }
     </div>
   )
 }
 
+function LandingPage(){
+  return(
+    <div>
+      <div className={utilStyles.fullWidthContainerVeryPeri}>
+        <div className={utilStyles.heroHeadline}>
+          <span>Duuurable </span>
+          <span className="material-icons md-48">query_stats</span>
+        </div>
+        <div className={utilStyles.heroSubHeadline}>
+          <span>Is it durable? Will it last?</span>
+        </div>
+      </div>
+      <div className={utilStyles.fullWidthContainerWhite}>
+        <h1>Test.</h1>
+        <h1>Test 123.</h1>
+        <h1>Another Test.</h1>
+      </div>
+      <div className={utilStyles.landingPageFeaturesWrapper}>
+        <div className={utilStyles.landingPageFeatureWrapper}>
+          <span className="material-icons md-48 very-peri">storefront</span>
+          <p>Filter by store</p>
+        </div>
+        <div className={utilStyles.landingPageFeatureWrapper}>
+          <span className="material-icons md-48 very-peri">ac_unit</span>
+          <p>Sort by refrigeration need</p>
+        </div>
+        <div className={utilStyles.landingPageFeatureWrapper}>
+          <span className="material-icons md-48 very-peri">devices</span>
+          <p>Access from iOS, Android, Mac, PC, and more</p>
+        </div>
+        <div className={utilStyles.landingPageFeatureWrapper}>
+          <span className="material-icons md-48 very-peri">groups</span>
+          <p>(Coming soon!) Share your list with family and co-workers!</p>
+        </div>
+        <div className={utilStyles.landingPageFeatureWrapper}>
+          <span className="material-icons md-48 very-peri">library_add</span>
+          <p>And much more!  We pride ourselves on creating what our users want.  Missing a feature?  Tell us.  We&#39;ll add it!</p>
+        </div>
+      </div>
+      <div className={utilStyles.fullWidthContainerVeriPeriAmusementsOrange}>
+        <h1>Easy to use</h1>
+        <h1>No clutter</h1>
+        <h1>No overly complicated forms to fill out</h1>
+      </div>
+    </div>
+  )
+}
 
 interface DataPointEditingFormProps {
   brand: string;
