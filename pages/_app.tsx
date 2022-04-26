@@ -44,9 +44,9 @@ export {db};
 const DuuurableAuthUI = () => {
 
   const[isSignedIn, setIsSignedIn] = useState(false);
-  const[showCreateAccountOrSignInUI, setShowCreateAccountOrSignInUI] = useState(true);
-  const[showCreateAccountUI, setShowCreateAccountUI] = useState(true);
-  const[showSignInUI, setShowSignInUI] = useState(false);
+  const[showCreateAccountOrSignInUI, setShowCreateAccountOrSignInUI] = useState(false);
+  const[showCreateAccountUI, setShowCreateAccountUI] = useState(false);
+  const[showSignInUI, setShowSignInUI] = useState(true);
 
     
   useEffect( () => {
