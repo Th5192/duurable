@@ -15,15 +15,6 @@ import { doc, setDoc, addDoc, collection, updateDoc  } from "firebase/firestore"
 
 import {db} from '../pages/_app'
 
-async function setMyFirstDoc(){
-  // Add a new document in collection "cities"
-  await addDoc(collection(db, "products", "itemsSortedByBrand", "bose"), {
-    title: "SoundSport",
-    gTIN: "A90898S8989",
-    productIdentifierExists: true
-  });
-  
-}
 
 function MonitorUserLoginStatus() {
   const [currentUserUID, setCurrentUserUID] = useState('');
@@ -58,7 +49,6 @@ function MonitorUserLoginStatus() {
         <div>
           <p>The current user uid is:</p>
           <p>{currentUserUID}</p>
-          <button onClick={()=>{setMyFirstDoc()}}>Set My First Doc</button>
         </div>
       }
       {(user==undefined) &&
