@@ -82,6 +82,7 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
         <div className={productPageStyles.wrapper}>
             <h2>IS IT DURABLE?</h2>
             <h1>{props.brandName}, {props.title}</h1>
+            <h3>Link to YouTube durability video:</h3>
             <div className={productPageStyles.videoContainer}>
                 <iframe
                     src={props.youTubeURL}
