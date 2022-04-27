@@ -27,6 +27,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
               console.log(item, data[item]);
               itemStringArray.push(item)
             });
+            itemStringArray.sort()
         
         } else {
             console.log("No such document!");
@@ -44,6 +45,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
 function ListOfBrandLinks({brandUID, itemStringArray}:{brandUID:string, itemStringArray:string[]}) {
     return (
         <div>
+            <h1>Sort by Global Trade Item Number (GTIN)</h1>
             <ul>
                 {itemStringArray.map((item) => (
                     <li key={item}>
