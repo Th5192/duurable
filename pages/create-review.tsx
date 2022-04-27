@@ -11,7 +11,7 @@ import productPageStyles from '../styles/product-page.module.css'
 // React core.
 import React, { useState } from 'react';
 
-import { doc, collection, writeBatch } from "firebase/firestore";
+import { doc, collection, writeBatch, serverTimestamp } from "firebase/firestore";
 
 import {db} from './_app'
 
@@ -115,7 +115,8 @@ interface DataPointEditingFormProps {
         itemModelNumber: itemModelNumber,
         timeToReplaceInDays: timeToReplaceInDays,
         youTubeURL: youTubeURL,
-        comments: comments
+        comments: comments,
+        timestamp: serverTimestamp()
       })    
   
       const dataPointUID = newOrEditedDataPointRef.id
