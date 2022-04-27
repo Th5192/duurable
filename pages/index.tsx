@@ -2,6 +2,7 @@
 
 
 import type { NextPage } from 'next'
+import Link from 'next/link';
 
 import Layout from '../components/layout'
 
@@ -77,36 +78,40 @@ function LandingPage(){
         </div>
       </div>
       <div className={utilStyles.fullWidthContainerWhite}>
-        <h1>Test.</h1>
-        <h1>Test 123.</h1>
-        <h1>Another Test.</h1>
+        <div>
+          <Link href='/brand-directory'><a>Search Durability Data</a></Link>
+        </div>
+        <div>
+          <p>Click the link above to search for durability videos.</p>  
+          <p>Watch videos showing wear and tear. Search by brand and model number.</p>
+        </div>
       </div>
       <div className={utilStyles.landingPageFeaturesWrapper}>
         <div className={utilStyles.landingPageFeatureWrapper}>
-          <span className="material-icons md-48 very-peri">storefront</span>
-          <p>Filter by store</p>
+          <span className="material-icons md-48 very-peri">manage_search</span>
+          <p>Search by brand and model number.</p>
         </div>
         <div className={utilStyles.landingPageFeatureWrapper}>
-          <span className="material-icons md-48 very-peri">ac_unit</span>
-          <p>Sort by refrigeration need</p>
+          <span className="material-icons md-48 very-peri">video_library</span>
+          <p>Watch wear and tear videos.</p>
         </div>
         <div className={utilStyles.landingPageFeatureWrapper}>
-          <span className="material-icons md-48 very-peri">devices</span>
-          <p>Access from iOS, Android, Mac, PC, and more</p>
+          <span className="material-icons md-48 very-peri">insights</span>
+          <p>Analyze durability data.</p>
         </div>
         <div className={utilStyles.landingPageFeatureWrapper}>
-          <span className="material-icons md-48 very-peri">groups</span>
-          <p>(Coming soon!) Share your list with family and co-workers!</p>
+          <span className="material-icons md-48 very-peri">sentiment_satisfied</span>
+          <p>Find products that last!</p>
         </div>
         <div className={utilStyles.landingPageFeatureWrapper}>
           <span className="material-icons md-48 very-peri">library_add</span>
-          <p>And much more!  We pride ourselves on creating what our users want.  Missing a feature?  Tell us.  We&#39;ll add it!</p>
+          <p>New videos on the way!  We&#39;re just starting out.</p>
         </div>
       </div>
       <div className={utilStyles.fullWidthContainerVeriPeriAmusementsOrange}>
-        <h1>Easy to use</h1>
-        <h1>No clutter</h1>
-        <h1>No overly complicated forms to fill out</h1>
+        <h1>Spend your money on products that last.</h1>
+        <h1>Making durable products costs extra.  Reward brands that take on this responsibility.</h1>
+        <h1>Support the environment by reducing waste.</h1>
       </div>
     </div>
   )

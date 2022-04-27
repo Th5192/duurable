@@ -295,3 +295,26 @@
 .landingPageFeatureWrapper p {
   color: var(--very-peri-amusements-red);
 }
+
+
+.largeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  width: auto;
+  padding: 10px;
+  border-color: var(--very-peri);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 10px;
+  background-color: var(--very-peri);
+  color: white;
+  margin: 5px;
+}
+
+.largeButton:hover {
+  background-color: var(--very-peri-amusements-orange);
+  border-color: var(--very-peri-amusements-orange);
+  transition: 0.3s;
+}
