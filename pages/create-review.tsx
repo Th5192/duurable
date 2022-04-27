@@ -7,14 +7,13 @@ import Link from 'next/link';
 import Layout from '../components/layout'
 
 import productPageStyles from '../styles/product-page.module.css'
-import utilStyles from '../styles/utils.module.css'
 
 // React core.
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 
-import { doc, setDoc, addDoc, collection, updateDoc  } from "firebase/firestore";
+import { doc, collection, writeBatch } from "firebase/firestore";
 
-import {db} from '../pages/_app'
+import {db} from './_app'
 
 
 
@@ -28,6 +27,9 @@ interface DataPointEditingFormProps {
     youTubeURL: string;
     comments: string;
     dataPointUID: string;
+    setVisibilityForDataPointEditingForm: Function,
+    setShowErrorMessage: Function,
+    setShowSuccessMessage: Function
   }
   
   function DataPointEditingForm(props: DataPointEditingFormProps) {
@@ -101,9 +103,11 @@ interface DataPointEditingFormProps {
   
     async function pushToFirebase() {
       
+      const batch = writeBatch(db);
+
       const newOrEditedDataPointRef = doc(collection(db, 'dataPoints'));
-      
-      await setDoc(newOrEditedDataPointRef, {
+
+      batch.set(newOrEditedDataPointRef, {
         brand: brand,
         title: title,
         identifierExists: identifierExists,
@@ -117,30 +121,52 @@ interface DataPointEditingFormProps {
       const dataPointUID = newOrEditedDataPointRef.id
   
       const durabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', brand, gTIN)
-      await setDoc(durabilityBrandGTINRef, {
+      batch.set(durabilityBrandGTINRef, {
         [dataPointUID]: timeToReplaceInDays
       }, {merge: true});
   
       const brandRouteParametersRef = doc(db, 'products', 'brandRouteParameters')
-      await setDoc(brandRouteParametersRef, {
+      batch.set(brandRouteParametersRef, {
         [brand]:true
       }, {merge: true})
   
       const itemRouteParametersRef = doc(db, 'products', 'itemRouteParameters', brand, 'itemRouteParameters')
-      await setDoc(itemRouteParametersRef, {
+      batch.set(itemRouteParametersRef, {
         [gTIN]:true
       }, {merge: true})
   
       const dataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', brand, gTIN)
-      await setDoc(dataPointRouteParametersRef, {
+      batch.set(dataPointRouteParametersRef, {
         [dataPointUID]:true
       }, {merge: true})
   
+      try {
+        await batch.commit()
+        return true
+      } catch (e) {
+        throw e
+      }
+
     }
-  
+
     const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
       event.preventDefault();
       pushToFirebase()
+      .then(result => {
+        console.log('.then triggered now')
+        if (result === true) {
+          props.setShowSuccessMessage(true)
+          props.setShowErrorMessage(false)
+          props.setVisibilityForDataPointEditingForm(false)
+          console.log('.then result yields: TRUE')
+        } else {
+          console.log('.then result yields: FALSE')
+        }
+      })
+      .catch(error => {
+        props.setShowErrorMessage(true)
+        console.log('.catch yields error of: ' + error)
+      })
       console.log('handleSubmit')
     };
   
@@ -177,9 +203,6 @@ interface DataPointEditingFormProps {
       }
     }
   
-    function handleEditButtonState() {
-      console.log("handleEditButtonState pressed")
-    }
   
     return(
       <div className={productPageStyles.dataPointEditingForm}>
@@ -212,18 +235,48 @@ interface DataPointEditingFormProps {
           <button className={productPageStyles.saveButton} type='submit'>Save</button>
           <br></br>
         </form>
-        <button className={productPageStyles.doNotSaveButton} onClick={() => handleEditButtonState()}>Do not save</button> 
       </div>
     )
   }
 
 const CreateReview: NextPage = () => {
+
+  const [showDataPointEditingForm, setShowDataPointEditingForm] = useState(true);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+
+  function setVisibilityForDataPointEditingForm(formIsVisible: boolean) {
+    setShowDataPointEditingForm(formIsVisible)
+  }
+
+  function createAnotherReview() {
+    setShowDataPointEditingForm(true)
+    setShowErrorMessage(false)
+    setShowSuccessMessage(false)
+  }
+
     return (
       <div>
         <Layout>
             <h1>Create a review:</h1>
             <div>
-                <DataPointEditingForm brand={''} title={''} identifierExists={false} gTIN={''} itemModelNumber={''} timeToReplaceInDays={0} youTubeURL={''} comments={''} dataPointUID={''}/>
+              {(showDataPointEditingForm === true) &&
+                <DataPointEditingForm brand={''} title={''} identifierExists={false} gTIN={''} itemModelNumber={''} timeToReplaceInDays={0} youTubeURL={''} comments={''} dataPointUID={''} 
+                  setVisibilityForDataPointEditingForm={setVisibilityForDataPointEditingForm}
+                  setShowErrorMessage={setShowErrorMessage} 
+                  setShowSuccessMessage={setShowSuccessMessage}
+                />}
+            </div>
+            <div>
+              {(showErrorMessage === true) && 
+                <p>An error occurred.  Please try again.</p>
+              }
+              {(showSuccessMessage === true) && 
+                <div>
+                  <p>Saved successfully!  To leave another review please click below:</p>
+                  <button onClick={() => createAnotherReview()}>Create Another Review</button>
+                </div>
+              }
             </div>
         </Layout>
       </div>
