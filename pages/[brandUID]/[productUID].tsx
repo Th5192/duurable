@@ -31,6 +31,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
               console.log(dataPointUID, dataPointDirectoryData[dataPointUID]);
               dataPointUIDStringArray.push(dataPointUID)
             });
+            dataPointUIDStringArray.sort()
 
         } else {
             dataPointRouteParametersExistOnFirebase = false
@@ -62,6 +63,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
 function ListOfLinks({dataPointUIDStringArray, brandRouteParamAsString, gTINRouteParamAsString}:{dataPointUIDStringArray:string[], brandRouteParamAsString:string, gTINRouteParamAsString:string}) {
     return (
         <div>
+            <h1>Search customer submitted durability videos:</h1>
             <ul>
                 {dataPointUIDStringArray.map((dataPointUID) => (
                     <li key={dataPointUID}>
