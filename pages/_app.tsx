@@ -184,7 +184,7 @@ const DuuurableAuthUI = () => {
         }
         {isSignedIn &&
           <div className={utilStyles.signedIn}>
-            NEED TO ADD USER NAME HERE
+            <span>Welcome!</span>
             <br></br>
             <a onClick={() => signOut(auth)}>Sign-out</a>
           </div>
