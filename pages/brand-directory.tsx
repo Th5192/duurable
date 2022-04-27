@@ -21,6 +21,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
               console.log(name, brandDirectoryData[name]);
               brandStringArray.push(name)
             });
+            brandStringArray.sort()
         
         } else {
             console.log("No such document!");
@@ -37,6 +38,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
 function ListOfBrandLinks({brandStringArray}:{brandStringArray:string[]}) {
     return (
         <div>
+            <h1>Search by brand:</h1>
             <ul>
                 {brandStringArray.map((brand) => (
                     <li key={brand}>
