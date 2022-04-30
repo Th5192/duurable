@@ -11,7 +11,7 @@ import productPageStyles from '../styles/product-page.module.css'
 // React core.
 import React, { useState } from 'react';
 
-import { doc, collection, writeBatch, serverTimestamp } from "firebase/firestore";
+import { doc, collection, writeBatch, serverTimestamp, Timestamp } from "firebase/firestore";
 
 import {db} from './_app'
 
@@ -96,6 +96,7 @@ interface DataPointEditingFormProps {
     const [identifierExists, setIdentifierExists] = useState(existingIdentifierExists || false);
     const [gTIN, setGTIN] = useState(existingGTIN || '');
     const [itemModelNumber, setItemModelNumber] = useState(existingItemModelNumber || '');
+    const [purchaseDate, setPurchaseDate] = useState('2018-07-22')
     const [timeToReplaceInDays, setTimeToReplaceInDays] = useState(existingTimeToReplaceInDays || 0);
     const [youTubeURL, setYouTubeURL] = useState(existingYouTubeURL || '');
     const [comments, setComments] = useState(existingComments || '');
@@ -107,12 +108,16 @@ interface DataPointEditingFormProps {
 
       const newOrEditedDataPointRef = doc(collection(db, 'dataPoints'));
 
+      let purchaseDateStringAsDate = new Date(purchaseDate)
+      let purchaseDateAsFirebaseTimeStamp = Timestamp.fromDate(purchaseDateStringAsDate)
+
       batch.set(newOrEditedDataPointRef, {
         brand: brand,
         title: title,
         identifierExists: identifierExists,
         gTIN: gTIN,
         itemModelNumber: itemModelNumber,
+        purchaseDate: purchaseDateAsFirebaseTimeStamp,
         timeToReplaceInDays: timeToReplaceInDays,
         youTubeURL: youTubeURL,
         comments: comments,
@@ -189,6 +194,9 @@ interface DataPointEditingFormProps {
         case 'itemModelNumber':
           setItemModelNumber(event.target.value);
           break;
+        case 'purchaseDate':
+          setPurchaseDate(event.target.value)
+          break;
         case 'timeToReplaceInDays':
           let timeToReplaceInDaysAsInt = parseInt(event.target.value);
           setTimeToReplaceInDays(timeToReplaceInDaysAsInt);
@@ -223,6 +231,9 @@ interface DataPointEditingFormProps {
           <br></br>
           <label>Item Model Number: </label>
           <input id='itemModelNumber' className='form-field' type='text' placeholder='Enter Item Model Number...' name='itemModelNumber' value={itemModelNumber} onChange={handleChange}/>
+          <br></br>
+          <label>When did you purchase this product? </label>
+          <input id='purchaseDate' className='form-field' type='date' name='purchaseDate' value={purchaseDate} onChange={handleChange}/>
           <br></br>
           <label>Time To Replace In Days: </label>
           <input id='timeToReplaceInDays' className='form-field' type='number' min='0' max='365000' placeholder='Enter Time To Replace In Days...' name='timeToReplaceInDays' value={timeToReplaceInDays} onChange={handleChange}/>
