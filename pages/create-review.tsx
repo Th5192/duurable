@@ -97,6 +97,7 @@ interface DataPointEditingFormProps {
     const [gTIN, setGTIN] = useState(existingGTIN || '');
     const [itemModelNumber, setItemModelNumber] = useState(existingItemModelNumber || '');
     const [purchaseDate, setPurchaseDate] = useState('2018-07-22')
+    const [needsReplacement, setNeedsReplacement] = useState(false)
     const [timeToReplaceInDays, setTimeToReplaceInDays] = useState(existingTimeToReplaceInDays || 0);
     const [youTubeURL, setYouTubeURL] = useState(existingYouTubeURL || '');
     const [comments, setComments] = useState(existingComments || '');
@@ -118,6 +119,7 @@ interface DataPointEditingFormProps {
         gTIN: gTIN,
         itemModelNumber: itemModelNumber,
         purchaseDate: purchaseDateAsFirebaseTimeStamp,
+        needsReplacement: needsReplacement,
         timeToReplaceInDays: timeToReplaceInDays,
         youTubeURL: youTubeURL,
         comments: comments,
@@ -197,6 +199,14 @@ interface DataPointEditingFormProps {
         case 'purchaseDate':
           setPurchaseDate(event.target.value)
           break;
+        case 'needsReplacementRadioButton':
+          const value = event.target.value
+          if (value === 'Yes'){ 
+            setNeedsReplacement(true);
+          } else {
+            setNeedsReplacement(false)
+          }
+          break;
         case 'timeToReplaceInDays':
           let timeToReplaceInDaysAsInt = parseInt(event.target.value);
           setTimeToReplaceInDays(timeToReplaceInDaysAsInt);
@@ -235,6 +245,22 @@ interface DataPointEditingFormProps {
           <label>When did you purchase this product? </label>
           <input id='purchaseDate' className='form-field' type='date' name='purchaseDate' value={purchaseDate} onChange={handleChange}/>
           <br></br>
+          <fieldset>
+            <legend>Does it need to be replaced?</legend>
+            <div>
+              <input type='radio' id='needsReplacementRadioButton' name = 'replacement-required' value='Yes' checked={needsReplacement === true} onChange={handleChange} /><label htmlFor='Yes'>Yes</label>           
+            </div>
+            <div>
+              <input type='radio' id='needsReplacementRadioButton' name = 'replacement-required' value='No' checked={needsReplacement === false} onChange={handleChange} /><label htmlFor='No'>No</label>           
+            </div>
+          </fieldset>
+          <div>
+            {(needsReplacement) && 
+              <div>
+                <p>Needs Replacement</p>
+              </div>
+            }
+          </div>
           <label>Time To Replace In Days: </label>
           <input id='timeToReplaceInDays' className='form-field' type='number' min='0' max='365000' placeholder='Enter Time To Replace In Days...' name='timeToReplaceInDays' value={timeToReplaceInDays} onChange={handleChange}/>
           <br></br>
