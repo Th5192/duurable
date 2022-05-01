@@ -9,13 +9,13 @@ import Layout from '../components/layout'
 import productPageStyles from '../styles/product-page.module.css'
 
 // React core.
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { deleteField, doc, collection, writeBatch, serverTimestamp, Timestamp } from "firebase/firestore";
 
 import {db} from './_app'
 
-
+import { UserContext } from '../pages/userContext'
 
 interface DataPointEditingFormProps {
     brand: string;
@@ -301,6 +301,8 @@ interface DataPointEditingFormProps {
 
 const CreateReview: NextPage = () => {
 
+  const userContextObject = useContext(UserContext)
+
   const [showDataPointEditingForm, setShowDataPointEditingForm] = useState(true);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
@@ -319,6 +321,7 @@ const CreateReview: NextPage = () => {
       <div>
         <Layout>
             <h1>Create a review:</h1>
+            <p>{userContextObject.userUIDString}</p>
             <div>
               {(showDataPointEditingForm === true) &&
                 <DataPointEditingForm brand={''} title={''} identifierExists={false} gTIN={''} itemModelNumber={''} timeToReplaceInDays={0} youTubeURL={''} comments={''} dataPointUID={''} 

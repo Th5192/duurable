@@ -16,7 +16,7 @@ import utilStyles from '../styles/utils.module.css';
 // Styles required by StyledFirebaseAuth
 import '../styles/firebaseui-styling.global.css'; // Import globally.
 
-
+import { UserContext } from '../pages/userContext'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -195,6 +195,25 @@ const DuuurableAuthUI = () => {
 
 
 function MyApp({ Component, pageProps }: AppProps) {
+
+  const [userUID, setUserUID] = useState('')
+
+  useEffect( () => {
+    console.log('MyApp/useEffect/triggered')
+    const unregisterAuthObserver = onAuthStateChanged(auth, user => {
+      console.log('MyApp/useEffect/onauthStateChanged callback triggered')
+      if (user) {
+        setUserUID(user.uid);
+      }
+    });
+
+    return () => { 
+      console.log('MyApp/useEffect/CLEANUP triggered')
+      unregisterAuthObserver(); 
+    }
+  });  
+
+
   return (
         <div>
           <div>
@@ -204,7 +223,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           </div>
           <div>
             <DuuurableAuthUI/>
+            <UserContext.Provider value={ {userUIDString:userUID} }>
             <Component {...pageProps} />
+            </UserContext.Provider>
           </div>
         </div>
           )
