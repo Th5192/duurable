@@ -11,7 +11,7 @@ import productPageStyles from '../styles/product-page.module.css'
 // React core.
 import React, { useState } from 'react';
 
-import { doc, collection, writeBatch, serverTimestamp, Timestamp } from "firebase/firestore";
+import { deleteField, doc, collection, writeBatch, serverTimestamp, Timestamp } from "firebase/firestore";
 
 import {db} from './_app'
 
@@ -98,6 +98,7 @@ interface DataPointEditingFormProps {
     const [itemModelNumber, setItemModelNumber] = useState(existingItemModelNumber || '');
     const [purchaseDate, setPurchaseDate] = useState('2018-07-22')
     const [needsReplacement, setNeedsReplacement] = useState(false)
+    const [requiredReplacementDate, setRequiredReplacementDate] = useState<string>('');
     const [timeToReplaceInDays, setTimeToReplaceInDays] = useState(existingTimeToReplaceInDays || 0);
     const [youTubeURL, setYouTubeURL] = useState(existingYouTubeURL || '');
     const [comments, setComments] = useState(existingComments || '');
@@ -112,6 +113,21 @@ interface DataPointEditingFormProps {
       let purchaseDateStringAsDate = new Date(purchaseDate)
       let purchaseDateAsFirebaseTimeStamp = Timestamp.fromDate(purchaseDateStringAsDate)
 
+      if (requiredReplacementDate === '') {
+        batch.set(newOrEditedDataPointRef, {
+            requiredReplacementDate: deleteField()
+        }, {merge: true})
+
+      } else {
+        let dateStringAsDate = new Date(requiredReplacementDate)
+        let requiredReplacementDateAsFirebaseTimeStamp = Timestamp.fromDate(dateStringAsDate)  
+
+        batch.set(newOrEditedDataPointRef, {
+          requiredReplacementDate: requiredReplacementDateAsFirebaseTimeStamp
+        }, {merge: true})
+
+      }
+
       batch.set(newOrEditedDataPointRef, {
         brand: brand,
         title: title,
@@ -124,7 +140,7 @@ interface DataPointEditingFormProps {
         youTubeURL: youTubeURL,
         comments: comments,
         timestamp: serverTimestamp()
-      })    
+      }, {merge: true})    
   
       const dataPointUID = newOrEditedDataPointRef.id
   
@@ -205,7 +221,11 @@ interface DataPointEditingFormProps {
             setNeedsReplacement(true);
           } else {
             setNeedsReplacement(false)
+            setRequiredReplacementDate('')
           }
+          break;
+        case 'requiredReplacementDate':
+          setRequiredReplacementDate(event.target.value)
           break;
         case 'timeToReplaceInDays':
           let timeToReplaceInDaysAsInt = parseInt(event.target.value);
@@ -257,7 +277,9 @@ interface DataPointEditingFormProps {
           <div>
             {(needsReplacement) && 
               <div>
-                <p>Needs Replacement</p>
+                <label>When did this product require replacing?</label>
+                <input id='requiredReplacementDate' className='form-field' type='date' name='requiredReplacementDate' required value={requiredReplacementDate} onChange={handleChange}/><span className="validity"></span>
+                <br></br>
               </div>
             }
           </div>
