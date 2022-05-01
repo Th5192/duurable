@@ -223,7 +223,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </div>
           <div>
             <DuuurableAuthUI/>
-            <UserContext.Provider value={ {userUIDString:userUID} }>
+             <UserContext.Provider value={ {userUIDString:userUID} }>
             <Component {...pageProps} />
             </UserContext.Provider>
           </div>
