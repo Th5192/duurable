@@ -33,6 +33,8 @@ interface DataPointEditingFormProps {
   }
   
   function DataPointEditingForm(props: DataPointEditingFormProps) {
+
+    const userContextObject = useContext(UserContext)
   
     let existingBrand = undefined
     if (props.brand == undefined) {
@@ -129,6 +131,7 @@ interface DataPointEditingFormProps {
       }
 
       batch.set(newOrEditedDataPointRef, {
+        authorUID: userContextObject.userUIDString,
         brand: brand,
         title: title,
         identifierExists: identifierExists,
@@ -164,6 +167,12 @@ interface DataPointEditingFormProps {
         [dataPointUID]:true
       }, {merge: true})
   
+      const dataPointsOwnedByUserRef = doc(db, 'users', userContextObject.userUIDString, 'private-documents', 'dataPointsOwnedByUser');
+      batch.set(dataPointsOwnedByUserRef, {
+        [dataPointUID]:true
+      }, {merge:true})
+
+
       try {
         await batch.commit()
         return true
