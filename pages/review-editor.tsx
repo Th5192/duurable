@@ -15,7 +15,7 @@ import { deleteField, doc, collection, writeBatch, serverTimestamp, Timestamp } 
 
 import {db} from './_app'
 
-import { UserContext } from '../pages/userContext'
+import { UserContext } from './userContext'
 
 interface DataPointEditingFormProps {
     brand: string;
