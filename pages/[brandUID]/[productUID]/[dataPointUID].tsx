@@ -1,12 +1,15 @@
 import productPageStyles from '../../../styles/product-page.module.css';
 import { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
+import Link from 'next/link';
 
 // React core.
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { doc, getDoc } from "firebase/firestore";
 
 import {db} from '../../_app'
+
+import { UserContext } from '../../../pages/userContext'
 
 export const getServerSideProps:GetServerSideProps = async (context: GetServerSidePropsContext ) => {
 
@@ -57,6 +60,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
         
             return {
                 props: {
+                    dataPointUID: dataPointRouteParamAsString,
                     authorUID: authorUID,
                     brandName: brandName,
                     comments: comments,
@@ -80,6 +84,8 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
 
 
 function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+
+    let userContextObject = useContext(UserContext)
 
     return(
         <div className={productPageStyles.wrapper}>
@@ -106,6 +112,21 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
                 <p>Item Model Number: {props.itemModelNumber}</p>
             </div>
             <p>AuthorUID: {props.authorUID}</p>
+            <div>
+                {(userContextObject.userUIDString === props.authorUID) &&
+                    <Link
+                        href={{
+                            pathname: `/review-editor`,
+                            query: {
+                                dataPointUID: props.dataPointUID,
+                                authorUID: props.authorUID,
+                                brandName: props.brandName
+                            },
+                        }}>
+                            <a>Edit this data point</a>
+                    </Link>
+                }
+            </div>
         </div>
     )
 }

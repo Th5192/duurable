@@ -1,6 +1,6 @@
 // Typescript recommends using undefined and not null.  Source: https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines#null-and-undefined
 
-
+import { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import type { NextPage } from 'next'
 import Link from 'next/link';
 
@@ -16,6 +16,39 @@ import { deleteField, doc, collection, writeBatch, serverTimestamp, Timestamp } 
 import {db} from './_app'
 
 import { UserContext } from './userContext'
+
+export const getServerSideProps:GetServerSideProps = async (context: GetServerSidePropsContext) => {
+
+  let authorUID:string = '';
+  let dataPointUID:string = '';
+  let brandName:string = '';
+
+
+  if (context.query !== undefined
+      && context.query.authorUID !== undefined
+      && context.query.dataPointUID !== undefined
+      && context.query.brandName !== undefined
+     ){
+    let authorUIDAsString = context.query.authorUID as string;
+    authorUID = authorUIDAsString
+    let dataPointUIDAsString = context.query.dataPointUID as string;
+    dataPointUID = dataPointUIDAsString
+    let brandNameAsString = context.query.brandName as string;
+    brandName = brandNameAsString
+    
+  }
+
+  return {
+    props: {
+      authorUID: authorUID,
+      dataPointUID: dataPointUID,
+      brandName: brandName
+    }
+  }
+
+}
+
+
 
 interface DataPointEditingFormProps {
     brand: string;
@@ -308,7 +341,15 @@ interface DataPointEditingFormProps {
     )
   }
 
-const CreateReview: NextPage = () => {
+const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+
+  let existingBrand = undefined
+  if (props.brandName == undefined) {
+
+  } else {
+    existingBrand = props.brandName
+  }
+
 
   const userContextObject = useContext(UserContext)
 
@@ -333,7 +374,7 @@ const CreateReview: NextPage = () => {
             <p>{userContextObject.userUIDString}</p>
             <div>
               {(showDataPointEditingForm === true) &&
-                <DataPointEditingForm brand={''} title={''} identifierExists={false} gTIN={''} itemModelNumber={''} timeToReplaceInDays={0} youTubeURL={''} comments={''} dataPointUID={''} 
+                <DataPointEditingForm brand={existingBrand} title={''} identifierExists={false} gTIN={''} itemModelNumber={''} timeToReplaceInDays={0} youTubeURL={''} comments={''} dataPointUID={''} 
                   setVisibilityForDataPointEditingForm={setVisibilityForDataPointEditingForm}
                   setShowErrorMessage={setShowErrorMessage} 
                   setShowSuccessMessage={setShowSuccessMessage}
@@ -349,6 +390,9 @@ const CreateReview: NextPage = () => {
                   <button onClick={() => createAnotherReview()}>Create Another Review</button>
                 </div>
               }
+            </div>
+            <div>
+              <p>AuthorUID: {props.authorUID}</p>
             </div>
         </Layout>
       </div>
