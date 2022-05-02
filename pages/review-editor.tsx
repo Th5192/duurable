@@ -29,6 +29,9 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
   let timeToReplaceInDays:number = 0;
   let title:string = '';
   let youTubeURL:string = '';
+  let needsReplacement:boolean = false;
+  let purchaseDate:string = '';
+  let requiredReplacementDate:string = '';
 
 
 
@@ -43,6 +46,9 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
       && context.query.timeToReplaceInDays !== undefined
       && context.query.title !== undefined
       && context.query.youTubeURL !== undefined
+      && context.query.needsReplacement !== undefined
+      && context.query.purchaseDate !== undefined
+      && context.query.requiredReplacementDate !== undefined
      ){
       let dataPointUIDAsString = context.query.dataPointUID as string;
       dataPointUID = dataPointUIDAsString  
@@ -71,6 +77,17 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
       title = titleAsString
       let youTubeURLAsString = context.query.youTubeURL as string;
       youTubeURL = youTubeURLAsString
+      let needsReplacementAsString = context.query.needsReplacement as string;
+      if (needsReplacementAsString === 'true') {
+        needsReplacement = true
+      }
+      if (needsReplacementAsString === 'false') {
+        needsReplacement = false
+      }
+      let purchaseDateAsString = context.query.purchaseDate as string;
+      purchaseDate = purchaseDateAsString
+      let requiredReplacementDateAsString = context.query.requiredReplacementDate as string;
+      requiredReplacementDate = requiredReplacementDateAsString
   }
 
   return {
@@ -84,7 +101,10 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
       itemModelNumber:itemModelNumber,
       timeToReplaceInDays:timeToReplaceInDays,
       title:title,
-      youTubeURL:youTubeURL    
+      youTubeURL:youTubeURL,
+      needsReplacement: needsReplacement,
+      purchaseDate: purchaseDate,
+      requiredReplacementDate: requiredReplacementDate
     }
   }
 
@@ -104,7 +124,10 @@ interface DataPointEditingFormProps {
     dataPointUID: string;
     setVisibilityForDataPointEditingForm: Function,
     setShowErrorMessage: Function,
-    setShowSuccessMessage: Function
+    setShowSuccessMessage: Function;
+    needsReplacement: boolean;
+    purchaseDate: string;
+    requiredReplacementDate: string; 
   }
   
   function DataPointEditingForm(props: DataPointEditingFormProps) {
@@ -167,15 +190,38 @@ interface DataPointEditingFormProps {
     } else {
       existingComments = props.comments
     }
+
+    let existingNeedsReplacement = false
+    if (props.needsReplacement == undefined) {
   
+    } else {
+      existingNeedsReplacement = props.needsReplacement
+    }
+
+    let existingPurchaseDate = undefined
+    if (props.purchaseDate == undefined) {
+  
+    } else {
+      existingPurchaseDate = props.purchaseDate
+    }
+
+    let existingRequiredReplacementDate = undefined
+    if (props.requiredReplacementDate == undefined) {
+  
+    } else {
+      existingRequiredReplacementDate = props.requiredReplacementDate
+    }
+
+
+    
     const [brand, setBrand] = useState(existingBrand || '');
     const [title, setTitle] = useState(existingTitle || '');
     const [identifierExists, setIdentifierExists] = useState(existingIdentifierExists || false);
     const [gTIN, setGTIN] = useState(existingGTIN || '');
     const [itemModelNumber, setItemModelNumber] = useState(existingItemModelNumber || '');
-    const [purchaseDate, setPurchaseDate] = useState('2018-07-22')
-    const [needsReplacement, setNeedsReplacement] = useState(false)
-    const [requiredReplacementDate, setRequiredReplacementDate] = useState<string>('');
+    const [purchaseDate, setPurchaseDate] = useState(existingPurchaseDate || '')
+    const [needsReplacement, setNeedsReplacement] = useState(existingNeedsReplacement || false)
+    const [requiredReplacementDate, setRequiredReplacementDate] = useState(existingRequiredReplacementDate || '');
     const [timeToReplaceInDays, setTimeToReplaceInDays] = useState(existingTimeToReplaceInDays || 0);
     const [youTubeURL, setYouTubeURL] = useState(existingYouTubeURL || '');
     const [comments, setComments] = useState(existingComments || '');
@@ -186,9 +232,10 @@ interface DataPointEditingFormProps {
       const batch = writeBatch(db);
 
       const newOrEditedDataPointRef = doc(collection(db, 'dataPoints'));
-
-      let purchaseDateStringAsDate = new Date(purchaseDate)
-      let purchaseDateAsFirebaseTimeStamp = Timestamp.fromDate(purchaseDateStringAsDate)
+      
+      // This code can be used to convert string type date to FirebaseTimeStamp type date.
+      // let purchaseDateStringAsDate = new Date(purchaseDate)
+      // let purchaseDateAsFirebaseTimeStamp = Timestamp.fromDate(purchaseDateStringAsDate)
 
       if (requiredReplacementDate === '') {
         batch.set(newOrEditedDataPointRef, {
@@ -196,11 +243,9 @@ interface DataPointEditingFormProps {
         }, {merge: true})
 
       } else {
-        let dateStringAsDate = new Date(requiredReplacementDate)
-        let requiredReplacementDateAsFirebaseTimeStamp = Timestamp.fromDate(dateStringAsDate)  
 
         batch.set(newOrEditedDataPointRef, {
-          requiredReplacementDate: requiredReplacementDateAsFirebaseTimeStamp
+          requiredReplacementDate: requiredReplacementDate
         }, {merge: true})
 
       }
@@ -212,7 +257,7 @@ interface DataPointEditingFormProps {
         identifierExists: identifierExists,
         gTIN: gTIN,
         itemModelNumber: itemModelNumber,
-        purchaseDate: purchaseDateAsFirebaseTimeStamp,
+        purchaseDate: purchaseDate,
         needsReplacement: needsReplacement,
         timeToReplaceInDays: timeToReplaceInDays,
         youTubeURL: youTubeURL,
@@ -418,6 +463,9 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
                   youTubeURL={props.youTubeURL} 
                   comments={props.comments} 
                   dataPointUID={props.dataPointUID} 
+                  purchaseDate={props.purchaseDate}
+                  needsReplacement={props.needsReplacement}
+                  requiredReplacementDate={props.requiredReplacementDate}
                   setVisibilityForDataPointEditingForm={setVisibilityForDataPointEditingForm}
                   setShowErrorMessage={setShowErrorMessage} 
                   setShowSuccessMessage={setShowSuccessMessage}

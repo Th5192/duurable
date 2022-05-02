@@ -27,10 +27,14 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
         let comments:string = 'Error';
         let gTIN:string = 'Error';
         let identifierExists:boolean = false;
+        let needsReplacement:boolean = false;
         let itemModelNumber:string = 'Error';
         let timeToReplaceInDays:number = -1;
         let title:string = 'Error';
         let youTubeURL:string = 'Error';
+        let purchaseDate:string = 'Error';
+        let requiredReplacementDate:string = 'Error';
+
 
         if (docSnap.exists()) {
             console.log('dataPointUID.tsx reached and docSnap.exists()')
@@ -44,7 +48,14 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
             } else {
                 identifierExists = false
             }
-            
+
+            if ((docSnap.data().needsReplacement !== undefined) && (typeof docSnap.data().needsReplacement === 'boolean')) {
+                if (docSnap.data().needsReplacement === true) { needsReplacement = true } else { needsReplacement = false}
+            } else {
+                needsReplacement = false
+            }
+
+
             itemModelNumber = docSnap.data().itemModelNumber ?? 'error'
     
             if ((docSnap.data().timeToReplaceInDays !== undefined) && (typeof docSnap.data().timeToReplaceInDays === 'number')) {
@@ -53,6 +64,8 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
 
             title = docSnap.data().title ?? 'error'
             youTubeURL = docSnap.data().youTubeURL ?? 'error'
+            purchaseDate = docSnap.data().purchaseDate ?? ''
+            requiredReplacementDate = docSnap.data().requiredReplacementDate ?? ''
 
         } else {
             console.log("No such document!");
@@ -69,7 +82,10 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
                     itemModelNumber: itemModelNumber,
                     timeToReplaceInDays: timeToReplaceInDays,
                     title: title,
-                    youTubeURL: youTubeURL
+                    youTubeURL: youTubeURL,
+                    needsReplacement: needsReplacement,
+                    purchaseDate: purchaseDate,
+                    requiredReplacementDate: requiredReplacementDate
                 }
             }
 
@@ -127,7 +143,10 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
                                 itemModelNumber: props.itemModelNumber,
                                 timeToReplaceInDays: props.timeToReplaceInDays,
                                 title: props.title,
-                                youTubeURL: props.youTubeURL
+                                youTubeURL: props.youTubeURL,
+                                needsReplacement: props.needsReplacement,
+                                purchaseDate: props.purchaseDate,
+                                requiredReplacementDate: props.requiredReplacementDate            
                             },
                         }}>
                             <a>Edit this data point</a>
