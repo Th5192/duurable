@@ -19,6 +19,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
         
         const docRef = doc(db, 'dataPoints', dataPointRouteParamAsString);
         const docSnap = await getDoc(docRef);
+        let authorUID:string = 'Error';
         let brandName:string = 'Error';
         let comments:string = 'Error';
         let gTIN:string = 'Error';
@@ -30,6 +31,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
 
         if (docSnap.exists()) {
             console.log('dataPointUID.tsx reached and docSnap.exists()')
+            authorUID = docSnap.data().authorUID ?? 'error'
             brandName = docSnap.data().brand ?? 'error'
             comments = docSnap.data().comments ?? 'error'
             gTIN = docSnap.data().gTIN ?? 'error'
@@ -55,6 +57,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
         
             return {
                 props: {
+                    authorUID: authorUID,
                     brandName: brandName,
                     comments: comments,
                     gTIN: gTIN,
@@ -102,6 +105,7 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
                 <p>GTIN: {props.gTIN}</p>
                 <p>Item Model Number: {props.itemModelNumber}</p>
             </div>
+            <p>AuthorUID: {props.authorUID}</p>
         </div>
     )
 }
