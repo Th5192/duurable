@@ -120,7 +120,14 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
                             query: {
                                 dataPointUID: props.dataPointUID,
                                 authorUID: props.authorUID,
-                                brandName: props.brandName
+                                brandName: props.brandName,
+                                comments: props.comments,
+                                gTIN: props.gTIN,
+                                identifierExists: props.identifierExists,
+                                itemModelNumber: props.itemModelNumber,
+                                timeToReplaceInDays: props.timeToReplaceInDays,
+                                title: props.title,
+                                youTubeURL: props.youTubeURL
                             },
                         }}>
                             <a>Edit this data point</a>

@@ -19,30 +19,72 @@ import { UserContext } from './userContext'
 
 export const getServerSideProps:GetServerSideProps = async (context: GetServerSidePropsContext) => {
 
-  let authorUID:string = '';
   let dataPointUID:string = '';
+  let authorUID:string = '';
   let brandName:string = '';
+  let comments:string = '';
+  let gTIN:string = ''; 
+  let identifierExists:boolean = false;
+  let itemModelNumber:string = '';
+  let timeToReplaceInDays:number = 0;
+  let title:string = '';
+  let youTubeURL:string = '';
+
 
 
   if (context.query !== undefined
-      && context.query.authorUID !== undefined
       && context.query.dataPointUID !== undefined
+      && context.query.authorUID !== undefined
       && context.query.brandName !== undefined
+      && context.query.comments !== undefined
+      && context.query.gTIN !== undefined
+      && context.query.identifierExists !== undefined
+      && context.query.itemModelNumber !== undefined
+      && context.query.timeToReplaceInDays !== undefined
+      && context.query.title !== undefined
+      && context.query.youTubeURL !== undefined
      ){
-    let authorUIDAsString = context.query.authorUID as string;
-    authorUID = authorUIDAsString
-    let dataPointUIDAsString = context.query.dataPointUID as string;
-    dataPointUID = dataPointUIDAsString
-    let brandNameAsString = context.query.brandName as string;
-    brandName = brandNameAsString
-    
+      let dataPointUIDAsString = context.query.dataPointUID as string;
+      dataPointUID = dataPointUIDAsString  
+      let authorUIDAsString = context.query.authorUID as string;
+      authorUID = authorUIDAsString
+      let brandNameAsString = context.query.brandName as string;
+      brandName = brandNameAsString
+
+      let commentsAsString = context.query.comments as string;
+      comments = commentsAsString
+      let gTINAsString = context.query.gTIN as string;
+      gTIN = gTINAsString
+      let identifierExistsAsString = context.query.identifierExists as string;
+      if (identifierExistsAsString === 'true') {
+      identifierExists = true
+      }
+      if (identifierExistsAsString === 'false') {
+        identifierExists = false
+      }
+      let itemModelNumberAsString = context.query.itemModelNumber as string;
+      itemModelNumber = itemModelNumberAsString
+      let timeToReplaceInDaysAsString = context.query.timeToReplaceInDays as string;
+      let timeToReplaceInDaysAsNumber:number = Number(timeToReplaceInDaysAsString)
+      timeToReplaceInDays = timeToReplaceInDaysAsNumber
+      let titleAsString = context.query.title as string;
+      title = titleAsString
+      let youTubeURLAsString = context.query.youTubeURL as string;
+      youTubeURL = youTubeURLAsString
   }
 
   return {
     props: {
       authorUID: authorUID,
       dataPointUID: dataPointUID,
-      brandName: brandName
+      brandName: brandName,
+      comments:comments,
+      gTIN:gTIN, 
+      identifierExists:identifierExists,
+      itemModelNumber:itemModelNumber,
+      timeToReplaceInDays:timeToReplaceInDays,
+      title:title,
+      youTubeURL:youTubeURL    
     }
   }
 
@@ -343,14 +385,6 @@ interface DataPointEditingFormProps {
 
 const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
-  let existingBrand = undefined
-  if (props.brandName == undefined) {
-
-  } else {
-    existingBrand = props.brandName
-  }
-
-
   const userContextObject = useContext(UserContext)
 
   const [showDataPointEditingForm, setShowDataPointEditingForm] = useState(true);
@@ -374,7 +408,16 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
             <p>{userContextObject.userUIDString}</p>
             <div>
               {(showDataPointEditingForm === true) &&
-                <DataPointEditingForm brand={existingBrand} title={''} identifierExists={false} gTIN={''} itemModelNumber={''} timeToReplaceInDays={0} youTubeURL={''} comments={''} dataPointUID={''} 
+                <DataPointEditingForm 
+                  brand={props.brandName} 
+                  title={props.title} 
+                  identifierExists={props.identifierExists} 
+                  gTIN={props.gTIN} 
+                  itemModelNumber={props.itemModelNumber} 
+                  timeToReplaceInDays={props.timeToReplaceInDays} 
+                  youTubeURL={props.youTubeURL} 
+                  comments={props.comments} 
+                  dataPointUID={props.dataPointUID} 
                   setVisibilityForDataPointEditingForm={setVisibilityForDataPointEditingForm}
                   setShowErrorMessage={setShowErrorMessage} 
                   setShowSuccessMessage={setShowSuccessMessage}
