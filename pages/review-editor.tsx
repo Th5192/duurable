@@ -454,7 +454,6 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
       <div>
         <Layout>
             <h1>Create a review:</h1>
-            <p>{userContextObject.userUIDString}</p>
             <div>
               {(showDataPointEditingForm === true) &&
                 <DataPointEditingForm 
@@ -485,9 +484,6 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
                   <Link href='/'>Back to home</Link>
                 </div>
               }
-            </div>
-            <div>
-              <p>AuthorUID: {props.authorUID}</p>
             </div>
         </Layout>
       </div>
