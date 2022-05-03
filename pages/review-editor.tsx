@@ -11,7 +11,7 @@ import productPageStyles from '../styles/product-page.module.css'
 // React core.
 import React, { useContext, useState } from 'react';
 
-import { deleteField, doc, collection, writeBatch, serverTimestamp, Timestamp } from "firebase/firestore";
+import { deleteField, doc, DocumentData, DocumentReference, collection, writeBatch, serverTimestamp, Timestamp } from "firebase/firestore";
 
 import {db} from './_app'
 
@@ -231,8 +231,12 @@ interface DataPointEditingFormProps {
       
       const batch = writeBatch(db);
 
-      const newOrEditedDataPointRef = doc(collection(db, 'dataPoints'));
-      
+      let newOrEditedDataPointRef:DocumentReference<DocumentData>
+      if (props.dataPointUID === '') {
+        newOrEditedDataPointRef = doc(collection(db, 'dataPoints'));
+      } else {
+        newOrEditedDataPointRef = doc(db, 'dataPoints', props.dataPointUID)
+      }
       // This code can be used to convert string type date to FirebaseTimeStamp type date.
       // let purchaseDateStringAsDate = new Date(purchaseDate)
       // let purchaseDateAsFirebaseTimeStamp = Timestamp.fromDate(purchaseDateStringAsDate)
