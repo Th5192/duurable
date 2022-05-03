@@ -481,8 +481,8 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
               }
               {(showSuccessMessage === true) && 
                 <div>
-                  <p>Saved successfully!  To leave another review please click below:</p>
-                  <button onClick={() => createAnotherReview()}>Create Another Review</button>
+                  <p>Saved successfully!</p>
+                  <Link href='/'>Back to home</Link>
                 </div>
               }
             </div>
