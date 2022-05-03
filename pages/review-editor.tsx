@@ -453,7 +453,7 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
     return (
       <div>
         <Layout>
-            <h1>Create a review:</h1>
+            <h1>Data Point Form</h1>
             <div>
               {(showDataPointEditingForm === true) &&
                 <DataPointEditingForm 
