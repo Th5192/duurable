@@ -17,22 +17,14 @@ function ContentModeratorPage(){
      const [userIsAdmin, setUserIsAdmin] = useState(false)
 
      useEffect(() => {
-
-          async function fetchUserAdminStatus() {
-               if (userContext.userUIDString !== '') {
-                    const userAdminStatusRef = doc(db, 'users', userContext.userUIDString);
-                    const docSnap = await getDoc(userAdminStatusRef);
-                    if(docSnap.exists()){
-                         let userIsAdminAPICallResult = docSnap.data().admin ?? false
-                         setUserIsAdmin(userIsAdminAPICallResult)
-                         console.log('ContentModerationPage userIsAdmin async callback reached now...')
-                    }
-               }
+          console.log('content-moderator useEffect triggered now...')
+          if (userContext.userIsAdminContextValue === true ) {
+               setUserIsAdmin(true)
+          } else {
+               setUserIsAdmin(false)
           }
-     
-          fetchUserAdminStatus();
 
-     },[userContext.userUIDString]);
+     },[userContext.userIsAdminContextValue]);
 
       
      async function fetchNotModeratedYetDataPoints() {

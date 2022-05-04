@@ -9,7 +9,7 @@ import React, {useState, useEffect} from 'react';
 
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, signInWithPopup, signOut, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 import utilStyles from '../styles/utils.module.css';
 
@@ -197,21 +197,45 @@ const DuuurableAuthUI = () => {
 function MyApp({ Component, pageProps }: AppProps) {
 
   const [userUID, setUserUID] = useState('')
+  const [userIsAdmin, setUserIsAdmin] = useState(false)
+
 
   useEffect( () => {
-    console.log('MyApp/useEffect/triggered')
+    console.log('111 MyApp/useEffect/onAuthStateChanged/triggered')
     const unregisterAuthObserver = onAuthStateChanged(auth, user => {
-      console.log('MyApp/useEffect/onauthStateChanged callback triggered')
+      console.log('111 MyApp/useEffect/onauthStateChanged callback triggered')
       if (user) {
         setUserUID(user.uid);
       }
     });
 
     return () => { 
-      console.log('MyApp/useEffect/CLEANUP triggered')
+      console.log('111 MyApp/useEffect/onAuthState/CLEANUP triggered')
       unregisterAuthObserver(); 
     }
   });  
+
+  useEffect( () => {
+
+    async function fetchUserAdminStatus(userUIDParam:string): Promise<void> {
+      console.log('222 Myapp/useEffect/fetchUserAdminStatus triggered now and userUIDParam yields: ' + JSON.stringify(userUIDParam))
+        const userAdminStatusRef = doc(db, 'adminUsers', userUIDParam);
+        const docSnap = await getDoc(userAdminStatusRef);
+        if(docSnap.exists()){
+            let userIsAdminAPICallResult = docSnap.data().admin ?? false
+            setUserIsAdmin(userIsAdminAPICallResult)
+            console.log('222 Myapp/useEffect/fetchUserAdminStatus docSnap.exists() callback reached now...')
+        }
+      
+    }
+    
+    if (userUID !== '') {
+      console.log('222 Myapp/useEffect/fetchUserAdminStatus says userUID !== empty string so execute fetchUserAdminStatus async function and userUID yields: ' + JSON.stringify(userUID))
+      fetchUserAdminStatus(userUID)
+    }
+
+  }, [userUID]);
+
 
 
   return (
@@ -223,7 +247,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </div>
           <div>
             <DuuurableAuthUI/>
-             <UserContext.Provider value={ {userUIDString:userUID} }>
+             <UserContext.Provider value={ {userUIDString:userUID, userIsAdminContextValue: userIsAdmin } }>
             <Component {...pageProps} />
             </UserContext.Provider>
           </div>
