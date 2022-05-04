@@ -4,7 +4,7 @@ import Link from 'next/link';
 // React core.
 import React, { useContext, useEffect, useState } from 'react';
 
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, limit, query, where } from "firebase/firestore";
 
 import {db} from '../pages/_app'
 
@@ -34,10 +34,23 @@ function ContentModeratorPage(){
 
      },[userContext.userUIDString]);
 
+      
+     async function fetchNotModeratedYetDataPoints() {
+          const q = query(collection(db, 'dataPoints'), where('hasBeenModerated', '==', false), limit(1));
+          const querySnapshot = await getDocs(q)
+          querySnapshot.forEach((doc) => {
+               console.log(doc.id, ' => ', doc.data());
+          });
+     }
+
+
      return(
           <div>
                {(userIsAdmin === true) && 
-                    <p>User Is Admin</p>
+                    <div>
+                         <p>User Is Admin</p>
+                         <button onClick={()=>{fetchNotModeratedYetDataPoints()}}>Get next unmoderated data point</button>
+                    </div>
                }
                {(userIsAdmin === false) && 
                     <p>User Is NOT Admin</p>
