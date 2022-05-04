@@ -444,11 +444,6 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
     setShowDataPointEditingForm(formIsVisible)
   }
 
-  function createAnotherReview() {
-    setShowDataPointEditingForm(true)
-    setShowErrorMessage(false)
-    setShowSuccessMessage(false)
-  }
 
     return (
       <div>
