@@ -38,9 +38,9 @@ function ContentModeratorPage(){
                setUnmoderatedDataPointExists(false)
           } else {
                setUnmoderatedDataPointExists(true)
-          querySnapshot.forEach((doc) => {
-               console.log(doc.id, ' => ', doc.data());
-          });
+               querySnapshot.forEach((doc) => {
+                    console.log(doc.id, ' => ', doc.data());
+               });
           }
 
      }
