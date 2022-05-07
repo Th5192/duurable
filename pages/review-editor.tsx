@@ -494,6 +494,20 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
   const [showDataPointEditingForm, setShowDataPointEditingForm] = useState(true);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+  const [userIsAdmin, setUserIsAdmin] = useState(false)
+
+  let userContextObject = useContext(UserContext);
+
+  useEffect(() => {
+    console.log('### CreateReview useEffect userIsAdmin triggered now')
+    if (userContextObject.userIsAdminContextValue === true) {
+      console.log('### CreateReview useEffect userIsAdmin triggered now / setUserIsAdmin to true')
+      setUserIsAdmin(true)
+    } else {
+      console.log('### CreateReview useEffect userIsAdmin triggered now / setUserIsAdmin to false')
+      setUserIsAdmin(false)
+    }
+  },[userContextObject.userIsAdminContextValue, userIsAdmin])
 
   function setVisibilityForDataPointEditingForm(formIsVisible: boolean) {
     setShowDataPointEditingForm(formIsVisible)
@@ -533,6 +547,11 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
                 <div>
                   <p>Saved successfully!</p>
                   <Link href='/'>Back to home</Link>
+                  <div>
+                    {(userIsAdmin === true) &&
+                      <Link href='/content-moderator'>Content Moderation Console</Link>
+                    }
+                  </div>
                 </div>
               }
             </div>
