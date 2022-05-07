@@ -332,6 +332,32 @@ interface DataPointEditingFormProps {
         [dataPointUID]:true
       }, {merge: true})
 
+      /* This code is commented out for now.  I want to use it to scrub denormalized data when the user changes the brand or GTIN in the future.  It is a rough draft and not fully thought out yet.
+      if (
+            ((props.brand !== '') && (props.brand !== brand))
+                    ||
+            ((props.gTIN !== '') && (props.gTIN !== gTIN))  ){
+              console.log('DATA SCRUB PERFORMED: pre-existing brand or GTIN was edited so need to retractively delete effected denormalized fields')
+          
+              
+              const durabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', props.brand, props.gTIN)
+              batch.set(durabilityBrandGTINRef, {
+                [dataPointUID]: deleteField()
+              }, {merge: true});
+          
+              const itemRouteParametersRef = doc(db, 'products', 'itemRouteParameters', props.brand, 'itemRouteParameters')
+              batch.set(itemRouteParametersRef, {
+                [gTIN]:true
+              }, {merge: true})
+          
+              const dataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', brand, gTIN)
+              batch.set(dataPointRouteParametersRef, {
+                [dataPointUID]: deleteField()
+              }, {merge: true})
+          
+            }
+        */
+
       const brandRouteParametersRef = doc(db, 'products', 'brandRouteParameters')
       batch.set(brandRouteParametersRef, {
         [brand]:true
