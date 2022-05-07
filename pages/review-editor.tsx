@@ -322,11 +322,6 @@ interface DataPointEditingFormProps {
         [dataPointUID]: timeToReplaceInDays
       }, {merge: true});
   
-      const brandRouteParametersRef = doc(db, 'products', 'brandRouteParameters')
-      batch.set(brandRouteParametersRef, {
-        [brand]:true
-      }, {merge: true})
-  
       const itemRouteParametersRef = doc(db, 'products', 'itemRouteParameters', brand, 'itemRouteParameters')
       batch.set(itemRouteParametersRef, {
         [gTIN]:true
@@ -335,6 +330,11 @@ interface DataPointEditingFormProps {
       const dataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', brand, gTIN)
       batch.set(dataPointRouteParametersRef, {
         [dataPointUID]:true
+      }, {merge: true})
+
+      const brandRouteParametersRef = doc(db, 'products', 'brandRouteParameters')
+      batch.set(brandRouteParametersRef, {
+        [brand]:true
       }, {merge: true})
   
       const dataPointsOwnedByUserRef = doc(db, 'users', authorUID, 'private-documents', 'dataPointsOwnedByUser');
