@@ -9,7 +9,7 @@ import Layout from '../components/layout'
 import productPageStyles from '../styles/product-page.module.css'
 
 // React core.
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { deleteField, doc, DocumentData, DocumentReference, collection, writeBatch, serverTimestamp, Timestamp } from "firebase/firestore";
 
@@ -113,6 +113,7 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
 
 
 interface DataPointEditingFormProps {
+    authorUID: string;
     brand: string;
     title: string;
     identifierExists: boolean;
@@ -132,8 +133,15 @@ interface DataPointEditingFormProps {
   
   function DataPointEditingForm(props: DataPointEditingFormProps) {
 
-    const userContextObject = useContext(UserContext)
   
+    let existingAuthorUID = undefined
+    if (props.authorUID === '') {
+
+    } else {
+      existingAuthorUID = props.authorUID
+      console.log('set datapoint author to pre-existing author value because this is an existing data point')
+    }
+
     let existingBrand = undefined
     if (props.brand == undefined) {
   
@@ -213,7 +221,8 @@ interface DataPointEditingFormProps {
     }
 
 
-    
+    const [userIsAdmin, setUserIsAdmin] = useState(false)
+    const [authorUID, setAuthorUID] = useState(existingAuthorUID || '')
     const [brand, setBrand] = useState(existingBrand || '');
     const [title, setTitle] = useState(existingTitle || '');
     const [identifierExists, setIdentifierExists] = useState(existingIdentifierExists || false);
@@ -227,6 +236,32 @@ interface DataPointEditingFormProps {
     const [comments, setComments] = useState(existingComments || '');
     
   
+    const userContextObject = useContext(UserContext)
+
+    useEffect(() => {
+      console.log('%%% review-editor userIsAdmin useEffect triggered now yields: ' + userContextObject.userIsAdminContextValue)
+      if (userContextObject.userIsAdminContextValue === true ) {
+        console.log('%%% review-editor userIsAdmin useEffect / setUserAdmin is true')
+        setUserIsAdmin(true)
+      } else {
+        console.log('%%% review-editor userIsAdmin useEffect / setUserAdmin is false')  
+        setUserIsAdmin(false)
+      }
+  
+    },[userContextObject.userIsAdminContextValue, userIsAdmin]);
+  
+
+    useEffect(() => {
+      console.log('@ review-editor userUID useEffect triggered now. / setUserUID performed now yields:' + userContextObject.userUIDString )
+          if (authorUID === '') {
+            console.log('@ review-editor userUID useEffect triggered now. / setAuthorUID performed now ..')
+            setAuthorUID(userContextObject.userUIDString)
+          }
+
+    },[userContextObject.userUIDString, authorUID]);
+  
+  
+
     async function pushToFirebase() {
       
       const batch = writeBatch(db);
@@ -237,6 +272,17 @@ interface DataPointEditingFormProps {
       } else {
         newOrEditedDataPointRef = doc(db, 'dataPoints', props.dataPointUID)
       }
+
+      if (userIsAdmin === true) {
+        batch.set(newOrEditedDataPointRef, {
+            hasBeenModerated: true
+        }, {merge: true})
+      } else {
+        batch.set(newOrEditedDataPointRef, {
+          hasBeenModerated: false
+        }, {merge: true})
+      }
+
       // This code can be used to convert string type date to FirebaseTimeStamp type date.
       // let purchaseDateStringAsDate = new Date(purchaseDate)
       // let purchaseDateAsFirebaseTimeStamp = Timestamp.fromDate(purchaseDateStringAsDate)
@@ -255,7 +301,7 @@ interface DataPointEditingFormProps {
       }
 
       batch.set(newOrEditedDataPointRef, {
-        authorUID: userContextObject.userUIDString,
+        authorUID: authorUID,
         brand: brand,
         title: title,
         identifierExists: identifierExists,
@@ -291,7 +337,7 @@ interface DataPointEditingFormProps {
         [dataPointUID]:true
       }, {merge: true})
   
-      const dataPointsOwnedByUserRef = doc(db, 'users', userContextObject.userUIDString, 'private-documents', 'dataPointsOwnedByUser');
+      const dataPointsOwnedByUserRef = doc(db, 'users', authorUID, 'private-documents', 'dataPointsOwnedByUser');
       batch.set(dataPointsOwnedByUserRef, {
         [dataPointUID]:true
       }, {merge:true})
@@ -379,6 +425,9 @@ interface DataPointEditingFormProps {
     return(
       <div className={productPageStyles.dataPointEditingForm}>
         <form onSubmit={handleSubmit}>
+          <div>
+            <p>Data point authorUID: {authorUID}</p>
+          </div>
           <label>Brand name: </label>
           <input id='brand' className='form-field' type='text' placeholder='Enter brand name...' name='brand' value={brand} onChange={handleChange}/>
           <br></br>
@@ -428,13 +477,19 @@ interface DataPointEditingFormProps {
           <button className={productPageStyles.saveButton} type='submit'>Save</button>
           <br></br>
         </form>
+        <div>
+          {(userIsAdmin === true) && 
+            <div>
+              <p>You are now viewing as Admin.</p>
+             </div>
+          }
+        </div>
       </div>
     )
   }
 
 const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
-  const userContextObject = useContext(UserContext)
 
   const [showDataPointEditingForm, setShowDataPointEditingForm] = useState(true);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -451,7 +506,8 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
             <h1>Data Point Form</h1>
             <div>
               {(showDataPointEditingForm === true) &&
-                <DataPointEditingForm 
+                <DataPointEditingForm
+                  authorUID={props.authorUID}
                   brand={props.brandName} 
                   title={props.title} 
                   identifierExists={props.identifierExists} 

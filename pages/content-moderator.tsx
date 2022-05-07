@@ -53,7 +53,7 @@ function ContentModeratorPage(){
                setUnmoderatedDataPointExists(true)
                querySnapshot.forEach((doc) => {
                     console.log(doc.id, ' => ', doc.data());
-                    setDataPointUID(doc.data().dataPointUID) 
+                    setDataPointUID(doc.id) 
                     setAuthorUID(doc.data().authorUID)
                     setBrandName(doc.data().brand)
                     setComments(doc.data().comments)
@@ -100,7 +100,7 @@ function ContentModeratorPage(){
                                                   requiredReplacementDate: requiredReplacementDate            
                                              },
                                              }}>
-                                             <a>Go to unmoderated data point</a>
+                                             <a>Go to unmoderated data point {dataPointUID}</a>
                                         </Link>
                                    </div>
                               }
