@@ -317,27 +317,6 @@ interface DataPointEditingFormProps {
   
       const dataPointUID = newOrEditedDataPointRef.id
   
-      /*
-      const durabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', brand, gTIN)
-      batch.set(durabilityBrandGTINRef, {
-        [dataPointUID]: timeToReplaceInDays
-      }, {merge: true});
-      */
-
-      /*
-      const itemRouteParametersRef = doc(db, 'products', 'itemRouteParameters', brand, 'itemRouteParameters')
-      batch.set(itemRouteParametersRef, {
-        [gTIN]:true
-      }, {merge: true})
-      */
-     
-      /*
-      const dataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', brand, gTIN)
-      batch.set(dataPointRouteParametersRef, {
-        [dataPointUID]:true
-      }, {merge: true})
-      */
-
       if (props.dataPointUID !== '') {
         if (
             ((props.brand !== '') && (props.brand !== brand))
@@ -385,14 +364,6 @@ interface DataPointEditingFormProps {
           [dataPointUID]:true
         }, {merge: true})  
       }
-
-      
-      /*
-      const brandRouteParametersRef = doc(db, 'products', 'brandRouteParameters')
-      batch.set(brandRouteParametersRef, {
-        [brand]:true
-      }, {merge: true})
-      */
   
       const dataPointsOwnedByUserRef = doc(db, 'users', authorUID, 'private-documents', 'dataPointsOwnedByUser');
       batch.set(dataPointsOwnedByUserRef, {
