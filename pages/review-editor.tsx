@@ -139,7 +139,6 @@ interface DataPointEditingFormProps {
 
     } else {
       existingAuthorUID = props.authorUID
-      console.log('set datapoint author to pre-existing author value because this is an existing data point')
     }
 
     let existingBrand = undefined
