@@ -11,7 +11,7 @@ import productPageStyles from '../styles/product-page.module.css'
 // React core.
 import React, { useContext, useEffect, useState } from 'react';
 
-import { deleteField, doc, DocumentData, DocumentReference, collection, writeBatch, serverTimestamp, Timestamp } from "firebase/firestore";
+import { deleteField, doc, DocumentData, DocumentReference, collection, writeBatch, runTransaction, serverTimestamp, Timestamp } from "firebase/firestore";
 
 import {db} from './_app'
 
@@ -358,10 +358,13 @@ interface DataPointEditingFormProps {
             }
         */
 
+      
+      /*
       const brandRouteParametersRef = doc(db, 'products', 'brandRouteParameters')
       batch.set(brandRouteParametersRef, {
         [brand]:true
       }, {merge: true})
+      */
   
       const dataPointsOwnedByUserRef = doc(db, 'users', authorUID, 'private-documents', 'dataPointsOwnedByUser');
       batch.set(dataPointsOwnedByUserRef, {
@@ -378,8 +381,54 @@ interface DataPointEditingFormProps {
 
     }
 
+    async function runTransactionsOnFirebase() {
+
+      let priorBrandState = 'Error'
+      if (props.brand !== '') {
+        priorBrandState = props.brand
+      }
+      
+      let newBrandState = 'Error'
+      if (brand !== '') {
+        newBrandState = brand
+      }
+
+      async function handleTransaction(docRef:DocumentReference<DocumentData>, stateToAdjust: string, transactionAmount: number) {
+        try {
+          await runTransaction(db, async (transaction) => {
+            const countDoc = await transaction.get(docRef);
+            if (!countDoc.exists()) {
+              throw 'brandRouteParameters doc does not exist'
+            }
+            const newCount = Math.max(0, (countDoc.data()[stateToAdjust] || 0) + transactionAmount)
+            transaction.update(brandRouteParametersRef, {[stateToAdjust]: newCount})
+          });
+        } catch (e) {
+          console.error(e)
+        }
+      }
+
+      const brandRouteParametersRef = doc(db, 'products', 'brandRouteParameters')
+      if (props.dataPointUID !== '') {
+        if (
+          ((props.brand !== '') && (props.brand !== brand))
+                  ||
+          ((props.gTIN !== '') && (props.gTIN !== gTIN))  ){
+            handleTransaction(brandRouteParametersRef, priorBrandState, -1)
+            handleTransaction(brandRouteParametersRef, newBrandState, 1)
+          }
+
+      } else {
+        handleTransaction(brandRouteParametersRef,newBrandState,1)
+      }
+    }
+
+
     const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
       event.preventDefault();
+
+      runTransactionsOnFirebase()
+
       pushToFirebase()
       .then(result => {
         console.log('.then triggered now')
