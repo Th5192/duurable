@@ -322,11 +322,13 @@ interface DataPointEditingFormProps {
         [dataPointUID]: timeToReplaceInDays
       }, {merge: true});
   
+      /*
       const itemRouteParametersRef = doc(db, 'products', 'itemRouteParameters', brand, 'itemRouteParameters')
       batch.set(itemRouteParametersRef, {
         [gTIN]:true
       }, {merge: true})
-  
+      */
+     
       const dataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', brand, gTIN)
       batch.set(dataPointRouteParametersRef, {
         [dataPointUID]:true
@@ -387,10 +389,20 @@ interface DataPointEditingFormProps {
       if (props.brand !== '') {
         priorBrandState = props.brand
       }
-      
+
       let newBrandState = 'Error'
       if (brand !== '') {
         newBrandState = brand
+      }
+
+      let priorGTINState = 'Error'
+      if (props.gTIN !== '') {
+        priorGTINState = props.gTIN
+      }
+
+      let newGTINState = 'Error'
+      if (gTIN !== '') {
+        newGTINState = gTIN
       }
 
       async function handleTransaction(docRef:DocumentReference<DocumentData>, stateToAdjust: string, transactionAmount: number) {
@@ -398,10 +410,10 @@ interface DataPointEditingFormProps {
           await runTransaction(db, async (transaction) => {
             const countDoc = await transaction.get(docRef);
             if (!countDoc.exists()) {
-              throw 'brandRouteParameters doc does not exist'
+              throw 'handleTransaction doc does not exist'
             }
             const newCount = Math.max(0, (countDoc.data()[stateToAdjust] || 0) + transactionAmount)
-            transaction.update(brandRouteParametersRef, {[stateToAdjust]: newCount})
+            transaction.update(docRef, {[stateToAdjust]: newCount})
           });
         } catch (e) {
           console.error(e)
@@ -409,6 +421,9 @@ interface DataPointEditingFormProps {
       }
 
       const brandRouteParametersRef = doc(db, 'products', 'brandRouteParameters')
+      const priorItemRouteParametersRef = doc(db, 'products', 'itemRouteParameters', priorBrandState, 'itemRouteParameters')
+      const newItemRouteParametersRef = doc(db, 'products', 'itemRouteParameters', newBrandState, 'itemRouteParameters')
+
       if (props.dataPointUID !== '') {
         if (
           ((props.brand !== '') && (props.brand !== brand))
@@ -416,10 +431,14 @@ interface DataPointEditingFormProps {
           ((props.gTIN !== '') && (props.gTIN !== gTIN))  ){
             handleTransaction(brandRouteParametersRef, priorBrandState, -1)
             handleTransaction(brandRouteParametersRef, newBrandState, 1)
+
+            handleTransaction(priorItemRouteParametersRef, priorGTINState, -1)
+            handleTransaction(newItemRouteParametersRef, newGTINState, 1)
           }
 
       } else {
         handleTransaction(brandRouteParametersRef,newBrandState,1)
+        handleTransaction(newItemRouteParametersRef, newGTINState, 1)
       }
     }
 
