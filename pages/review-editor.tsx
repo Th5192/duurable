@@ -402,20 +402,69 @@ interface DataPointEditingFormProps {
         newGTINState = gTIN
       }
 
-      async function handleTransaction(docRef:DocumentReference<DocumentData>, stateToAdjust: string, transactionAmount: number) {
+      async function handleSingleTransactionInOneDoc(docRef:DocumentReference<DocumentData>, stateToAdjust: string, transactionAmount: number) {
         try {
           await runTransaction(db, async (transaction) => {
             const countDoc = await transaction.get(docRef);
-            if (!countDoc.exists()) {
-              throw 'handleTransaction doc does not exist'
-            }
-            const newCount = Math.max(0, (countDoc.data()[stateToAdjust] || 0) + transactionAmount)
-            transaction.update(docRef, {[stateToAdjust]: newCount})
+            let priorCount = 0 
+            if((countDoc.exists())){
+                let docData = countDoc.data()
+                if (docData === undefined) {
+                  priorCount = 0
+                } else {
+                  let stateToAdjustValue = docData[stateToAdjust]
+                  if (stateToAdjustValue === undefined) {
+                    priorCount = 0
+                  } else {
+                    priorCount = stateToAdjustValue
+                  }
+                }
+              
+            } 
+            const newCount = Math.max(0, priorCount + transactionAmount)
+            transaction.set(docRef, {[stateToAdjust]: newCount}, {merge: true})
           });
         } catch (e) {
           console.error(e)
         }
       }
+
+      async function handleTwoTransactionsInOneDoc(docRef:DocumentReference<DocumentData>, firstStateToAdjust: string, secondStateToAdjust:string, firstStateToAdjustTransactionAmount: number, secondStateToAdjustTransactionAmount: number) {
+        try {
+          await runTransaction(db, async (transaction) => {
+            const countDoc = await transaction.get(docRef);
+            let priorCountOfFirstState = 0 
+            let priorCountOfSecondState = 0
+            if((countDoc.exists())){
+                let docData = countDoc.data()
+                if (docData === undefined) {
+                  priorCountOfFirstState = 0
+                  priorCountOfSecondState = 0
+                } else {
+                  let firstStateToAdjustPriorValue = docData[firstStateToAdjust]
+                  if (firstStateToAdjustPriorValue === undefined) {
+                    priorCountOfFirstState = 0
+                  } else {
+                    priorCountOfFirstState = firstStateToAdjustPriorValue
+                  }
+                  let secondStateToAdjustPriorValue = docData[secondStateToAdjust]
+                  if (secondStateToAdjustPriorValue === undefined) {
+                    priorCountOfSecondState = 0
+                  } else {
+                    priorCountOfSecondState = secondStateToAdjustPriorValue
+                  }
+                }
+              
+            } 
+            const newValueOfFirstState = Math.max(0, priorCountOfFirstState + firstStateToAdjustTransactionAmount)
+            const newValueOfSecondState = Math.max(0, priorCountOfSecondState + secondStateToAdjustTransactionAmount)
+            transaction.set(docRef, {[firstStateToAdjust]: newValueOfFirstState, [secondStateToAdjust]: newValueOfSecondState}, {merge: true})
+          });
+        } catch (e) {
+          console.error(e)
+        }
+      }
+
 
       const brandRouteParametersRef = doc(db, 'products', 'brandRouteParameters')
       const priorItemRouteParametersRef = doc(db, 'products', 'itemRouteParameters', priorBrandState, 'itemRouteParameters')
@@ -426,16 +475,15 @@ interface DataPointEditingFormProps {
           ((props.brand !== '') && (props.brand !== brand))
                   ||
           ((props.gTIN !== '') && (props.gTIN !== gTIN))  ){
-            handleTransaction(brandRouteParametersRef, priorBrandState, -1)
-            handleTransaction(brandRouteParametersRef, newBrandState, 1)
+            handleTwoTransactionsInOneDoc(brandRouteParametersRef, priorBrandState, newBrandState, -1, 1)
 
-            handleTransaction(priorItemRouteParametersRef, priorGTINState, -1)
-            handleTransaction(newItemRouteParametersRef, newGTINState, 1)
+            handleSingleTransactionInOneDoc(priorItemRouteParametersRef, priorGTINState, -1)
+            handleSingleTransactionInOneDoc(newItemRouteParametersRef, newGTINState, 1)
           }
 
       } else {
-        handleTransaction(brandRouteParametersRef,newBrandState,1)
-        handleTransaction(newItemRouteParametersRef, newGTINState, 1)
+        handleSingleTransactionInOneDoc(brandRouteParametersRef,newBrandState,1)
+        handleSingleTransactionInOneDoc(newItemRouteParametersRef, newGTINState, 1)
       }
     }
 
