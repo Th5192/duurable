@@ -317,11 +317,13 @@ interface DataPointEditingFormProps {
   
       const dataPointUID = newOrEditedDataPointRef.id
   
+      /*
       const durabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', brand, gTIN)
       batch.set(durabilityBrandGTINRef, {
         [dataPointUID]: timeToReplaceInDays
       }, {merge: true});
-  
+      */
+
       /*
       const itemRouteParametersRef = doc(db, 'products', 'itemRouteParameters', brand, 'itemRouteParameters')
       batch.set(itemRouteParametersRef, {
@@ -329,36 +331,60 @@ interface DataPointEditingFormProps {
       }, {merge: true})
       */
      
+      /*
       const dataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', brand, gTIN)
       batch.set(dataPointRouteParametersRef, {
         [dataPointUID]:true
       }, {merge: true})
+      */
 
-      /* This code is commented out for now.  I want to use it to scrub denormalized data when the user changes the brand or GTIN in the future.  It is a rough draft and not fully thought out yet.
-      if (
+      if (props.dataPointUID !== '') {
+        if (
             ((props.brand !== '') && (props.brand !== brand))
                     ||
             ((props.gTIN !== '') && (props.gTIN !== gTIN))  ){
               console.log('DATA SCRUB PERFORMED: pre-existing brand or GTIN was edited so need to retractively delete effected denormalized fields')
           
-              
-              const durabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', props.brand, props.gTIN)
-              batch.set(durabilityBrandGTINRef, {
+              const priorDurabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', props.brand, props.gTIN)
+              batch.set(priorDurabilityBrandGTINRef, {
                 [dataPointUID]: deleteField()
               }, {merge: true});
+
+              const newDurabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', brand, gTIN)
+              batch.set(newDurabilityBrandGTINRef, {
+                [dataPointUID]: timeToReplaceInDays
+              }, {merge: true});
+        
           
-              const itemRouteParametersRef = doc(db, 'products', 'itemRouteParameters', props.brand, 'itemRouteParameters')
-              batch.set(itemRouteParametersRef, {
-                [gTIN]:true
-              }, {merge: true})
-          
-              const dataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', brand, gTIN)
-              batch.set(dataPointRouteParametersRef, {
+              const priorDataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', props.brand, props.gTIN)
+              batch.set(priorDataPointRouteParametersRef, {
                 [dataPointUID]: deleteField()
               }, {merge: true})
-          
+
+              const newDataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', brand, gTIN)
+              batch.set(newDataPointRouteParametersRef, {
+                [dataPointUID]:true
+              }, {merge: true})
+        
+            } else {
+              if (props.timeToReplaceInDays !== timeToReplaceInDays) {
+                const newDurabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', brand, gTIN)
+                batch.set(newDurabilityBrandGTINRef, {
+                  [dataPointUID]: timeToReplaceInDays
+                }, {merge: true});
+              }
             }
-        */
+      } else {
+        const durabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', brand, gTIN)
+        batch.set(durabilityBrandGTINRef, {
+          [dataPointUID]: timeToReplaceInDays
+        }, {merge: true});
+
+        const dataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', brand, gTIN)
+        batch.set(dataPointRouteParametersRef, {
+          [dataPointUID]:true
+        }, {merge: true})  
+      }
 
       
       /*
