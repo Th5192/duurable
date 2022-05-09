@@ -26,7 +26,10 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
   let gTIN:string = ''; 
   let identifierExists:boolean = false;
   let itemModelNumber:string = '';
+
+  // timeToReplaceInDays is not used in this app.  But it is still present in the code because the app may use this variable in the future.
   let timeToReplaceInDays:number = 0;
+  
   let title:string = '';
   let youTubeURL:string = '';
   let needsReplacement:boolean = false;
@@ -603,8 +606,6 @@ interface DataPointEditingFormProps {
               </div>
             }
           </div>
-          <label>Time To Replace In Days: </label>
-          <input id='timeToReplaceInDays' className='form-field' type='number' min='0' max='365000' placeholder='Enter Time To Replace In Days...' name='timeToReplaceInDays' value={timeToReplaceInDays} onChange={handleChange}/>
           <br></br>
           <label>YouTube URL:</label>
           <input id='youTubeURL' className='form-field' type='text' placeholder='Enter YouTube URL ...' name='youTubeURL' value={youTubeURL} onChange={handleChange}/>
