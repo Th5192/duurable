@@ -103,6 +103,36 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
 
     let userContextObject = useContext(UserContext)
 
+    function calculateProductLongevity(){
+
+        let numberOfSecondsInAYear = (365*24*60*60)
+        let numberOfSecondsInADay = (24*60*60)
+
+        let purchaseDateAsUnixTimeStamp = Date.parse(props.purchaseDate)
+        let replacementDateAsUnixTimeStamp = Date.parse(props.requiredReplacementDate)
+        let productLifeSpanInSeconds = (replacementDateAsUnixTimeStamp - purchaseDateAsUnixTimeStamp)/1000
+
+         if (   (props.purchaseDate === '') ||
+                (props.requiredReplacementDate === '') ||
+                (Number.isNaN(purchaseDateAsUnixTimeStamp)) ||
+                (Number.isNaN(replacementDateAsUnixTimeStamp)) ||
+                productLifeSpanInSeconds < 0
+             ) { return 'Error' } 
+
+        let productLifeSpanInYears = Math.floor(productLifeSpanInSeconds/numberOfSecondsInAYear)
+        let productLifeSpanRemainderAfterDivisionByYears = (productLifeSpanInSeconds % numberOfSecondsInAYear)
+        let yearOrYearsString:string = 'years'
+        if (productLifeSpanInYears === 1) {
+            yearOrYearsString = 'year'
+        }
+
+        return (
+                productLifeSpanInYears + ' ' + yearOrYearsString + ' and ' + productLifeSpanRemainderAfterDivisionByYears/numberOfSecondsInADay + ' days.' 
+                )
+
+    }
+
+
     return(
         <div className={productPageStyles.wrapper}>
             <h2>IS IT DURABLE?</h2>
@@ -117,8 +147,24 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
                     title='YouTube video player.'
                 />
             </div>
-            <h3>How long did it last before you needed a new one?</h3>
-            <p>{props.timeToReplaceInDays} days</p>
+            <div>
+                <h3>Date purchased (YYYY-MM-DD)</h3>
+                <p>{props.purchaseDate}</p>
+                <h3>Did this product break down and require replacement?</h3>
+                <div>
+                    {props.needsReplacement && 
+                        <div>
+                            <p>Yes.  It needed replacing on: <span>{props.requiredReplacementDate}</span>.</p>  
+                            <div>
+                                This product lasted: {calculateProductLongevity()}
+                            </div>
+                        </div>}
+                    {!props.needsReplacement && 
+                    <div>
+                        No. This product was still functional at the time of this report.    
+                    </div>}
+                </div>
+            </div>
             <h3>Additional comments:</h3>
             <p>{props.comments}</p>
             <div className={productPageStyles.productInformationContainer}>
