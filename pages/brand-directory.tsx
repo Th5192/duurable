@@ -18,8 +18,9 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
 
             brandDirectoryData = docSnap.data();
             Object.keys(brandDirectoryData).forEach((name) => {
-              console.log(name, brandDirectoryData[name]);
-              brandStringArray.push(name)
+              if (brandDirectoryData[name] > 0) {
+                    brandStringArray.push(name)
+                }
             });
             brandStringArray.sort()
         

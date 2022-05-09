@@ -25,7 +25,9 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
             data = docSnap.data();
             Object.keys(data).forEach((item) => {
               console.log(item, data[item]);
-              itemStringArray.push(item)
+              if (data[item] > 0) {
+                    itemStringArray.push(item)
+                }
             });
             itemStringArray.sort()
         

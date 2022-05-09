@@ -29,7 +29,9 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
             let dataPointDirectoryData = docSnap.data();
             Object.keys(dataPointDirectoryData).forEach((dataPointUID) => {
               console.log(dataPointUID, dataPointDirectoryData[dataPointUID]);
-              dataPointUIDStringArray.push(dataPointUID)
+              if (dataPointDirectoryData[dataPointUID] = true) {
+                dataPointUIDStringArray.push(dataPointUID)
+              }
             });
             dataPointUIDStringArray.sort()
 
