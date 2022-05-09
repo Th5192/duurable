@@ -8,7 +8,7 @@ import { collection, getDocs, limit, query, where } from "firebase/firestore";
 
 import {db} from '../pages/_app'
 
-import { UserContext } from '../pages/userContext'
+import { UserContext } from '../components/userContext'
 
 
 function ContentModeratorPage(){

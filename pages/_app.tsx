@@ -16,7 +16,7 @@ import utilStyles from '../styles/utils.module.css';
 // Styles required by StyledFirebaseAuth
 import '../styles/firebaseui-styling.global.css'; // Import globally.
 
-import { UserContext } from '../pages/userContext'
+import { UserContext } from '../components/userContext'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional

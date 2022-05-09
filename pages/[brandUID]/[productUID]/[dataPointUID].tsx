@@ -9,7 +9,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 import {db} from '../../_app'
 
-import { UserContext } from '../../../pages/userContext'
+import { UserContext } from '../../../components/userContext'
 
 export const getServerSideProps:GetServerSideProps = async (context: GetServerSidePropsContext ) => {
 

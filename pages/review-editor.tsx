@@ -15,7 +15,7 @@ import { deleteField, doc, DocumentData, DocumentReference, collection, writeBat
 
 import {db} from './_app'
 
-import { UserContext } from './userContext'
+import { UserContext } from '../components/userContext'
 
 export const getServerSideProps:GetServerSideProps = async (context: GetServerSidePropsContext) => {
 
