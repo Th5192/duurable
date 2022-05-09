@@ -567,17 +567,17 @@ interface DataPointEditingFormProps {
             <p>Data point authorUID: {authorUID}</p>
           </div>
           <label>Brand name: </label>
-          <input id='brand' className='form-field' type='text' placeholder='Enter brand name...' name='brand' value={brand} onChange={handleChange}/>
+          <input id='brand' className='form-field' type='text' placeholder='Enter brand name...' name='brand' value={brand} minLength={2} required onChange={handleChange}/>
           <br></br>
           <label>Product Title (Name of product): </label>
-          <input id='title' className='form-field' type='text' placeholder='Enter name of product...' name='title' value={title} onChange={handleChange}/>
+          <input id='title' className='form-field' type='text' placeholder='Enter name of product...' name='title' value={title} minLength={2} required onChange={handleChange}/>
           <br></br>
           <label>GTIN exists? 
           <input id='identifierExists' type='checkbox' checked={identifierExists} name='identifierExists' onChange={handleChange}/>
           </label>
           <br></br>
           <label>GTIN: </label>
-          <input id='gTIN' className='form-field' type='text' placeholder='Enter GTIN...' name='gTIN' value={gTIN} onChange={handleChange}/>
+          <input id='gTIN' className='form-field' type='text' placeholder='Enter GTIN...' name='gTIN' value={gTIN} minLength={5} required onChange={handleChange}/>
           <br></br>
           <label>Item Model Number: </label>
           <input id='itemModelNumber' className='form-field' type='text' placeholder='Enter Item Model Number...' name='itemModelNumber' value={itemModelNumber} onChange={handleChange}/>
