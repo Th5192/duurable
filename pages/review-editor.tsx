@@ -633,7 +633,7 @@ interface DataPointEditingFormProps {
           <input id='youTubeURL' className='form-field' type='text' placeholder='Enter YouTube URL ...' name='youTubeURL' value={youTubeURL} onChange={handleChange}/>
           <br></br>
           <label>Comments:</label>
-          <textarea id='comments' className='form-field' placeholder='Enter comments ...' name='comments' rows={10} value={comments} onChange={handleTextAreaChange}/>
+          <textarea id='comments' placeholder='Enter comments ...' name='comments' rows={10} value={comments} onChange={handleTextAreaChange}/>
           <br></br>
           <button type='submit'>Save</button>
           <br></br>
