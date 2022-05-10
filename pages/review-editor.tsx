@@ -17,6 +17,8 @@ import {db} from './_app'
 
 import { UserContext } from '../components/userContext'
 
+import { calculateProductLongevityInDays } from '../shared/utils/utilityFunctions';
+
 export const getServerSideProps:GetServerSideProps = async (context: GetServerSidePropsContext) => {
 
   let dataPointUID:string = '';
@@ -233,7 +235,7 @@ interface DataPointEditingFormProps {
     const [purchaseDate, setPurchaseDate] = useState(existingPurchaseDate || '')
     const [needsReplacement, setNeedsReplacement] = useState(existingNeedsReplacement || false)
     const [requiredReplacementDate, setRequiredReplacementDate] = useState(existingRequiredReplacementDate || '');
-    const [timeToReplaceInDays, setTimeToReplaceInDays] = useState(existingTimeToReplaceInDays || 0);
+    const [timeToReplaceInDays, setTimeToReplaceInDays] = useState(existingTimeToReplaceInDays || undefined);
     const [youTubeURL, setYouTubeURL] = useState(existingYouTubeURL || '');
     const [comments, setComments] = useState(existingComments || '');
     
@@ -262,7 +264,23 @@ interface DataPointEditingFormProps {
 
     },[userContextObject.userUIDString, authorUID]);
   
-  
+    useEffect(() => {
+
+      if (
+        (purchaseDate === '') ||
+        (needsReplacement === false) ||
+        (requiredReplacementDate === '') ||
+        (Number.isNaN(Date.parse(purchaseDate))) ||
+        (Number.isNaN(Date.parse(requiredReplacementDate)))) {
+            console.log('setTimeToReplaceInDays as undefined')
+            setTimeToReplaceInDays(undefined)
+          } else {
+            let timeToReplaceInDaysPlaceholder = calculateProductLongevityInDays(purchaseDate, requiredReplacementDate)
+            setTimeToReplaceInDays(timeToReplaceInDaysPlaceholder)
+            console.log('setTimeToReplaceInDays as: ' + timeToReplaceInDaysPlaceholder)
+          }
+
+    }, [purchaseDate, needsReplacement, requiredReplacementDate, timeToReplaceInDays])
 
     async function pushToFirebase() {
       
@@ -311,7 +329,7 @@ interface DataPointEditingFormProps {
         itemModelNumber: itemModelNumber,
         purchaseDate: purchaseDate,
         needsReplacement: needsReplacement,
-        timeToReplaceInDays: timeToReplaceInDays,
+        timeToReplaceInDays: timeToReplaceInDays ?? deleteField(),
         youTubeURL: youTubeURL,
         comments: comments,
         timestamp: serverTimestamp()
@@ -333,7 +351,7 @@ interface DataPointEditingFormProps {
 
               const newDurabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', brand, gTIN)
               batch.set(newDurabilityBrandGTINRef, {
-                [dataPointUID]: timeToReplaceInDays
+                [dataPointUID]: timeToReplaceInDays ?? deleteField()
               }, {merge: true});
         
           
@@ -351,14 +369,14 @@ interface DataPointEditingFormProps {
               if (props.timeToReplaceInDays !== timeToReplaceInDays) {
                 const newDurabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', brand, gTIN)
                 batch.set(newDurabilityBrandGTINRef, {
-                  [dataPointUID]: timeToReplaceInDays
+                  [dataPointUID]: timeToReplaceInDays ?? deleteField()
                 }, {merge: true});
               }
             }
       } else {
         const durabilityBrandGTINRef = doc(db,'products', 'durabilityInDaysSortedByBrandAndGTIN', brand, gTIN)
         batch.set(durabilityBrandGTINRef, {
-          [dataPointUID]: timeToReplaceInDays
+          [dataPointUID]: timeToReplaceInDays ?? deleteField()
         }, {merge: true});
 
         const dataPointRouteParametersRef = doc(db, 'products', 'dataPointRouteParameters', brand, gTIN)
