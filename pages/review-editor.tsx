@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import Layout from '../components/layout'
 
-import productPageStyles from '../styles/product-page.module.css'
+import reviewEditorStyles from '../styles/review-editor.module.css'
 
 // React core.
 import React, { useContext, useEffect, useState } from 'react';
@@ -582,8 +582,8 @@ interface DataPointEditingFormProps {
   
   
     return(
-      <div className={productPageStyles.dataPointEditingForm}>
-        <form onSubmit={handleSubmit}>
+      <div>
+        <form className={reviewEditorStyles.reviewEditorForm} onSubmit={handleSubmit}>
           <div>
             <p>Data point authorUID: {authorUID}</p>
           </div>
@@ -593,9 +593,12 @@ interface DataPointEditingFormProps {
           <label>Product Title (Name of product): </label>
           <input id='title' className='form-field' type='text' placeholder='Enter name of product...' name='title' value={title} minLength={2} required onChange={handleChange}/>
           <br></br>
-          <label>GTIN exists? 
-          <input id='identifierExists' type='checkbox' checked={identifierExists} name='identifierExists' onChange={handleChange}/>
-          </label>
+          <div className={reviewEditorStyles.checkBoxRow}>
+              <label>
+                GTIN exists?
+                <input id='identifierExists' type='checkbox' checked={identifierExists} name='identifierExists' onChange={handleChange}/>
+              </label>
+          </div>
           <br></br>
           <label>GTIN: </label>
           <input id='gTIN' className='form-field' type='text' placeholder='Enter GTIN...' name='gTIN' value={gTIN} minLength={5} required onChange={handleChange}/>
@@ -631,7 +634,7 @@ interface DataPointEditingFormProps {
           <label>Comments:</label>
           <input id='comments' className='form-field' type='text' placeholder='Enter comments ...' name='comments' value={comments} onChange={handleChange}/>
           <br></br>
-          <button className={productPageStyles.saveButton} type='submit'>Save</button>
+          <button type='submit'>Save</button>
           <br></br>
         </form>
         <div>
