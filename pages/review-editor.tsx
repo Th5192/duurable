@@ -607,7 +607,7 @@ interface DataPointEditingFormProps {
           <input id='itemModelNumber' className='form-field' type='text' placeholder='Enter Item Model Number...' name='itemModelNumber' value={itemModelNumber} onChange={handleChange}/>
           <br></br>
           <label>When did you purchase this product? </label>
-          <input id='purchaseDate' className='form-field' type='date' name='purchaseDate' value={purchaseDate} onChange={handleChange}/>
+          <input id='purchaseDate' className={reviewEditorStyles.reviewEditorFormInputTypeDate} type='date' name='purchaseDate' value={purchaseDate} onChange={handleChange}/>
           <br></br>
           <fieldset>
             <legend>Does it need to be replaced?</legend>
@@ -622,8 +622,8 @@ interface DataPointEditingFormProps {
             {(needsReplacement) && 
               <div>
                 <label>When did this product require replacing?</label>
-                <input id='requiredReplacementDate' className='form-field' type='date' name='requiredReplacementDate' required value={requiredReplacementDate} onChange={handleChange}/><span className="validity"></span>
                 <br></br>
+                <input id='requiredReplacementDate' className={reviewEditorStyles.reviewEditorFormInputTypeDate} type='date' name='requiredReplacementDate' required value={requiredReplacementDate} onChange={handleChange}/><span className="validity"></span>
               </div>
             }
           </div>

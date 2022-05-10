@@ -6,13 +6,17 @@
     margin: 10px;
 }
 
-.reviewEditorForm input {
+.reviewEditorForm input[type=text] {
     margin: 0px 0px 20px 0px;
     max-width: 900px;
 }
 
 .reviewEditorForm label {
     margin: 0px 0px 3px 0px;
+}
+
+.reviewEditorFormInputTypeDate {
+    width: 200px;
 }
 
 .checkBoxRow{
