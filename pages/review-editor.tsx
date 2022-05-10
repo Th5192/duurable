@@ -572,14 +572,15 @@ interface DataPointEditingFormProps {
         case 'youTubeURL':
           setYouTubeURL(event.target.value);
           break;
-        case 'comments':
-          setComments(event.target.value);
-          break;
         default:
           break;
       }
     }
   
+    const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      event.persist();
+      setComments(event.target.value)
+    }
   
     return(
       <div>
@@ -632,7 +633,7 @@ interface DataPointEditingFormProps {
           <input id='youTubeURL' className='form-field' type='text' placeholder='Enter YouTube URL ...' name='youTubeURL' value={youTubeURL} onChange={handleChange}/>
           <br></br>
           <label>Comments:</label>
-          <input id='comments' className='form-field' type='text' placeholder='Enter comments ...' name='comments' value={comments} onChange={handleChange}/>
+          <textarea id='comments' className='form-field' placeholder='Enter comments ...' name='comments' rows={10} value={comments} onChange={handleTextAreaChange}/>
           <br></br>
           <button type='submit'>Save</button>
           <br></br>
