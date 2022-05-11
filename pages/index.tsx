@@ -49,11 +49,7 @@ function MonitorUserLoginStatus() {
     <div>
       {user && 
         <div>
-          <p>The current user uid is:</p>
-          <p>{currentUserUID}</p>
-          <div>
             <LandingPage/>
-          </div>
         </div>
       }
       {(user==undefined) &&
