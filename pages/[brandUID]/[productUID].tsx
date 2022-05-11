@@ -65,7 +65,8 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
 function ListOfLinks({dataPointUIDStringArray, brandRouteParamAsString, gTINRouteParamAsString}:{dataPointUIDStringArray:string[], brandRouteParamAsString:string, gTINRouteParamAsString:string}) {
     return (
         <div>
-            <h1>Search customer submitted durability videos:</h1>
+            <h1>Search customer submitted durability videos</h1>
+            <p>Each link below represents a user submitted durability report.  Click one to see what they had to say!</p>
             <ul>
                 {dataPointUIDStringArray.map((dataPointUID) => (
                     <li key={dataPointUID}>
