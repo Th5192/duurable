@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Layout from '../components/layout'
 
 import reviewEditorStyles from '../styles/review-editor.module.css'
+import utilStyles from '../styles/utils.module.css'
 
 // React core.
 import React, { useContext, useEffect, useState } from 'react';
@@ -635,7 +636,7 @@ interface DataPointEditingFormProps {
           <label>Comments:</label>
           <textarea id='comments' placeholder='Enter comments ...' name='comments' rows={10} value={comments} onChange={handleTextAreaChange}/>
           <br></br>
-          <button type='submit'>Save</button>
+          <button className={utilStyles.largeButton} type='submit'>Save</button>
           <br></br>
         </form>
         <div>

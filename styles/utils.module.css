@@ -303,6 +303,7 @@
   justify-content: center;
   height: auto;
   width: auto;
+  max-width: 300px;
   padding: 10px;
   border-color: var(--very-peri);
   border-width: 1px;
