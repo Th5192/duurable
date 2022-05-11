@@ -159,7 +159,7 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
                 <div>
                     {props.needsReplacement && 
                         <div>
-                            <p>Yes.  It needed replacing on: <span>{props.requiredReplacementDate}</span>.</p>  
+                            <p>Yes.  It needed replacing on: <span>{props.requiredReplacementDate}</span> (YYYY-MM-DD).</p>  
                             <div>
                                 This product lasted: {calculateProductLongevity()}
                             </div>
