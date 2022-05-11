@@ -121,13 +121,18 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
 
         let productLifeSpanInYears = Math.floor(productLifeSpanInSeconds/numberOfSecondsInAYear)
         let productLifeSpanRemainderAfterDivisionByYears = (productLifeSpanInSeconds % numberOfSecondsInAYear)
+        let productLifeSpanRemainderAfterDivisionByYearsStatedInDays = productLifeSpanRemainderAfterDivisionByYears/numberOfSecondsInADay
         let yearOrYearsString:string = 'years'
         if (productLifeSpanInYears === 1) {
             yearOrYearsString = 'year'
         }
+        let dayOrDaysString = 'days';
+        if (productLifeSpanRemainderAfterDivisionByYearsStatedInDays === 1) {
+            dayOrDaysString = 'day'
+        }
 
         return (
-                productLifeSpanInYears + ' ' + yearOrYearsString + ' and ' + productLifeSpanRemainderAfterDivisionByYears/numberOfSecondsInADay + ' days.' 
+                productLifeSpanInYears + ' ' + yearOrYearsString + ' and ' + productLifeSpanRemainderAfterDivisionByYears/numberOfSecondsInADay + ' ' + dayOrDaysString +'.' 
                 )
 
     }
