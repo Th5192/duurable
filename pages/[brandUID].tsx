@@ -47,11 +47,11 @@ export const getServerSideProps:GetServerSideProps = async (context: GetServerSi
 function ListOfBrandLinks({brandUID, itemStringArray}:{brandUID:string, itemStringArray:string[]}) {
     return (
         <div>
-            <h1>Search by Global Trade Item Number (GTIN)</h1>
+            <h1>Search {brandUID} products by Global Trade Item Number (GTIN)</h1>
             <ul>
                 {itemStringArray.map((item) => (
                     <li key={item}>
-                        <a href={`/${brandUID}/${item}`}>{brandUID} {item}</a>
+                        <a href={`/${brandUID}/${item}`}>{item}</a>
                     </li>
                 ))}
             </ul>
