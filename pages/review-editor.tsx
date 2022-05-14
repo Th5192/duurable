@@ -237,6 +237,7 @@ interface DataPointEditingFormProps {
     const [needsReplacement, setNeedsReplacement] = useState(existingNeedsReplacement || false)
     const [requiredReplacementDate, setRequiredReplacementDate] = useState(existingRequiredReplacementDate || '');
     const [timeToReplaceInDays, setTimeToReplaceInDays] = useState(existingTimeToReplaceInDays || undefined);
+    const [candidateYouTubeURL, setCandidateYouTubeURL] = useState<string|undefined>(undefined)
     const [youTubeURL, setYouTubeURL] = useState(existingYouTubeURL || '');
     const [comments, setComments] = useState(existingComments || '');
     
@@ -508,6 +509,52 @@ interface DataPointEditingFormProps {
       }
     }
 
+    function extractYouTubeVideoUID(youTubeURLString:string) {
+
+      let fullLengthURLLink = youTubeURLString.split('https://www.youtube.com/watch?v=')
+      if (fullLengthURLLink[1] !== undefined) {
+        if (fullLengthURLLink[1].length === 11) {
+          setCandidateYouTubeURL(fullLengthURLLink[1])
+          return
+        }
+      }
+
+      let shortenedURLLink = youTubeURLString.split('https://youtu.be/')
+      if (shortenedURLLink[1] !== undefined) {
+        if (shortenedURLLink[1].length === 11) {
+          setCandidateYouTubeURL(shortenedURLLink[1])
+          return
+        }
+      } 
+
+      setCandidateYouTubeURL(undefined)
+
+    }
+
+    function CandidateYouTubeVideoComponent() {
+      if (candidateYouTubeURL === undefined) {
+        return(
+          <div>After you enter a valid YouTube link a preview will appear here.</div>
+        )
+      }
+
+      let srcString = 'https://www.youtube.com/embed/' + candidateYouTubeURL
+
+
+      return (
+        <div>
+          <iframe 
+            width="560" 
+            height="315" 
+            src={srcString}
+            title="YouTube video player" 
+            frameBorder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowFullScreen>
+          </iframe>
+        </div>
+      )
+    }
 
     const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -571,6 +618,7 @@ interface DataPointEditingFormProps {
           setTimeToReplaceInDays(timeToReplaceInDaysAsInt);
           break;
         case 'youTubeURL':
+          extractYouTubeVideoUID(event.target.value)
           setYouTubeURL(event.target.value);
           break;
         default:
@@ -633,6 +681,9 @@ interface DataPointEditingFormProps {
           <label>YouTube URL:</label>
           <input id='youTubeURL' className='form-field' type='text' placeholder='Enter YouTube URL ...' name='youTubeURL' value={youTubeURL} onChange={handleChange}/>
           <br></br>
+          <div>
+            <CandidateYouTubeVideoComponent/>
+          </div>
           <label>Comments:</label>
           <textarea id='comments' placeholder='Enter comments ...' name='comments' rows={10} value={comments} onChange={handleTextAreaChange}/>
           <br></br>
