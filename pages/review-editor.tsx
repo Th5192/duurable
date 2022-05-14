@@ -534,7 +534,7 @@ interface DataPointEditingFormProps {
     function CandidateYouTubeVideoComponent() {
       if (candidateYouTubeURL === undefined) {
         return(
-          <div>After you enter a valid YouTube link a preview will appear here.</div>
+          <div className={reviewEditorStyles.videoPreviewPlaceholder}>After you enter a valid YouTube link a preview will appear here.</div>
         )
       }
 
