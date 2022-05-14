@@ -237,7 +237,7 @@ interface DataPointEditingFormProps {
     const [needsReplacement, setNeedsReplacement] = useState(existingNeedsReplacement || false)
     const [requiredReplacementDate, setRequiredReplacementDate] = useState(existingRequiredReplacementDate || '');
     const [timeToReplaceInDays, setTimeToReplaceInDays] = useState(existingTimeToReplaceInDays || undefined);
-    const [candidateYouTubeURL, setCandidateYouTubeURL] = useState<string|undefined>(undefined)
+    const [candidateYouTubeVideoUID, setCandidateYouTubeVideoUID] = useState<string|undefined>(undefined)
     const [youTubeURL, setYouTubeURL] = useState(existingYouTubeURL || '');
     const [comments, setComments] = useState(existingComments || '');
     
@@ -322,6 +322,12 @@ interface DataPointEditingFormProps {
 
       }
 
+      let youTubeEmbedURL = undefined
+      if (candidateYouTubeVideoUID !== undefined) {
+        youTubeEmbedURL = 'https://www.youtube.com/embed/' + candidateYouTubeVideoUID
+      }
+
+
       batch.set(newOrEditedDataPointRef, {
         authorUID: authorUID,
         brand: brand,
@@ -332,7 +338,7 @@ interface DataPointEditingFormProps {
         purchaseDate: purchaseDate,
         needsReplacement: needsReplacement,
         timeToReplaceInDays: timeToReplaceInDays ?? deleteField(),
-        youTubeURL: youTubeURL,
+        youTubeURL: youTubeEmbedURL ?? deleteField(), 
         comments: comments,
         timestamp: serverTimestamp()
       }, {merge: true})    
@@ -514,7 +520,7 @@ interface DataPointEditingFormProps {
       let fullLengthURLLink = youTubeURLString.split('https://www.youtube.com/watch?v=')
       if (fullLengthURLLink[1] !== undefined) {
         if (fullLengthURLLink[1].length === 11) {
-          setCandidateYouTubeURL(fullLengthURLLink[1])
+          setCandidateYouTubeVideoUID(fullLengthURLLink[1])
           return
         }
       }
@@ -522,23 +528,23 @@ interface DataPointEditingFormProps {
       let shortenedURLLink = youTubeURLString.split('https://youtu.be/')
       if (shortenedURLLink[1] !== undefined) {
         if (shortenedURLLink[1].length === 11) {
-          setCandidateYouTubeURL(shortenedURLLink[1])
+          setCandidateYouTubeVideoUID(shortenedURLLink[1])
           return
         }
       } 
 
-      setCandidateYouTubeURL(undefined)
+      setCandidateYouTubeVideoUID(undefined)
 
     }
 
     function CandidateYouTubeVideoComponent() {
-      if (candidateYouTubeURL === undefined) {
+      if (candidateYouTubeVideoUID === undefined) {
         return(
           <div className={reviewEditorStyles.videoPreviewPlaceholder}>After you enter a valid YouTube link a preview will appear here.</div>
         )
       }
 
-      let srcString = 'https://www.youtube.com/embed/' + candidateYouTubeURL
+      let srcString = 'https://www.youtube.com/embed/' + candidateYouTubeVideoUID
 
 
       return (
