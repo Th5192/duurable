@@ -284,6 +284,14 @@ interface DataPointEditingFormProps {
 
     }, [purchaseDate, needsReplacement, requiredReplacementDate, timeToReplaceInDays])
 
+    useEffect(() => {
+      console.log('% review-editor youTubeURL useEffect triggered now')
+      if(youTubeURL !== ''){
+        console.log('% review-editor youTubeURL useEffect extractYOuTubeVideoUID triggered now')
+        extractYouTubeVideoUID(youTubeURL)
+      }
+    },[youTubeURL, candidateYouTubeVideoUID])
+
     async function pushToFirebase() {
       
       const batch = writeBatch(db);
@@ -529,6 +537,14 @@ interface DataPointEditingFormProps {
       if (shortenedURLLink[1] !== undefined) {
         if (shortenedURLLink[1].length === 11) {
           setCandidateYouTubeVideoUID(shortenedURLLink[1])
+          return
+        }
+      } 
+
+      let embedURLLink = youTubeURLString.split('https://www.youtube.com/embed/')
+      if (embedURLLink[1] !== undefined) {
+        if (embedURLLink[1].length === 11) {
+          setCandidateYouTubeVideoUID(embedURLLink[1])
           return
         }
       } 
