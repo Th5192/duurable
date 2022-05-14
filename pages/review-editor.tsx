@@ -678,7 +678,15 @@ interface DataPointEditingFormProps {
             }
           </div>
           <br></br>
-          <label>YouTube URL:</label>
+          <b>YouTube Video</b>
+          <label>We encourage users to document their durability experience by creating videos on YouTube&reg; and linking them here.  To submit your YouTube video please copy its URL here.</label>  
+          <br></br>
+          <label>Your YouTube link should look like one of these links:</label>
+          <br></br>
+          <label>https://www.youtube.com/watch?v=FQmr0GuylJI</label>
+          <label>or</label>
+          <label>https://youtu.be/FQmr0GuylJI</label>
+          <br></br>
           <input id='youTubeURL' className='form-field' type='text' placeholder='Enter YouTube URL ...' name='youTubeURL' value={youTubeURL} onChange={handleChange}/>
           <br></br>
           <div>
