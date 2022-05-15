@@ -137,21 +137,42 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
 
     }
 
+    function YouTubeVideoComponent(){
+
+        const correctEmbedURLPrefix = '^https://www.youtube.com/embed/';
+        const regexp = new RegExp(correctEmbedURLPrefix);
+        const candidateURL = props.youTubeURL;
+        const regExTestResult = regexp.test(candidateURL);
+        const candidateURLStringLength = candidateURL.length;
+        if ((regExTestResult === true) && (candidateURLStringLength === 41)) {
+            return (
+                <div>
+                    <iframe 
+                        width="560" 
+                        height="315" 
+                        src={props.youTubeURL}
+                        title="YouTube video player" 
+                        frameBorder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowFullScreen>
+                    </iframe>
+                </div>
+            )
+        } else {
+            return(
+                <div>
+                    <p>A YouTube video does not exist for this data point.</p>
+                </div>
+            )
+        }
+    }
 
     return(
         <div className={productPageStyles.wrapper}>
             <h2>IS IT DURABLE?</h2>
             <h1>{props.brandName}, {props.title}</h1>
             <h3>Link to YouTube durability video:</h3>
-            <div className={productPageStyles.videoContainer}>
-                <iframe
-                    src={props.youTubeURL}
-                    frameBorder='0'
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen
-                    title='YouTube video player.'
-                />
-            </div>
+            <YouTubeVideoComponent/>
             <div>
                 <h3>Date purchased (YYYY-MM-DD)</h3>
                 <p>{props.purchaseDate}</p>
