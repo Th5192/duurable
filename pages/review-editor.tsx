@@ -525,6 +525,25 @@ interface DataPointEditingFormProps {
 
     function extractYouTubeVideoUID(youTubeURLString:string) {
 
+      
+      const youTubeURLStringLowercased = youTubeURLString.toLowerCase()
+      
+      // Note: Special characters like the question mark ? need to be 'escaped' in a RegExp
+      const fullYouTubePrefix = '^https://www.youtube.com/watch\\?v='      
+      const shortenedYouTubePrefix = '^https://youtu.be/'
+      const embedYouTubePrefix = '^https://www.youtube.com/embed/'
+
+      const fullYouTubePrefixRegExp = new RegExp(fullYouTubePrefix)
+      const shortenedYouTubePrefixRegExp = new RegExp(shortenedYouTubePrefix)
+      const embedYouTubePrefixRegExp = new RegExp(embedYouTubePrefix)
+
+      if( (!fullYouTubePrefixRegExp.test(youTubeURLStringLowercased)) &&
+          (!shortenedYouTubePrefixRegExp.test(youTubeURLStringLowercased)) && 
+          (!embedYouTubePrefixRegExp.test(youTubeURLStringLowercased))){
+            setCandidateYouTubeVideoUID(undefined)
+            return
+          }
+      
       let fullLengthURLLink = youTubeURLString.split('https://www.youtube.com/watch?v=')
       if (fullLengthURLLink[1] !== undefined) {
         if (fullLengthURLLink[1].length === 11) {
