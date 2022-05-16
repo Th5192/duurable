@@ -705,6 +705,14 @@ interface DataPointEditingFormProps {
           <label>https://youtu.be/FQmr0GuylJI</label>
           <br></br>
           <input id='youTubeURL' className='form-field' type='text' placeholder='Enter YouTube URL ...' name='youTubeURL' value={youTubeURL} onChange={handleChange}/>
+          <div>
+            {(youTubeURL !== '') && (candidateYouTubeVideoUID !== undefined) && 
+              <p><span className="material-icons">done</span> YouTube link looks good! You can see a preview at the bottom of this page.</p>
+            }
+            {(youTubeURL !== '') && (candidateYouTubeVideoUID === undefined) && 
+              <p><span className="material-icons">close</span> Please enter a correctly formatted YouTube link.</p>
+            }
+          </div>
           <br></br>
           <label>Comments:</label>
           <textarea id='comments' placeholder='Enter comments ...' name='comments' rows={10} value={comments} onChange={handleTextAreaChange}/>
