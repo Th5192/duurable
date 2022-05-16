@@ -132,6 +132,7 @@ interface DataPointEditingFormProps {
     setVisibilityForDataPointEditingForm: Function,
     setShowErrorMessage: Function,
     setShowSuccessMessage: Function;
+    setCorrectlyFormattedYouTubeUID: Function;
     needsReplacement: boolean;
     purchaseDate: string;
     requiredReplacementDate: string; 
@@ -284,13 +285,7 @@ interface DataPointEditingFormProps {
 
     }, [purchaseDate, needsReplacement, requiredReplacementDate, timeToReplaceInDays])
 
-    useEffect(() => {
-      console.log('% review-editor youTubeURL useEffect triggered now')
-      if(youTubeURL !== ''){
-        console.log('% review-editor youTubeURL useEffect extractYOuTubeVideoUID triggered now')
-        extractYouTubeVideoUID(youTubeURL)
-      }
-    },[youTubeURL, candidateYouTubeVideoUID])
+
 
     async function pushToFirebase() {
       
@@ -541,6 +536,7 @@ interface DataPointEditingFormProps {
           (!shortenedYouTubePrefixRegExp.test(youTubeURLStringLowercased)) && 
           (!embedYouTubePrefixRegExp.test(youTubeURLStringLowercased))){
             setCandidateYouTubeVideoUID(undefined)
+            props.setCorrectlyFormattedYouTubeUID(undefined)
             return
           }
       
@@ -548,6 +544,7 @@ interface DataPointEditingFormProps {
       if (fullLengthURLLink[1] !== undefined) {
         if (fullLengthURLLink[1].length === 11) {
           setCandidateYouTubeVideoUID(fullLengthURLLink[1])
+          props.setCorrectlyFormattedYouTubeUID(fullLengthURLLink[1])
           return
         }
       }
@@ -556,6 +553,7 @@ interface DataPointEditingFormProps {
       if (shortenedURLLink[1] !== undefined) {
         if (shortenedURLLink[1].length === 11) {
           setCandidateYouTubeVideoUID(shortenedURLLink[1])
+          props.setCorrectlyFormattedYouTubeUID(shortenedURLLink[1])
           return
         }
       } 
@@ -564,38 +562,16 @@ interface DataPointEditingFormProps {
       if (embedURLLink[1] !== undefined) {
         if (embedURLLink[1].length === 11) {
           setCandidateYouTubeVideoUID(embedURLLink[1])
+          props.setCorrectlyFormattedYouTubeUID(embedURLLink[1])
           return
         }
       } 
 
       setCandidateYouTubeVideoUID(undefined)
+      props.setCorrectlyFormattedYouTubeUID(undefined)
 
     }
 
-    function CandidateYouTubeVideoComponent() {
-      if (candidateYouTubeVideoUID === undefined) {
-        return(
-          <div className={reviewEditorStyles.videoPreviewPlaceholder}>After you enter a valid YouTube link a preview will appear here.</div>
-        )
-      }
-
-      let srcString = 'https://www.youtube.com/embed/' + candidateYouTubeVideoUID
-
-
-      return (
-        <div>
-          <iframe 
-            width="560" 
-            height="315" 
-            src={srcString}
-            title="YouTube video player" 
-            frameBorder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowFullScreen>
-          </iframe>
-        </div>
-      )
-    }
 
     const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -730,9 +706,6 @@ interface DataPointEditingFormProps {
           <br></br>
           <input id='youTubeURL' className='form-field' type='text' placeholder='Enter YouTube URL ...' name='youTubeURL' value={youTubeURL} onChange={handleChange}/>
           <br></br>
-          <div>
-            <CandidateYouTubeVideoComponent/>
-          </div>
           <label>Comments:</label>
           <textarea id='comments' placeholder='Enter comments ...' name='comments' rows={10} value={comments} onChange={handleTextAreaChange}/>
           <br></br>
@@ -757,6 +730,7 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const [userIsAdmin, setUserIsAdmin] = useState(false)
+  const [correctlyFormattedYouTubeUID, setCorrectlyFormattedYouTubeUID] = useState<string|undefined>(undefined)
 
   let userContextObject = useContext(UserContext);
 
@@ -773,6 +747,31 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
 
   function setVisibilityForDataPointEditingForm(formIsVisible: boolean) {
     setShowDataPointEditingForm(formIsVisible)
+  }
+
+  function CandidateYouTubeVideoComponent() {
+    if (correctlyFormattedYouTubeUID === undefined) {
+      return(
+        <div className={reviewEditorStyles.videoPreviewPlaceholder}>After you enter a valid YouTube link a preview will appear here.</div>
+      )
+    }
+
+    let srcString = 'https://www.youtube.com/embed/' + correctlyFormattedYouTubeUID
+
+
+    return (
+      <div>
+        <iframe 
+          width="560" 
+          height="315" 
+          src={srcString}
+          title="YouTube video player" 
+          frameBorder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowFullScreen>
+        </iframe>
+      </div>
+    )
   }
 
 
@@ -799,7 +798,11 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
                   setVisibilityForDataPointEditingForm={setVisibilityForDataPointEditingForm}
                   setShowErrorMessage={setShowErrorMessage} 
                   setShowSuccessMessage={setShowSuccessMessage}
+                  setCorrectlyFormattedYouTubeUID={setCorrectlyFormattedYouTubeUID}
                 />}
+            </div>
+            <div>
+                <CandidateYouTubeVideoComponent/>
             </div>
             <div>
               {(showErrorMessage === true) && 
