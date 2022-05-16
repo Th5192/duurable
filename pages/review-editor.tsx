@@ -246,6 +246,10 @@ interface DataPointEditingFormProps {
     const userContextObject = useContext(UserContext)
 
     useEffect(() => {
+      extractYouTubeVideoUID(youTubeURL)
+    })
+
+    useEffect(() => {
       console.log('%%% review-editor userIsAdmin useEffect triggered now yields: ' + userContextObject.userIsAdminContextValue)
       if (userContextObject.userIsAdminContextValue === true ) {
         console.log('%%% review-editor userIsAdmin useEffect / setUserAdmin is true')
@@ -635,7 +639,6 @@ interface DataPointEditingFormProps {
           setTimeToReplaceInDays(timeToReplaceInDaysAsInt);
           break;
         case 'youTubeURL':
-          extractYouTubeVideoUID(event.target.value)
           setYouTubeURL(event.target.value);
           break;
         default:
