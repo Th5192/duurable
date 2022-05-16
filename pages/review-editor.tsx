@@ -813,7 +813,9 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
                 />}
             </div>
             <div>
+              {(showErrorMessage === false) && (showSuccessMessage === false) &&
                 <CandidateYouTubeVideoComponent/>
+              }
             </div>
             <div>
               {(showErrorMessage === true) && 
