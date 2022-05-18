@@ -51,11 +51,11 @@ function LandingPage(){
       </div>
       <div className={utilStyles.fullWidthContainerWhite}>
         <div>
-          <Link href='/brand-directory'><a>Search Durability Data</a></Link>
+          <div className={utilStyles.boldText}>Watch videos that reveal wear and tear.</div> 
+          <div className={utilStyles.lighterText}>Search by brand and model number.</div>
         </div>
-        <div>
-          <p>Click the link above to search for durability videos.</p>  
-          <p>Watch videos showing wear and tear. Search by brand and model number.</p>
+        <div className={utilStyles.linkContainer}>
+          <Link href='/brand-directory'><a>Search Durability Data</a></Link>
         </div>
       </div>
       <div className={utilStyles.landingPageFeaturesWrapper}>

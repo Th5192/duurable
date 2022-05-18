@@ -237,6 +237,21 @@
   font-weight: lighter;
 }
 
+.boldText {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.lighterText {
+  font-size: 30px;
+  font-weight: lighter;
+}
+
+.linkContainer {
+  margin: 20px;
+}
+
+
 .fullWidthContainerVeryPeri {
   display: flex;
   flex-direction: column;
