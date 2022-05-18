@@ -9,10 +9,10 @@ export default function Footer () {
             </div>
             <div className={footerStyles.footerLinksContainer}>
                 <div className={footerStyles.footerLinkContainer}>
-                    <Link href='/termsandprivacy'><a>Terms of Use</a></Link>
+                    <Link href='/privacyandterms'><a>Terms of Use</a></Link>
                 </div>
                 <div className={footerStyles.footerLinkContainer}>
-                    <Link href='/termsandprivacy'><a>Privacy</a></Link>
+                    <Link href='/privacyandterms'><a>Privacy</a></Link>
                 </div>
             </div>
         </div>
