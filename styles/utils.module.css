@@ -228,11 +228,13 @@
 
 .heroHeadline {
   font-size: 48px;
+  font-weight: bold;
   padding: 0px;
 }
 
 .heroSubHeadline {
   font-size: 30px;
+  font-weight: lighter;
 }
 
 .fullWidthContainerVeryPeri {

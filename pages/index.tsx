@@ -40,7 +40,7 @@ function LandingPage(){
 
   return(
     <div>
-      <div className={utilStyles.fullWidthContainerVeryPeri}>
+      <div className={utilStyles.fullWidthContainerWhite}>
         <div className={utilStyles.heroHeadline}>
           <span>Duuurable </span>
           <span className="material-icons md-48">query_stats</span>
@@ -80,10 +80,10 @@ function LandingPage(){
           <p>New videos on the way!  We&#39;re just starting out.</p>
         </div>
       </div>
-      <div className={utilStyles.fullWidthContainerVeriPeriAmusementsOrange}>
-        <h1>Spend your money on products that last.</h1>
-        <h1>Making durable products costs extra.  Reward brands that take on this responsibility.</h1>
-        <h1>Support the environment by reducing waste.</h1>
+      <div className={utilStyles.fullWidthContainerWhite}>
+        <h2>Spend your money on products that last.</h2>
+        <h2>Making durable products costs extra.  Reward brands that take on this responsibility.</h2>
+        <h2>Support the environment by reducing waste.</h2>
       </div>
     </div>
   )
