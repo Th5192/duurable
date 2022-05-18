@@ -741,6 +741,7 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const [userIsAdmin, setUserIsAdmin] = useState(false)
+  const [currentUserUID, setCurrentUserUID] = useState('')
   const [correctlyFormattedYouTubeUID, setCorrectlyFormattedYouTubeUID] = useState<string|undefined>(undefined)
 
   let userContextObject = useContext(UserContext);
@@ -755,6 +756,14 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
       setUserIsAdmin(false)
     }
   },[userContextObject.userIsAdminContextValue, userIsAdmin])
+
+  useEffect(() => {
+    if (userContextObject.userUIDString !== '') {
+      setCurrentUserUID(userContextObject.userUIDString)
+    } else {
+      setCurrentUserUID('')
+    }
+  },[userContextObject.userUIDString, currentUserUID])
 
   function setVisibilityForDataPointEditingForm(formIsVisible: boolean) {
     setShowDataPointEditingForm(formIsVisible)
@@ -789,6 +798,14 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
     return (
       <div>
         <Layout>
+          {(currentUserUID === '') &&
+            <div>
+              <p>Please create an account or sign.</p>
+              <p>In order to create or edit a durability report you must have an account and be signed in.</p>
+            </div>
+          }
+          {(currentUserUID !== '') &&
+          <div>
             <h1>Data Point Form</h1>
             <div>
               {(showDataPointEditingForm === true) &&
@@ -833,6 +850,8 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
                 </div>
               }
             </div>
+          </div>
+          }
         </Layout>
       </div>
     )

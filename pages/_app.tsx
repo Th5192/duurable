@@ -206,6 +206,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       console.log('111 MyApp/useEffect/onauthStateChanged callback triggered')
       if (user) {
         setUserUID(user.uid);
+      } else {
+        setUserUID('');
       }
     });
 
