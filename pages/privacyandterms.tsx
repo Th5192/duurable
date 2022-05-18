@@ -11,7 +11,16 @@ export async function getStaticProps() {
     }
 }
 
-export default function PrivacyAndTerms( { pageData } ) {
+export default function PrivacyAndTerms({ 
+    pageData 
+}: {
+    pageData: {
+        id:string
+        title:string
+        date:string
+        contentHtml:string
+    }
+}) {
     return (
     <Layout>
         {pageData.title}
