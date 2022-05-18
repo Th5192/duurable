@@ -6,16 +6,11 @@ import Link from 'next/link';
 
 import Layout from '../components/layout'
 
-import productPageStyles from '../styles/product-page.module.css'
 import utilStyles from '../styles/utils.module.css'
 
 // React core.
 import React, {useState, useEffect, useContext} from 'react';
 
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, setDoc, addDoc, collection, updateDoc  } from "firebase/firestore";
-
-import {db} from '../pages/_app'
 
 import { UserContext } from '../components/userContext'
 
