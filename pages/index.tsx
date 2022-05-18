@@ -51,6 +51,15 @@ function LandingPage(){
       </div>
       <div className={utilStyles.fullWidthContainerWhite}>
         <div>
+          <div className={utilStyles.boldText}>Write a durability review.</div> 
+          <div className={utilStyles.lighterText}>Help people know if products really do last.</div>
+        </div>
+        <div className={utilStyles.linkContainer}>
+          <Link href='/review-editor'><a>Write a Review</a></Link>
+        </div>
+      </div>
+      <div className={utilStyles.fullWidthContainerWhite}>
+        <div>
           <div className={utilStyles.boldText}>Watch videos that reveal wear and tear.</div> 
           <div className={utilStyles.lighterText}>Search by brand and model number.</div>
         </div>
