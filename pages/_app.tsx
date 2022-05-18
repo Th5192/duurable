@@ -18,6 +18,8 @@ import '../styles/firebaseui-styling.global.css'; // Import globally.
 
 import { UserContext } from '../components/userContext'
 
+import Footer from '../components/footer'
+
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -251,6 +253,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <DuuurableAuthUI/>
              <UserContext.Provider value={ {userUIDString:userUID, userIsAdminContextValue: userIsAdmin } }>
             <Component {...pageProps} />
+            <Footer/>
             </UserContext.Provider>
           </div>
         </div>
