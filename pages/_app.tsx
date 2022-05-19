@@ -89,10 +89,11 @@ const DuuurableAuthUI = () => {
    */
     return (
       <div>
+
+        {/*
         <div>
           <i></i>
         </div>
-        {/* <div className={styles.caption}>This is a cool demo app</div> */}
         {isSignedIn !== undefined && !isSignedIn &&
           <div>
             {(showCreateAccountOrSignInUI===false) &&
@@ -191,6 +192,7 @@ const DuuurableAuthUI = () => {
             <a onClick={() => signOut(auth)}>Sign-out</a>
           </div>
         }
+      */}
       </div>
     );
   }
