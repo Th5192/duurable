@@ -19,6 +19,7 @@ import '../styles/firebaseui-styling.global.css'; // Import globally.
 import { UserContext } from '../components/userContext'
 
 import Footer from '../components/footer'
+import CookieConsent from 'react-cookie-consent'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -90,7 +91,7 @@ const DuuurableAuthUI = () => {
     return (
       <div>
 
-        {/*
+        
         <div>
           <i></i>
         </div>
@@ -192,7 +193,7 @@ const DuuurableAuthUI = () => {
             <a onClick={() => signOut(auth)}>Sign-out</a>
           </div>
         }
-      */}
+      
       </div>
     );
   }
@@ -256,6 +257,13 @@ function MyApp({ Component, pageProps }: AppProps) {
              <UserContext.Provider value={ {userUIDString:userUID, userIsAdminContextValue: userIsAdmin } }>
             <Component {...pageProps} />
             <Footer/>
+            {(userUID === '') && 
+              <CookieConsent buttonStyle={{background: "#686aaa", color: "#ffffff"}}>
+                We use cookies to ensure that we give you the best experience on our website. 
+                If you continue to use this site we will assume that you are happy with this.                
+              </CookieConsent>
+            }
+
             </UserContext.Provider>
           </div>
         </div>
