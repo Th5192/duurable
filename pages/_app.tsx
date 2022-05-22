@@ -257,13 +257,10 @@ function MyApp({ Component, pageProps }: AppProps) {
              <UserContext.Provider value={ {userUIDString:userUID, userIsAdminContextValue: userIsAdmin } }>
             <Component {...pageProps} />
             <Footer/>
-            {(userUID === '') && 
-              <CookieConsent buttonStyle={{background: "#686aaa", color: "#ffffff"}}>
-                We use cookies to ensure that we give you the best experience on our website. 
-                If you continue to use this site we will assume that you are happy with this.                
-              </CookieConsent>
-            }
-
+            <CookieConsent buttonStyle={{background: "#686aaa", color: "#ffffff"}}>
+              We use cookies to ensure that we give you the best experience on our website. 
+              If you continue to use this site we will assume that you are happy with this.                
+            </CookieConsent>
             </UserContext.Provider>
           </div>
         </div>
