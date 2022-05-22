@@ -800,7 +800,7 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
         <Layout>
           {(currentUserUID === '') &&
             <div>
-              <p>Please create an account or sign.</p>
+              <p>Please create an account or sign in.</p>
               <p>In order to create or edit a durability report you must have an account and be signed in.</p>
             </div>
           }
