@@ -94,7 +94,7 @@ const DuuurableAuthUI = () => {
     return (
       <div>
         {isSignedIn !== undefined && !isSignedIn &&
-          <div>
+          <div className={utilStyles.notSignedIn}>
             {(showCreateAccountOrSignInUI===false) &&
               <div className={utilStyles.containerForSignUpButtonandCreateAccountButton}>
                 <button className={utilStyles.signInButton} onClick={()=>{

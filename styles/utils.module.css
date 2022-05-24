@@ -51,6 +51,10 @@
     color: #666;
   }
   
+  .notSignedIn{
+    margin: 82px 0px 0px 0px;
+  }
+
   .signedIn{
     text-align: right;
     margin: 2em;
@@ -336,3 +340,11 @@
   border-color: var(--very-peri-amusements-orange);
   transition: 0.3s;
 }
+
+
+@media screen and (min-width: 600px) {
+  .notSignedIn{
+    margin: 0px;
+  }
+}
+
