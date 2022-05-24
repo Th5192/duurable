@@ -12,6 +12,7 @@ import { getAuth, onAuthStateChanged, signInWithPopup, signOut, GoogleAuthProvid
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 import utilStyles from '../styles/utils.module.css';
+import Layout from '../components/layout'
 
 // Styles required by StyledFirebaseAuth
 import '../styles/firebaseui-styling.global.css'; // Import globally.
@@ -257,6 +258,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <div id='outer-container'>
             <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
             <div id='page-wrap'>
+            <Layout>
             <DuuurableAuthUI/>
              <UserContext.Provider value={ {userUIDString:userUID, userIsAdminContextValue: userIsAdmin } }>
             <Component {...pageProps} />
@@ -266,6 +268,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               If you continue to use this site we will assume that you are happy with this.                
             </CookieConsent>
             </UserContext.Provider>
+            </Layout>
             </div>
           </div>
         </div>

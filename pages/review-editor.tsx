@@ -797,7 +797,6 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
 
     return (
       <div>
-        <Layout>
           {(currentUserUID === '') &&
             <div>
               <p>Please create an account or sign in.</p>
@@ -852,7 +851,6 @@ const CreateReview: NextPage = (props: InferGetServerSidePropsType<typeof getSer
             </div>
           </div>
           }
-        </Layout>
       </div>
     )
   }

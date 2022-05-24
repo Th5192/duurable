@@ -22,12 +22,12 @@ export default function PrivacyAndTerms({
     }
 }) {
     return (
-    <Layout>
+        <div>
         {pageData.title}
         <br />
         {pageData.date}
         <br />
         <div dangerouslySetInnerHTML={{ __html: pageData.contentHtml }} />
-    </Layout>
+        </div>
     ) 
 }

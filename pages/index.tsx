@@ -103,9 +103,7 @@ function LandingPage(){
 const Home: NextPage = () => {
   return (
     <div>
-      <Layout>
         <LandingPage/>
-      </Layout>
     </div>
   )
 }
