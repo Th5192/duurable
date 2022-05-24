@@ -254,7 +254,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <meta name="viewport" content="width=device-width,initial-scale=1"/>
             </Head>
           </div>
-          <div className='App' id='outer-container'>
+          <div id='outer-container'>
             <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
             <div id='page-wrap'>
             <DuuurableAuthUI/>
