@@ -1,3 +1,5 @@
+@import '../components/sidebar.module.css';
+
 :root {
   --very-peri: rgb(104,106,170); /* Pantone 2022 Color of Year Very Peri */
   --very-peri-amusements-red: rgb(212,82,122); /* Pantone Color of Year Amusements Palette Complementary Red */

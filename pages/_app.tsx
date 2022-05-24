@@ -20,6 +20,8 @@ import { UserContext } from '../components/userContext'
 
 import Footer from '../components/footer'
 import CookieConsent from 'react-cookie-consent'
+import Sidebar from '../components/sidebar'
+
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -252,7 +254,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <meta name="viewport" content="width=device-width,initial-scale=1"/>
             </Head>
           </div>
-          <div>
+          <div className='App' id='outer-container'>
+            <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
+            <div id='page-wrap'>
             <DuuurableAuthUI/>
              <UserContext.Provider value={ {userUIDString:userUID, userIsAdminContextValue: userIsAdmin } }>
             <Component {...pageProps} />
@@ -262,6 +266,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               If you continue to use this site we will assume that you are happy with this.                
             </CookieConsent>
             </UserContext.Provider>
+            </div>
           </div>
         </div>
           )
