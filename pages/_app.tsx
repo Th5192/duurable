@@ -93,11 +93,6 @@ const DuuurableAuthUI = () => {
    */
     return (
       <div>
-
-        
-        <div>
-          <i></i>
-        </div>
         {isSignedIn !== undefined && !isSignedIn &&
           <div>
             {(showCreateAccountOrSignInUI===false) &&
