@@ -201,7 +201,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const [userUID, setUserUID] = useState('')
   const [userIsAdmin, setUserIsAdmin] = useState(false)
-
+  const [sideBarIsOpen, setSideBarIsOpen] = useState(false)
 
   useEffect( () => {
     console.log('111 MyApp/useEffect/onAuthStateChanged/triggered')
@@ -241,6 +241,14 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   }, [userUID]);
 
+  function stateChangeHandler(newState: { isOpen: boolean | ((prevState: boolean) => boolean) }) {
+    setSideBarIsOpen(newState.isOpen)
+  }
+
+  function handleChildToParent(){
+    console.log('handleChildToParent triggered')
+    setSideBarIsOpen(false)
+  }
 
 
   return (
@@ -251,7 +259,10 @@ function MyApp({ Component, pageProps }: AppProps) {
             </Head>
           </div>
           <div id='outer-container'>
-            <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
+            <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} 
+                isOpen={sideBarIsOpen} 
+                handleStateChange={stateChangeHandler}
+                childToParent={handleChildToParent} />
             <div id='page-wrap'>
             <Layout>
             <DuuurableAuthUI/>
