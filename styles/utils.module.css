@@ -52,12 +52,12 @@
   }
   
   .notSignedIn{
-    margin: 82px 0px 0px 0px;
+    padding: 82px 0px 0px 0px;
   }
 
   .signedIn{
     text-align: right;
-    margin: 25px 25px 0px 0px;
+    padding: 0px 25px 0px 0px;
   }
   
   .containerForSignUpButtonandCreateAccountButton {
@@ -344,7 +344,7 @@
 
 @media screen and (min-width: 600px) {
   .notSignedIn{
-    margin: 36px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
   }
 }
 
