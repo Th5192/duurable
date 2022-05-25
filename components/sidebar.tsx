@@ -26,7 +26,5 @@ export default function Sidebar(props: SidebarProps) {
     </div>
     )
 }
-/*function state(state: any): ((state: import("react-burger-menu").State) => void) | undefined {
-    throw new Error('Function not implemented.')
-}
-*/
+
+
