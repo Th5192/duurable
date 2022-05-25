@@ -1,5 +1,5 @@
 import Link  from 'next/link'
-import { bubble as Menu } from 'react-burger-menu'
+import { slide as Menu } from 'react-burger-menu'
 
 interface SidebarProps {
     pageWrapId:string
