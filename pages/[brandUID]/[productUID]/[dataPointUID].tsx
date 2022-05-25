@@ -169,7 +169,7 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
 
     return(
         <div className={productPageStyles.wrapper}>
-            <h2>IS IT DURABLE?</h2>
+            <h3>PRODUCT REVIEW: Is it durable?</h3> 
             <h1>{props.brandName}, {props.title}</h1>
             <h3>Link to YouTube durability video:</h3>
             <YouTubeVideoComponent/>
@@ -200,6 +200,11 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
                 <p>Item Model Number: {props.itemModelNumber}</p>
             </div>
             <p>AuthorUID: {props.authorUID}</p>
+            <div>
+                <b>About Duuurable</b>
+                <p>What&#39;s the best product for you?  We believe the best products should be durable and last.  
+                    Help others find the best products.  Write a product review focused on durability today!</p>
+            </div>
             <div>
                 {(userContextObject.userUIDString === props.authorUID) &&
                     <Link
