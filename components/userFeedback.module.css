@@ -1,0 +1,66 @@
+.userFeedbackContainer {
+    display: flex;
+    flex-direction: row;
+    max-height: 150px;
+    max-width: 300px;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    margin: 20px;
+    border-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 10px;  
+    color: gray;
+}
+
+.happyNotHappyContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0px 0px 0px 0px;
+    color: gray;
+    width: 150px;
+}
+
+.happy{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.happy:hover{
+    color: blue;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.notHappy{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.notHappy:hover{
+    color: blue;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.feedbackForm {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    border-color: gray;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 10px;  
+    padding: 10px;
+
+}
+
+.feedbackSentConfirmation {
+    margin: 20px 0px 20px 0px;
+    color: gray;
+}
