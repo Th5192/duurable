@@ -64,3 +64,11 @@
     margin: 20px 0px 20px 0px;
     color: gray;
 }
+
+.submitButton {
+    margin: 40px 0px 20px 0px;
+}
+
+.closeButton {
+    margin: 20px 0px 20px 0px;
+}

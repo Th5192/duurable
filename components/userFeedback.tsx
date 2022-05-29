@@ -44,8 +44,8 @@ export default function UserFeedback() {
                     <input type='text' placeholder='example@example.com'></input>
                     <label>Comment:</label>
                     <textarea rows={10}></textarea>
-                    <button>Submit</button>
-                    <button onClick={() => handleCloseButtonClick()}>Close</button>
+                    <button className={userFeedbackStyles.submitButton}>Submit</button>
+                    <button className={userFeedbackStyles.closeButton} onClick={() => handleCloseButtonClick()}>Close</button>
                     </form>
                 </div>
             }
