@@ -20,6 +20,8 @@ export default function UserFeedback() {
         setShowFeedbackSentConfirmation(true)
     }
     
+    // I can use window.location.href to get the url of the page in question.
+
     return(
         <div>
             { (showHappyNotHappy === true) && 
