@@ -1,6 +1,6 @@
 import userFeedbackStyles from './userFeedback.module.css'
-import { useEffect, useState } from 'react'
-import { collection, doc, getDocs, limit, setDoc, query, runTransaction, where, Timestamp, DocumentReference, DocumentData } from 'firebase/firestore'
+import React, { useEffect, useState } from 'react'
+import { collection, doc, getDocs, limit, setDoc, query, runTransaction, where, Timestamp, DocumentReference, DocumentData, serverTimestamp } from 'firebase/firestore'
 import {db} from '../pages/_app'
 
 
@@ -10,6 +10,9 @@ export default function UserFeedback() {
     const [showFeedbackSentConfirmation, setShowFeedbackSentConfirmation] = useState(false)
     const [pageURL, setPageURL] = useState<string|undefined>(undefined)
     const [hostname, setHostname] = useState<string|undefined>(undefined)
+
+    const [emailAddress, setEmailAddress] = useState('blank')
+    const [comment, setComment] = useState('blank')
 
     useEffect(() => {
         setPageURL(window.location.href)
@@ -147,6 +150,43 @@ export default function UserFeedback() {
         setShowFeedbackForm(true)
     }
 
+    const handleEmailAddressInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmailAddress(event.target.value)
+    }
+    
+    const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setComment(event.target.value)
+    }
+  
+    async function pushCommentToFirebase(){
+
+        if (hostname !== undefined) {
+            const commentsGroupedByHostnameRef = doc(collection(db, 'userFeedback', 'commentsGroupedByHostname', hostname))
+            const commentData = {
+                comment: comment,
+                emailAddress: emailAddress,
+                pageURL: pageURL,
+                timestamp: serverTimestamp(),
+                read: false,
+                commentStatusisOpen: true
+            }
+
+            try { 
+                await setDoc(commentsGroupedByHostnameRef,  commentData , {merge:true})
+            } catch (e) {
+
+            }
+        }
+
+    }
+
+    const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        pushCommentToFirebase()
+        setShowFeedbackForm(false)
+        setShowFeedbackSentConfirmation(true)
+    }
+
     function handleCloseButtonClick() {
         setShowFeedbackForm(false)
         setShowFeedbackSentConfirmation(true)
@@ -170,13 +210,13 @@ export default function UserFeedback() {
             }
             { (showFeedbackForm === true) &&
                 <div>
-                    <form className={userFeedbackStyles.feedbackForm}>
+                    <form className={userFeedbackStyles.feedbackForm} onSubmit={handleSubmit}>
                     <p>Thank you!</p>
                     <p>If you&#39;d like to leave a comment please do so below. Otherwise, click CLOSE.</p>
                     <label>Email (optional):</label>
-                    <input type='text' placeholder='example@example.com'></input>
+                    <input type='text' placeholder='example@example.com' value={emailAddress} onChange={handleEmailAddressInputChange}></input>
                     <label>Comment:</label>
-                    <textarea rows={10}></textarea>
+                    <textarea rows={10} value={comment} onChange={handleTextAreaChange}></textarea>
                     <button className={userFeedbackStyles.submitButton}>Submit</button>
                     <button className={userFeedbackStyles.closeButton} onClick={() => handleCloseButtonClick()}>Close</button>
                     </form>
