@@ -8,7 +8,7 @@ export interface VotesForDay {
     Sad: number;
 }
 
-export interface DailyReport {
+export interface DailyReports {
     [key:number]:VotesForDay
 }
 
@@ -17,7 +17,7 @@ export default function ConsoleOverview() {
     const [pageUIDs, setPageUIDs] = useState<string[]>()
     const [pageURLUIDtoURLMap, setPageURLUIDtoURLMap] = useState<Map<string,string>>();
     const [datesWithVotes, setDatesWithVotes] = useState<number[]>()
-    const [dailyReportObject, setDailyReportObject] = useState<DailyReport>()
+    const [dailyReports, setDailyReports] = useState<DailyReports>()
 
     // THIS IS HARDWIRED
     const hostname = 'localhost'
@@ -52,7 +52,7 @@ export default function ConsoleOverview() {
             let docSnapshot = await getDoc(dailyVoteReportRef);
             if (docSnapshot.exists()){
                 let data = docSnapshot.data()
-                setDailyReportObject(data)
+                setDailyReports(data)
                 let tempDatesWithVotes = new Array() 
                 for (const[key,value] of Object.entries(data)){
                     console.log('key yields: ' + key)
@@ -72,18 +72,18 @@ export default function ConsoleOverview() {
 
     function RenderDailyReport(){
         console.log('RenderDailyReport yields datesWithVotes of: ' + JSON.stringify(datesWithVotes) + ' length: ' + datesWithVotes?.length)
-        console.log('RenderDailyReport yields dailyReportObject of: ' + dailyReportObject?.hasOwnProperty('20220531'))
-        if (dailyReportObject !== undefined) {
-            console.log('RenderDailyReport dailyReportObject.Object.getOwnPropertyNames(): ' + Object.getOwnPropertyNames(dailyReportObject) )
-            console.log('dailyReportObject[20220531]: ' + dailyReportObject[20220531].Happy)
+        console.log('RenderDailyReport yields dailyReportObject of: ' + dailyReports?.hasOwnProperty('20220531'))
+        if (dailyReports !== undefined) {
+            console.log('RenderDailyReport dailyReportObject.Object.getOwnPropertyNames(): ' + Object.getOwnPropertyNames(dailyReports) )
+            console.log('dailyReportObject[20220531]: ' + dailyReports[20220531].Happy)
         
             return(
                 <div>
                 {datesWithVotes?.map((dateAsNumber) => (
                     <div key={dateAsNumber}>
                         <b>{dateAsNumber}</b>
-                        <p>Happy votes = {dailyReportObject[dateAsNumber].Happy}</p>
-                        <p>Sad votes = {dailyReportObject[dateAsNumber].Sad ?? 0}</p>
+                        <p>Happy votes = {dailyReports[dateAsNumber].Happy}</p>
+                        <p>Sad votes = {dailyReports[dateAsNumber].Sad ?? 0}</p>
                     </div>
                 ))}
                 </div>
