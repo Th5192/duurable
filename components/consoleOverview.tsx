@@ -21,6 +21,19 @@ export default function ConsoleOverview() {
 
     // THIS IS HARDWIRED
     const hostname = 'localhost'
+
+    function calculatePercent(numerator:number, denominator:number):string {
+
+        if ((numerator === 0) || (denominator === 0)) {
+            return 'na'
+        } else {
+            const percentage = numerator/denominator * 100
+            const percentageAsString = String(percentage) ?? 'error'
+
+            return  percentageAsString + '%'
+        }
+        
+    }
         
     async function getPageURLs() {
         const pageURLsRef = collection(db, 'userFeedback', 'pageURLDirectories', hostname, 'pageURLDirectory', 'pageURLUIDs')
@@ -82,8 +95,12 @@ export default function ConsoleOverview() {
                 {datesWithVotes?.map((dateAsNumber) => (
                     <div key={dateAsNumber}>
                         <b>{dateAsNumber}</b>
-                        <p>Happy votes = {dailyReports[dateAsNumber].Happy}</p>
+                        <p>Happy votes = {dailyReports[dateAsNumber].Happy ?? 0}</p>
                         <p>Sad votes = {dailyReports[dateAsNumber].Sad ?? 0}</p>
+                        <p>Percent Happy = {
+                            calculatePercent(dailyReports[dateAsNumber].Happy, ((dailyReports[dateAsNumber].Happy ?? 0) + (dailyReports[dateAsNumber].Sad ?? 0)))
+                        }
+                        </p>
                     </div>
                 ))}
                 </div>
