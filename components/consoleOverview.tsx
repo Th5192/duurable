@@ -1,6 +1,6 @@
 import { collection, doc, DocumentData, getDoc, getDocs, limit, query, Query, where } from 'firebase/firestore';
 import { db } from '../pages/_app';
-import { useState, } from 'react';
+import React, { useState, } from 'react';
 
 
 export interface VotesForDay {
@@ -19,6 +19,8 @@ export default function ConsoleOverview() {
     const [datesWithVotes, setDatesWithVotes] = useState<number[]>()
     const [dailyReports, setDailyReports] = useState<DailyReports>()
     const [showOnlyReadComments, setShowOnlyReadComments] = useState<boolean | undefined>(undefined)
+    const [showOnlyOpenCaseStatusComments, setShowOnlyOpenCaseStatusComments] = useState<boolean | undefined>(undefined)
+
 
     // THIS IS HARDWIRED
     const hostname = 'localhost'
@@ -164,9 +166,10 @@ export default function ConsoleOverview() {
 
     }
 
-    function handleSubmit(){
+    const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
+        event.preventDefault()
         console.log('handleSubmit showOnlyReadComments yields: ' + JSON.stringify(showOnlyReadComments))
-        filterComments(undefined, showOnlyReadComments, undefined)
+        filterComments(undefined, showOnlyReadComments, showOnlyOpenCaseStatusComments)
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -185,6 +188,22 @@ export default function ConsoleOverview() {
                         break;
                     default:
                         setShowOnlyReadComments(undefined);
+                        break;
+                }
+            break;
+            case 'caseStatus':
+                switch (event.target.value) {
+                    case 'open':
+                        setShowOnlyOpenCaseStatusComments(true);
+                        break;
+                    case 'closed':
+                        setShowOnlyOpenCaseStatusComments(false);
+                        break;
+                    case 'all':
+                        setShowOnlyOpenCaseStatusComments(undefined);
+                        break;
+                    default:
+                        setShowOnlyOpenCaseStatusComments(undefined);
                         break;
                 }
                 break;
@@ -211,6 +230,17 @@ export default function ConsoleOverview() {
                     <input type='radio' id='readStatus' name='readStatus' value='unread'  onChange={handleChange}></input>
                     <label htmlFor='unread'>Unread</label><br/>
                     <input type='radio' id='readStatus' name='readStatus' value='all' onChange={handleChange}></input>
+                    <label htmlFor='all'>All</label><br/>
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        Case Status: Open / Closed / All
+                    </legend>
+                    <input type='radio' id='caseStatus' name='caseStatus' value='open' onChange={handleChange}></input>
+                    <label htmlFor='read'>Open</label><br/>
+                    <input type='radio' id='caseStatus' name='caseStatus' value='closed'  onChange={handleChange}></input>
+                    <label htmlFor='unread'>Closed</label><br/>
+                    <input type='radio' id='caseStatus' name='caseStatus' value='all' onChange={handleChange}></input>
                     <label htmlFor='all'>All</label><br/>
                 </fieldset>
                 <div>
