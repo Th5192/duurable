@@ -168,7 +168,7 @@ export default function UserFeedback() {
                 pageURL: pageURL,
                 timestamp: serverTimestamp(),
                 read: false,
-                commentStatusisOpen: true
+                commentStatusIsOpen: true
             }
 
             try { 

@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { collection, doc, DocumentData, getDoc, getDocs, limit, query, Query, where } from 'firebase/firestore';
 import { db } from '../pages/_app';
 import { useState, } from 'react';
 
@@ -18,6 +18,7 @@ export default function ConsoleOverview() {
     const [pageURLUIDtoURLMap, setPageURLUIDtoURLMap] = useState<Map<string,string>>();
     const [datesWithVotes, setDatesWithVotes] = useState<number[]>()
     const [dailyReports, setDailyReports] = useState<DailyReports>()
+    const [showOnlyReadComments, setShowOnlyReadComments] = useState<boolean | undefined>(undefined)
 
     // THIS IS HARDWIRED
     const hostname = 'localhost'
@@ -133,6 +134,65 @@ export default function ConsoleOverview() {
         
     }
 
+    async function filterComments(pageUID: string | undefined, read: boolean | undefined, commentStatusIsOpen: boolean | undefined) {
+        
+        let commentsRef = collection(db, 'userFeedback', 'commentsGroupedByHostname', hostname)
+
+        let commentsQuery: Query<DocumentData>
+        
+        let queryConstraints = []
+
+        if (pageUID !== undefined) {
+            // NEED TO FIGURE THIS OUT
+            // IT IS NOT THIS: queryConstraints.push(where('pageURL', '==', pageUID))
+        }
+
+        if (read !== undefined) {
+            queryConstraints.push(where('read', '==', read))
+        }
+
+        if (commentStatusIsOpen !== undefined) {
+            queryConstraints.push(where('commentStatusIsOpen', '==', commentStatusIsOpen))
+        }
+    
+        commentsQuery =  query(commentsRef, ...queryConstraints);
+
+        const querySnapshot = await getDocs(commentsQuery)
+        querySnapshot.forEach((doc) => {
+            console.log(doc.id, '=>', doc.data())
+        });
+
+    }
+
+    function handleSubmit(){
+        console.log('handleSubmit showOnlyReadComments yields: ' + JSON.stringify(showOnlyReadComments))
+        filterComments(undefined, showOnlyReadComments, undefined)
+    }
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.persist()
+        switch (event.target.id) {
+            case 'readStatus':
+                switch (event.target.value) {
+                    case 'read':
+                        setShowOnlyReadComments(true);
+                        break;
+                    case 'unread':
+                        setShowOnlyReadComments(false);
+                        break;
+                    case 'all':
+                        setShowOnlyReadComments(undefined);
+                        break;
+                    default:
+                        setShowOnlyReadComments(undefined);
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    };
+
     return(
         <div>
             Hello, world!
@@ -141,6 +201,22 @@ export default function ConsoleOverview() {
             </div>
             <ListOfPageURLs/>
             <RenderDailyReport/>
+            <form onSubmit={handleSubmit}>
+                <fieldset>
+                    <legend>
+                        Read / Unread / All
+                    </legend>
+                    <input type='radio' id='readStatus' name='readStatus' value='read' onChange={handleChange}></input>
+                    <label htmlFor='read'>Read</label><br/>
+                    <input type='radio' id='readStatus' name='readStatus' value='unread'  onChange={handleChange}></input>
+                    <label htmlFor='unread'>Unread</label><br/>
+                    <input type='radio' id='readStatus' name='readStatus' value='all' onChange={handleChange}></input>
+                    <label htmlFor='all'>All</label><br/>
+                </fieldset>
+                <div>
+                    <button type='submit'>Submit</button>
+                </div>
+            </form>
         </div>
     )
 }
