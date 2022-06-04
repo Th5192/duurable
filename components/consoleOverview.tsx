@@ -1,4 +1,4 @@
-import { collection, doc, DocumentData, getDoc, getDocs, limit, query, Query, where } from 'firebase/firestore';
+import { collection, doc, DocumentData, getDoc, getDocs, limit, query, Query, Timestamp, where } from 'firebase/firestore';
 import { db } from '../pages/_app';
 import React, { useState, } from 'react';
 
@@ -12,6 +12,10 @@ export interface DailyReports {
     [key:number]:VotesForDay
 }
 
+export interface RetrievedComment {
+    [key:string]: any
+}
+
 export default function ConsoleOverview() {
     const [isLoading, setLoading] = useState(false)
     const [pageUIDs, setPageUIDs] = useState<string[]>()
@@ -20,7 +24,7 @@ export default function ConsoleOverview() {
     const [dailyReports, setDailyReports] = useState<DailyReports>()
     const [showOnlyReadComments, setShowOnlyReadComments] = useState<boolean | undefined>(undefined)
     const [showOnlyOpenCaseStatusComments, setShowOnlyOpenCaseStatusComments] = useState<boolean | undefined>(undefined)
-
+    const [retrievedComment, setRetrievedComment] = useState<RetrievedComment | undefined>(undefined)
 
     // THIS IS HARDWIRED
     const hostname = 'localhost'
@@ -157,13 +161,68 @@ export default function ConsoleOverview() {
             queryConstraints.push(where('commentStatusIsOpen', '==', commentStatusIsOpen))
         }
     
-        commentsQuery =  query(commentsRef, ...queryConstraints);
+        commentsQuery =  query(commentsRef, ...queryConstraints, limit(1));
 
         const querySnapshot = await getDocs(commentsQuery)
         querySnapshot.forEach((doc) => {
+            let data = doc.data()
+            setRetrievedComment(data)
             console.log(doc.id, '=>', doc.data())
         });
 
+    }
+
+    function RenderCommentUnderReview(){
+
+        if (retrievedComment === undefined) { 
+            return(
+                <div>
+                    No comment exists to review.
+                </div>
+            )
+        }
+
+        let comment:string = 'Error'
+        let commentStatusIsOpen:boolean = true
+        let emailAddress:string = 'Error'
+        let pageURL:string = 'Error'
+        let read:boolean = true
+        let timestamp:Timestamp = Timestamp.now()
+
+        if (retrievedComment.hasOwnProperty('comment')){
+            comment = retrievedComment['comment']
+        }
+
+        if (retrievedComment.hasOwnProperty('commentStatusIsOpen')){
+            commentStatusIsOpen = retrievedComment['commentStatusIsOpen']
+        }
+
+        if (retrievedComment.hasOwnProperty('emailAddress')){
+            emailAddress = retrievedComment['emailAddress']
+        }
+
+        if (retrievedComment.hasOwnProperty('pageURL')){
+            pageURL = retrievedComment['pageURL']
+        }
+
+        if (retrievedComment.hasOwnProperty('read')){
+            read = retrievedComment['read']
+        }
+
+        if (retrievedComment.hasOwnProperty('timestamp')){
+            timestamp = retrievedComment['timestamp']
+        }
+
+        return(
+            <div>
+                <p>Comment: {comment}</p>
+                <p>Case is Open: {String(commentStatusIsOpen)}</p>
+                <p>Email Address: {emailAddress}</p>
+                <p>PageURL: {pageURL}</p>
+                <p>Has Been Read: {String(read)}</p>
+                <p>Timestamp: {String(timestamp.toDate())}</p>
+            </div>
+            )
     }
 
     const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
@@ -247,6 +306,9 @@ export default function ConsoleOverview() {
                     <button type='submit'>Submit</button>
                 </div>
             </form>
+            <div>
+                <RenderCommentUnderReview/>
+            </div>
         </div>
     )
 }
