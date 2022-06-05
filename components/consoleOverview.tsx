@@ -182,6 +182,7 @@ export default function ConsoleOverview() {
                     break;
                 case PaginationOption.GetPrevious:
                     queryConstraints.push(orderBy('timestamp'), endAt(queryCursor), limitToLast(1))
+                    break;
             }
         } else {
             queryConstraints.push(orderBy('timestamp'), limit(1))
@@ -196,8 +197,10 @@ export default function ConsoleOverview() {
             switch (paginationOption) {
                 case PaginationOption.GetPrevious:
                     setPreviousButtonEnabled(false);
+                    break;
                 case PaginationOption.GetNext:
                     setNextButtonEnabled(false);
+                    break;
                 default:
                     setQueryCursor(undefined);
                     setRetrievedComment(undefined);
@@ -205,6 +208,7 @@ export default function ConsoleOverview() {
                     setNextButtonEnabled(false);
                     setCommentUnderReviewUID(undefined);
                     setCommentStatusIsOpen(undefined)
+                    break;
             }
 
 
@@ -399,7 +403,7 @@ export default function ConsoleOverview() {
                         setShowOnlyReadComments(undefined);
                         break;
                 }
-            break;
+                break;
             case 'caseStatus':
                 switch (event.target.value) {
                     case 'open':
