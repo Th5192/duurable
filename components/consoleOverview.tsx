@@ -28,8 +28,8 @@ export default function ConsoleOverview() {
     const [pageURLUIDtoURLMap, setPageURLUIDtoURLMap] = useState<Map<string,string>>();
     const [datesWithVotes, setDatesWithVotes] = useState<number[]>()
     const [dailyReports, setDailyReports] = useState<DailyReports>()
-    const [showOnlyReadComments, setShowOnlyReadComments] = useState<boolean | undefined>(undefined)
-    const [showOnlyOpenCaseStatusComments, setShowOnlyOpenCaseStatusComments] = useState<boolean | undefined>(undefined)
+    const [showOnlyReadComments, setShowOnlyReadComments] = useState<boolean | undefined>(false)
+    const [showOnlyOpenCaseStatusComments, setShowOnlyOpenCaseStatusComments] = useState<boolean | undefined>(true)
     const [retrievedComment, setRetrievedComment] = useState<RetrievedComment | undefined>(undefined)
     const [queryCursor, setQueryCursor] = useState<QueryDocumentSnapshot<DocumentData> | undefined>(undefined)
     const [commentQueryInProgress, setCommentQueryInProgress] = useState(false)
@@ -349,22 +349,22 @@ export default function ConsoleOverview() {
                     <legend>
                         Read / Unread / All
                     </legend>
-                    <input type='radio' id='readStatus' name='readStatus' value='read' onChange={handleChange}></input>
+                    <input type='radio' id='readStatus' name='readStatus' value='read' checked={(showOnlyReadComments === true)} onChange={handleChange}></input>
                     <label htmlFor='read'>Read</label><br/>
-                    <input type='radio' id='readStatus' name='readStatus' value='unread'  onChange={handleChange}></input>
+                    <input type='radio' id='readStatus' name='readStatus' value='unread'  checked={(showOnlyReadComments === false)} onChange={handleChange}></input>
                     <label htmlFor='unread'>Unread</label><br/>
-                    <input type='radio' id='readStatus' name='readStatus' value='all' onChange={handleChange}></input>
+                    <input type='radio' id='readStatus' name='readStatus' value='all' checked={(showOnlyReadComments === undefined)} onChange={handleChange}></input>
                     <label htmlFor='all'>All</label><br/>
                 </fieldset>
                 <fieldset>
                     <legend>
                         Case Status: Open / Closed / All
                     </legend>
-                    <input type='radio' id='caseStatus' name='caseStatus' value='open' onChange={handleChange}></input>
+                    <input type='radio' id='caseStatus' name='caseStatus' value='open' checked={(showOnlyOpenCaseStatusComments === true)} onChange={handleChange}></input>
                     <label htmlFor='read'>Open</label><br/>
-                    <input type='radio' id='caseStatus' name='caseStatus' value='closed'  onChange={handleChange}></input>
+                    <input type='radio' id='caseStatus' name='caseStatus' value='closed' checked={(showOnlyOpenCaseStatusComments === false)} onChange={handleChange}></input>
                     <label htmlFor='unread'>Closed</label><br/>
-                    <input type='radio' id='caseStatus' name='caseStatus' value='all' onChange={handleChange}></input>
+                    <input type='radio' id='caseStatus' name='caseStatus' value='all' checked={(showOnlyOpenCaseStatusComments === undefined)} onChange={handleChange}></input>
                     <label htmlFor='all'>All</label><br/>
                 </fieldset>
                 <div>
