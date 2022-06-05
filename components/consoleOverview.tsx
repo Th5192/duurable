@@ -339,7 +339,10 @@ export default function ConsoleOverview() {
                 </div>
                 <p>Email Address: {emailAddress}</p>
                 <p>PageURL: {pageURL}</p>
-                <p>Has Been Read: {String(commentHasBeenRead)}</p>
+                <p>{(commentHasBeenRead) ? 'Read' : 'Unread'}</p>
+                <div>
+                    <button onClick={toggleCommentHasBeenReadStatusInFirebase}>{commentHasBeenRead ? 'Mark as unread' : 'Mark as read'}</button>
+                </div>
                 <p>Timestamp: {String(timestamp.toDate())}</p>
             </div>
             )
