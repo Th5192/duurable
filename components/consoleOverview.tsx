@@ -1,4 +1,4 @@
-import { collection, doc, DocumentData, endAt, getDoc, getDocs, limit, limitToLast, orderBy, query, Query, QueryDocumentSnapshot, startAfter, Timestamp, where } from 'firebase/firestore';
+import { collection, doc, DocumentData, endAt, getDoc, getDocs, limit, limitToLast, orderBy, query, Query, QueryDocumentSnapshot, setDoc, startAfter, Timestamp, where } from 'firebase/firestore';
 import { db } from '../pages/_app';
 import React, { useState, } from 'react';
 
@@ -35,6 +35,8 @@ export default function ConsoleOverview() {
     const [commentQueryInProgress, setCommentQueryInProgress] = useState(false)
     const [previousButtonEnabled, setPreviousButtonEnabled] = useState(false)
     const [nextButtonEnabled, setNextButtonEnabled] = useState(false)
+    const [commentStatusIsOpen, setCommentStatusIsOpen] = useState<boolean | undefined>(undefined)
+    const [commentUnderReviewUID, setCommentUnderReviewUID] = useState<string | undefined>(undefined)
 
     // THIS IS HARDWIRED
     const hostname = 'localhost'
@@ -190,12 +192,21 @@ export default function ConsoleOverview() {
 
         if (querySnapshot.empty) {
             console.log('no docs returned')
-            if (paginationOption === PaginationOption.GetPrevious) {
-                setPreviousButtonEnabled(false)
+            switch (paginationOption) {
+                case PaginationOption.GetPrevious:
+                    setPreviousButtonEnabled(false);
+                case PaginationOption.GetNext:
+                    setNextButtonEnabled(false);
+                default:
+                    setQueryCursor(undefined);
+                    setRetrievedComment(undefined);
+                    setPreviousButtonEnabled(false);
+                    setNextButtonEnabled(false);
+                    setCommentUnderReviewUID(undefined);
+                    setCommentStatusIsOpen(undefined)
             }
-            if (paginationOption === PaginationOption.GetNext) {
-                setNextButtonEnabled(false)
-            }
+
+
         } else { 
         querySnapshot.forEach((doc) => {
             let data = doc.data()
@@ -204,10 +215,40 @@ export default function ConsoleOverview() {
             setPreviousButtonEnabled(true)
             setNextButtonEnabled(true)
             console.log(doc.id, '=>', doc.data())
+            setCommentUnderReviewUID(doc.id)
+            if (data.hasOwnProperty('commentStatusIsOpen')){
+                setCommentStatusIsOpen(data['commentStatusIsOpen'])
+            }    
+
         });
 
         }
 
+    }
+
+    async function toggleCaseOpenStatusInFirebase() {
+        let newState = !commentStatusIsOpen
+        if (commentUnderReviewUID !== undefined) {
+            let caseStatusRef = doc(db, 'userFeedback', 'commentsGroupedByHostname', hostname, commentUnderReviewUID)
+            
+            let togglePromise =  setDoc(caseStatusRef, {
+                commentStatusIsOpen: newState
+            }, {merge:true}) 
+            
+            togglePromise
+                .then( response => {
+                        toggleCaseOpenStatus()
+                })
+                .catch( error => {
+
+                })
+        }
+    }
+    
+    
+    function toggleCaseOpenStatus(){
+        let newState = !commentStatusIsOpen
+        setCommentStatusIsOpen(newState)
     }
 
     function RenderCommentUnderReview(){
@@ -221,7 +262,6 @@ export default function ConsoleOverview() {
         }
 
         let comment:string = 'Error'
-        let commentStatusIsOpen:boolean = true
         let emailAddress:string = 'Error'
         let pageURL:string = 'Error'
         let read:boolean = true
@@ -231,9 +271,6 @@ export default function ConsoleOverview() {
             comment = retrievedComment['comment']
         }
 
-        if (retrievedComment.hasOwnProperty('commentStatusIsOpen')){
-            commentStatusIsOpen = retrievedComment['commentStatusIsOpen']
-        }
 
         if (retrievedComment.hasOwnProperty('emailAddress')){
             emailAddress = retrievedComment['emailAddress']
@@ -255,6 +292,9 @@ export default function ConsoleOverview() {
             <div>
                 <p>Comment: {comment}</p>
                 <p>Case is Open: {String(commentStatusIsOpen)}</p>
+                <div>
+                    <button onClick={toggleCaseOpenStatusInFirebase}>{(commentStatusIsOpen ? 'Close case' : 'Open case')}</button>
+                </div>
                 <p>Email Address: {emailAddress}</p>
                 <p>PageURL: {pageURL}</p>
                 <p>Has Been Read: {String(read)}</p>
