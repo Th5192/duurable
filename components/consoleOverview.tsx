@@ -37,6 +37,7 @@ export default function ConsoleOverview() {
     const [nextButtonEnabled, setNextButtonEnabled] = useState(false)
     const [commentStatusIsOpen, setCommentStatusIsOpen] = useState<boolean | undefined>(undefined)
     const [commentUnderReviewUID, setCommentUnderReviewUID] = useState<string | undefined>(undefined)
+    const [commentHasBeenRead, setCommentHasBeenRead] = useState<boolean | undefined>(undefined)
 
     // THIS IS HARDWIRED
     const hostname = 'localhost'
@@ -218,7 +219,12 @@ export default function ConsoleOverview() {
             setCommentUnderReviewUID(doc.id)
             if (data.hasOwnProperty('commentStatusIsOpen')){
                 setCommentStatusIsOpen(data['commentStatusIsOpen'])
-            }    
+            } 
+            if (data.hasOwnProperty('read')){
+                if (data['read'] === false){
+                    setCommentHasBeenReadInFirebase(doc.id)
+                }
+            }   
 
         });
 
@@ -251,6 +257,47 @@ export default function ConsoleOverview() {
         setCommentStatusIsOpen(newState)
     }
 
+
+    async function setCommentHasBeenReadInFirebase(docID:string) {
+            let readStatusRef = doc(db, 'userFeedback', 'commentsGroupedByHostname', hostname, docID)
+            
+            let promise =  setDoc(readStatusRef, {
+                read: true
+            }, {merge:true}) 
+            
+            promise
+            .then( response => {
+                    setCommentHasBeenRead(true)
+            })
+            .catch( error => {
+
+            })
+    }
+    
+    async function toggleCommentHasBeenReadStatusInFirebase() {
+        let newState = !commentHasBeenRead
+        if (commentUnderReviewUID !== undefined) {
+            let readStatusRef = doc(db, 'userFeedback', 'commentsGroupedByHostname', hostname, commentUnderReviewUID)
+            
+            let togglePromise =  setDoc(readStatusRef, {
+                read: newState
+            }, {merge:true}) 
+            
+            togglePromise
+                .then( response => {
+                        toggleCommentHasBeenReadStatus()
+                })
+                .catch( error => {
+
+                })
+        }
+    }
+
+    function toggleCommentHasBeenReadStatus(){
+        let newState = !commentHasBeenRead
+        setCommentHasBeenRead(newState)
+    }
+
     function RenderCommentUnderReview(){
 
         if (retrievedComment === undefined) { 
@@ -264,7 +311,6 @@ export default function ConsoleOverview() {
         let comment:string = 'Error'
         let emailAddress:string = 'Error'
         let pageURL:string = 'Error'
-        let read:boolean = true
         let timestamp:Timestamp = Timestamp.now()
 
         if (retrievedComment.hasOwnProperty('comment')){
@@ -280,10 +326,6 @@ export default function ConsoleOverview() {
             pageURL = retrievedComment['pageURL']
         }
 
-        if (retrievedComment.hasOwnProperty('read')){
-            read = retrievedComment['read']
-        }
-
         if (retrievedComment.hasOwnProperty('timestamp')){
             timestamp = retrievedComment['timestamp']
         }
@@ -297,7 +339,7 @@ export default function ConsoleOverview() {
                 </div>
                 <p>Email Address: {emailAddress}</p>
                 <p>PageURL: {pageURL}</p>
-                <p>Has Been Read: {String(read)}</p>
+                <p>Has Been Read: {String(commentHasBeenRead)}</p>
                 <p>Timestamp: {String(timestamp.toDate())}</p>
             </div>
             )
