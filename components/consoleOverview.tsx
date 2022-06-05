@@ -32,7 +32,7 @@ export default function ConsoleOverview() {
     const [showOnlyOpenCaseStatusComments, setShowOnlyOpenCaseStatusComments] = useState<boolean | undefined>(true)
     const [retrievedComment, setRetrievedComment] = useState<RetrievedComment | undefined>(undefined)
     const [queryCursor, setQueryCursor] = useState<QueryDocumentSnapshot<DocumentData> | undefined>(undefined)
-    const [commentQueryInProgress, setCommentQueryInProgress] = useState(false)
+    // const [commentQueryInProgress, setCommentQueryInProgress] = useState(false)
     const [previousButtonEnabled, setPreviousButtonEnabled] = useState(false)
     const [nextButtonEnabled, setNextButtonEnabled] = useState(false)
     const [commentStatusIsOpen, setCommentStatusIsOpen] = useState<boolean | undefined>(undefined)
@@ -355,7 +355,7 @@ export default function ConsoleOverview() {
     function RenderPaginationButtons() {
         return(
             <div>
-            {(commentQueryInProgress === true) &&
+            {(queryCursor !== undefined) &&
                 <div>
                     <div>
                         {(nextButtonEnabled === true ) && 
@@ -382,7 +382,6 @@ export default function ConsoleOverview() {
     const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
         event.preventDefault()
         filterComments(undefined, showOnlyReadComments, showOnlyOpenCaseStatusComments, undefined)
-        setCommentQueryInProgress(true)
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
