@@ -1,6 +1,12 @@
-import { collection, doc, DocumentData, getDoc, getDocs, limit, query, Query, Timestamp, where } from 'firebase/firestore';
+import { collection, doc, DocumentData, endAt, getDoc, getDocs, limit, limitToLast, orderBy, query, Query, QueryDocumentSnapshot, startAfter, Timestamp, where } from 'firebase/firestore';
 import { db } from '../pages/_app';
 import React, { useState, } from 'react';
+
+
+enum PaginationOption {
+    GetNext = 'Next',
+    GetPrevious = 'Previous'
+}
 
 
 export interface VotesForDay {
@@ -25,6 +31,10 @@ export default function ConsoleOverview() {
     const [showOnlyReadComments, setShowOnlyReadComments] = useState<boolean | undefined>(undefined)
     const [showOnlyOpenCaseStatusComments, setShowOnlyOpenCaseStatusComments] = useState<boolean | undefined>(undefined)
     const [retrievedComment, setRetrievedComment] = useState<RetrievedComment | undefined>(undefined)
+    const [queryCursor, setQueryCursor] = useState<QueryDocumentSnapshot<DocumentData> | undefined>(undefined)
+    const [commentQueryInProgress, setCommentQueryInProgress] = useState(false)
+    const [previousButtonEnabled, setPreviousButtonEnabled] = useState(false)
+    const [nextButtonEnabled, setNextButtonEnabled] = useState(false)
 
     // THIS IS HARDWIRED
     const hostname = 'localhost'
@@ -140,7 +150,7 @@ export default function ConsoleOverview() {
         
     }
 
-    async function filterComments(pageUID: string | undefined, read: boolean | undefined, commentStatusIsOpen: boolean | undefined) {
+    async function filterComments(pageUID: string | undefined, read: boolean | undefined, commentStatusIsOpen: boolean | undefined, paginationOption: PaginationOption | undefined) {
         
         let commentsRef = collection(db, 'userFeedback', 'commentsGroupedByHostname', hostname)
 
@@ -160,15 +170,43 @@ export default function ConsoleOverview() {
         if (commentStatusIsOpen !== undefined) {
             queryConstraints.push(where('commentStatusIsOpen', '==', commentStatusIsOpen))
         }
+
+        console.log('queryCursor yields: ' + JSON.stringify(queryCursor))
+        if (paginationOption !== undefined) {
+            switch (paginationOption) {
+                case PaginationOption.GetNext:
+                    queryConstraints.push(orderBy('timestamp'), startAfter(queryCursor), limit(1))
+                    break;
+                case PaginationOption.GetPrevious:
+                    queryConstraints.push(orderBy('timestamp'), endAt(queryCursor), limitToLast(1))
+            }
+        } else {
+            queryConstraints.push(orderBy('timestamp'), limit(1))
+        }
     
-        commentsQuery =  query(commentsRef, ...queryConstraints, limit(1));
+        commentsQuery =  query(commentsRef, ...queryConstraints);
 
         const querySnapshot = await getDocs(commentsQuery)
+
+        if (querySnapshot.empty) {
+            console.log('no docs returned')
+            if (paginationOption === PaginationOption.GetPrevious) {
+                setPreviousButtonEnabled(false)
+            }
+            if (paginationOption === PaginationOption.GetNext) {
+                setNextButtonEnabled(false)
+            }
+        } else { 
         querySnapshot.forEach((doc) => {
             let data = doc.data()
+            setQueryCursor(doc)
             setRetrievedComment(data)
+            setPreviousButtonEnabled(true)
+            setNextButtonEnabled(true)
             console.log(doc.id, '=>', doc.data())
         });
+
+        }
 
     }
 
@@ -225,10 +263,37 @@ export default function ConsoleOverview() {
             )
     }
 
+    function RenderPaginationButtons() {
+        return(
+            <div>
+            {(commentQueryInProgress === true) &&
+                <div>
+                    <div>
+                        {(nextButtonEnabled === true ) && 
+                            <button onClick={() => filterComments(undefined, showOnlyReadComments, showOnlyOpenCaseStatusComments, PaginationOption.GetNext)}>Get Next</button>
+                        }
+                        {(nextButtonEnabled === false) &&
+                            <p>There are no further comments to review.</p>
+                        }
+                    </div>
+                    <div>
+                        {(previousButtonEnabled === true) &&
+                            <button onClick={() => filterComments(undefined, showOnlyReadComments, showOnlyOpenCaseStatusComments, PaginationOption.GetPrevious)}>Get Previous</button>
+                        }   
+                        {(previousButtonEnabled === false) &&
+                            <p>There are no prior comments.</p>
+                        }          
+                    </div>
+                </div>
+            }
+            </div>
+        )
+    }
+
     const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
         event.preventDefault()
-        console.log('handleSubmit showOnlyReadComments yields: ' + JSON.stringify(showOnlyReadComments))
-        filterComments(undefined, showOnlyReadComments, showOnlyOpenCaseStatusComments)
+        filterComments(undefined, showOnlyReadComments, showOnlyOpenCaseStatusComments, undefined)
+        setCommentQueryInProgress(true)
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -308,6 +373,7 @@ export default function ConsoleOverview() {
             </form>
             <div>
                 <RenderCommentUnderReview/>
+                <RenderPaginationButtons/>
             </div>
         </div>
     )
