@@ -333,7 +333,7 @@ export default function ConsoleOverview() {
         return(
             <div>
                 <p>Comment: {comment}</p>
-                <p>Case is Open: {String(commentStatusIsOpen)}</p>
+                <p>{commentStatusIsOpen ? 'Case is open' : 'Case is closed'}</p>
                 <div>
                     <button onClick={toggleCaseOpenStatusInFirebase}>{(commentStatusIsOpen ? 'Close case' : 'Open case')}</button>
                 </div>
