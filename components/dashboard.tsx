@@ -478,7 +478,7 @@ export default function Dashboard() {
     function RenderVotesConsole(){
         return(
             <div>
-                <button onClick={getPageURLs}>Show URLs with vote data</button>
+                <button onClick={getPageURLs}>Refresh Page URLs</button>
                 <ListOfPageURLs/>
                 <RenderDailyReport/>
             </div>
@@ -487,6 +487,11 @@ export default function Dashboard() {
 
     function chooseConsoleToView(consoleChoice: ConsoleChoice){
         setConsoleChoice(consoleChoice)
+
+        if (consoleChoice === ConsoleChoice.VotesConsole && pageUIDs === undefined){
+            getPageURLs()
+            console.log('getPageURLs triggered')
+        }
     }
 
     return(
