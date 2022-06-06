@@ -467,14 +467,20 @@ export default function Dashboard() {
         )
     }
 
+    function RenderVotesConsole(){
+        return(
+            <div>
+                <button onClick={getPageURLs}>See My Analytics Data</button>
+                <ListOfPageURLs/>
+                <RenderDailyReport/>
+            </div>
+        )
+    }
+
     return(
         <div>
             Hello, world!
-            <div>
-                <button onClick={getPageURLs}>See My Analytics Data</button>
-            </div>
-            <ListOfPageURLs/>
-            <RenderDailyReport/>
+            <RenderVotesConsole/>
             <RenderCommentsConsole/>
         </div>
     )
