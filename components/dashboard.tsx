@@ -31,6 +31,7 @@ export interface RetrievedComment {
 
 export default function Dashboard() {
     const [consoleChoice, setConsoleChoice] = useState<ConsoleChoice | undefined>(undefined)
+    const [voteReportForPageIsInView, setVoteReportForPageIsInView] = useState<boolean>(false)
     const [isLoading, setLoading] = useState(false)
     const [queryInProgress, setQueryInProgress] = useState(false)
     const [pageUIDs, setPageUIDs] = useState<string[]>()
@@ -85,6 +86,7 @@ export default function Dashboard() {
             console.log('pageURLUIDtoURLMap: ' + JSON.stringify(pageURLUIDtoURLMap.size))
             console.log('getpage data for this pageUID: ' + pageURLUIDtoURLMap.get(pageUID))
             getDailyVoteReport(pageUID)
+            setVoteReportForPageIsInView(true)
         }
     }
 
@@ -478,9 +480,19 @@ export default function Dashboard() {
     function RenderVotesConsole(){
         return(
             <div>
-                <button onClick={getPageURLs}>Refresh Page URLs</button>
-                <ListOfPageURLs/>
-                <RenderDailyReport/>
+                {(voteReportForPageIsInView === false) && 
+                    <div>
+                        PAGES WITH VOTE DATA
+                        <ListOfPageURLs/>
+                        <button onClick={getPageURLs}>Refresh Page URLs</button>
+                    </div>
+                }
+                {(voteReportForPageIsInView === true) &&
+                <div>
+                    <button onClick={() => setVoteReportForPageIsInView(false)}>Choose a different page</button>
+                    <RenderDailyReport/>
+                </div>
+                }
             </div>
         )
     }
