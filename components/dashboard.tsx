@@ -431,14 +431,9 @@ export default function Dashboard() {
         }
     };
 
-    return(
-        <div>
-            Hello, world!
+    function RenderCommentsConsole(){
+        return(
             <div>
-                <button onClick={getPageURLs}>See My Analytics Data</button>
-            </div>
-            <ListOfPageURLs/>
-            <RenderDailyReport/>
             <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>
@@ -470,6 +465,19 @@ export default function Dashboard() {
                 <RenderCommentUnderReview/>
                 <RenderPaginationButtons/>
             </div>
+            </div>
+        )
+    }
+
+    return(
+        <div>
+            Hello, world!
+            <div>
+                <button onClick={getPageURLs}>See My Analytics Data</button>
+            </div>
+            <ListOfPageURLs/>
+            <RenderDailyReport/>
+            <RenderCommentsConsole/>
         </div>
     )
 }
