@@ -434,37 +434,35 @@ export default function Dashboard() {
     function RenderCommentsConsole(){
         return(
             <div>
-            <form onSubmit={handleSubmit}>
-                <fieldset>
-                    <legend>
-                        Read / Unread / All
-                    </legend>
-                    <input type='radio' id='readStatus' name='readStatus' value='read' checked={(showOnlyReadComments === true)} onChange={handleChange}></input>
-                    <label htmlFor='read'>Read</label><br/>
-                    <input type='radio' id='readStatus' name='readStatus' value='unread'  checked={(showOnlyReadComments === false)} onChange={handleChange}></input>
-                    <label htmlFor='unread'>Unread</label><br/>
-                    <input type='radio' id='readStatus' name='readStatus' value='all' checked={(showOnlyReadComments === undefined)} onChange={handleChange}></input>
-                    <label htmlFor='all'>All</label><br/>
-                </fieldset>
-                <fieldset>
-                    <legend>
-                        Case Status: Open / Closed / All
-                    </legend>
-                    <input type='radio' id='caseStatus' name='caseStatus' value='open' checked={(showOnlyOpenCaseStatusComments === true)} onChange={handleChange}></input>
-                    <label htmlFor='read'>Open</label><br/>
-                    <input type='radio' id='caseStatus' name='caseStatus' value='closed' checked={(showOnlyOpenCaseStatusComments === false)} onChange={handleChange}></input>
-                    <label htmlFor='unread'>Closed</label><br/>
-                    <input type='radio' id='caseStatus' name='caseStatus' value='all' checked={(showOnlyOpenCaseStatusComments === undefined)} onChange={handleChange}></input>
-                    <label htmlFor='all'>All</label><br/>
-                </fieldset>
-                <div>
-                    <button type='submit'>Submit</button>
-                </div>
-            </form>
-            <div>
+                <form onSubmit={handleSubmit}>
+                    <fieldset>
+                        <legend>
+                            Read / Unread / All
+                        </legend>
+                        <input type='radio' id='readStatus' name='readStatus' value='read' checked={(showOnlyReadComments === true)} onChange={handleChange}></input>
+                        <label htmlFor='read'>Read</label><br/>
+                        <input type='radio' id='readStatus' name='readStatus' value='unread'  checked={(showOnlyReadComments === false)} onChange={handleChange}></input>
+                        <label htmlFor='unread'>Unread</label><br/>
+                        <input type='radio' id='readStatus' name='readStatus' value='all' checked={(showOnlyReadComments === undefined)} onChange={handleChange}></input>
+                        <label htmlFor='all'>All</label><br/>
+                    </fieldset>
+                    <fieldset>
+                        <legend>
+                            Case Status: Open / Closed / All
+                        </legend>
+                        <input type='radio' id='caseStatus' name='caseStatus' value='open' checked={(showOnlyOpenCaseStatusComments === true)} onChange={handleChange}></input>
+                        <label htmlFor='read'>Open</label><br/>
+                        <input type='radio' id='caseStatus' name='caseStatus' value='closed' checked={(showOnlyOpenCaseStatusComments === false)} onChange={handleChange}></input>
+                        <label htmlFor='unread'>Closed</label><br/>
+                        <input type='radio' id='caseStatus' name='caseStatus' value='all' checked={(showOnlyOpenCaseStatusComments === undefined)} onChange={handleChange}></input>
+                        <label htmlFor='all'>All</label><br/>
+                    </fieldset>
+                    <div>
+                        <button type='submit'>Submit</button>
+                    </div>
+                </form>
                 <RenderCommentUnderReview/>
                 <RenderPaginationButtons/>
-            </div>
             </div>
         )
     }
