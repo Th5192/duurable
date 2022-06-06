@@ -497,7 +497,7 @@ export default function Dashboard() {
         )
     }
 
-    function chooseConsoleToView(consoleChoice: ConsoleChoice){
+    function chooseConsoleToView(consoleChoice: ConsoleChoice | undefined){
         setConsoleChoice(consoleChoice)
 
         if (consoleChoice === ConsoleChoice.VotesConsole && pageUIDs === undefined){
@@ -510,8 +510,17 @@ export default function Dashboard() {
         <div>
             Analytics: Dashboard
             <div>
-                <button onClick={() => chooseConsoleToView(ConsoleChoice.VotesConsole)}>Votes</button>
-                <button onClick={() => chooseConsoleToView(ConsoleChoice.CommentsConsole)}>Comments</button>
+                {(consoleChoice === undefined) &&
+                    <div> 
+                        <button onClick={() => chooseConsoleToView(ConsoleChoice.VotesConsole)}>Votes</button>
+                        <button onClick={() => chooseConsoleToView(ConsoleChoice.CommentsConsole)}>Comments</button>
+                    </div>
+                }
+                {(consoleChoice !== undefined) &&
+                    <div>
+                        <button onClick={() => chooseConsoleToView(undefined)}>Main Menu</button>
+                    </div>
+                }
             </div>
             {(consoleChoice === ConsoleChoice.VotesConsole) &&
                 <RenderVotesConsole/>
