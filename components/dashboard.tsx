@@ -22,7 +22,7 @@ export interface RetrievedComment {
     [key:string]: any
 }
 
-export default function ConsoleOverview() {
+export default function Dashboard() {
     const [isLoading, setLoading] = useState(false)
     const [queryInProgress, setQueryInProgress] = useState(false)
     const [pageUIDs, setPageUIDs] = useState<string[]>()

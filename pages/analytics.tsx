@@ -1,9 +1,9 @@
-import ConsoleOverview from '../components/dashboard'
+import Dashboard from '../components/dashboard'
 
-export default function ConsoleOverviewPage() {
+export default function AnalyticsPage() {
     return(
         <div>
-            <ConsoleOverview/>
+            <Dashboard/>
         </div>
     )
 }
