@@ -1,8 +1,8 @@
 import { collection, doc, DocumentData, endAt, getDoc, getDocs, limit, limitToLast, orderBy, query, Query, QueryDocumentSnapshot, setDoc, startAfter, Timestamp, where } from 'firebase/firestore';
 import { db } from '../pages/_app';
 import React, { useState, } from 'react';
-import { Console } from 'console';
 
+import dashboardStyles from './dashboard.module.css'
 
 
 enum ConsoleChoice {
