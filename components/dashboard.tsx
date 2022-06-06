@@ -32,6 +32,7 @@ export interface RetrievedComment {
 export default function Dashboard() {
     const [consoleChoice, setConsoleChoice] = useState<ConsoleChoice | undefined>(undefined)
     const [voteReportForPageIsInView, setVoteReportForPageIsInView] = useState<boolean>(false)
+    const [voteReportIsForThisURL, setVoteReportIsForThisURL] = useState<string | undefined>(undefined)
     const [isLoading, setLoading] = useState(false)
     const [queryInProgress, setQueryInProgress] = useState(false)
     const [pageUIDs, setPageUIDs] = useState<string[]>()
@@ -87,6 +88,8 @@ export default function Dashboard() {
             console.log('getpage data for this pageUID: ' + pageURLUIDtoURLMap.get(pageUID))
             getDailyVoteReport(pageUID)
             setVoteReportForPageIsInView(true)
+            let urlAsString = pageURLUIDtoURLMap.get(pageUID)
+            setVoteReportIsForThisURL(urlAsString)
         }
     }
 
@@ -123,6 +126,10 @@ export default function Dashboard() {
         
             return(
                 <div>
+                    <div>
+                        <h3>Daily user sentiment vote tally for:</h3>
+                        <p>{voteReportIsForThisURL}</p>
+                    </div>
                 {datesWithVotes?.map((dateAsNumber) => (
                     <div key={dateAsNumber}>
                         <b>{dateAsNumber}</b>
@@ -479,7 +486,7 @@ export default function Dashboard() {
 
     function RenderVotesConsole(){
         return(
-            <div>
+            <div className={dashboardStyles.votesConsole}>
                 {(voteReportForPageIsInView === false) && 
                     <div>
                         PAGES WITH VOTE DATA
