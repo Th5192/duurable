@@ -452,7 +452,7 @@ export default function Dashboard() {
         return(
             <div>
                 <form onSubmit={handleSubmit}>
-                    <fieldset>
+                    <fieldset className={dashboardStyles.fieldSetAutoWidth}>
                         <legend>
                             Read / Unread / All
                         </legend>
@@ -463,7 +463,7 @@ export default function Dashboard() {
                         <input type='radio' id='readStatus' name='readStatus' value='all' checked={(showOnlyReadComments === undefined)} onChange={handleChange}></input>
                         <label htmlFor='all'>All</label><br/>
                     </fieldset>
-                    <fieldset>
+                    <fieldset className={dashboardStyles.fieldSetAutoWidth}>
                         <legend>
                             Case Status: Open / Closed / All
                         </legend>

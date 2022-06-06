@@ -1,3 +1,10 @@
 .votesConsole {
     margin: 20px 0px 20px 0px
 }
+
+/* This is counterintuitive.  By default the width of fieldsets is the parent container.  In order 
+to shrink the width to the contents of the fieldset we need to use "display: inline-block" */
+.fieldSetAutoWidth {
+    display: inline-block;
+    margin: 20px;
+}
