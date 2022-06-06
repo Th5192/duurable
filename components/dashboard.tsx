@@ -3,7 +3,7 @@ import { db } from '../pages/_app';
 import React, { useState, } from 'react';
 
 import dashboardStyles from './dashboard.module.css'
-
+import utilStyles from '../styles/utils.module.css'
 
 enum ConsoleChoice {
     VotesConsole = 'VotesConsole',
@@ -451,6 +451,10 @@ export default function Dashboard() {
     function RenderCommentsConsole(){
         return(
             <div>
+                <div>
+                    <h1>Comments</h1>
+                    <p>Use the console below to search for comments, e.g., new comments that have not been read yet or comments that created a case that have not been closed yet, etc.</p>
+                </div>
                 <form onSubmit={handleSubmit}>
                     <fieldset className={dashboardStyles.fieldSetAutoWidth}>
                         <legend>
@@ -475,7 +479,7 @@ export default function Dashboard() {
                         <label htmlFor='all'>All</label><br/>
                     </fieldset>
                     <div>
-                        <button type='submit'>Submit</button>
+                        <button className={utilStyles.largeButton} type='submit'>Search for comments</button>
                     </div>
                 </form>
                 <RenderCommentUnderReview/>
