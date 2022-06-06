@@ -1,7 +1,14 @@
 import { collection, doc, DocumentData, endAt, getDoc, getDocs, limit, limitToLast, orderBy, query, Query, QueryDocumentSnapshot, setDoc, startAfter, Timestamp, where } from 'firebase/firestore';
 import { db } from '../pages/_app';
 import React, { useState, } from 'react';
+import { Console } from 'console';
 
+
+
+enum ConsoleChoice {
+    VotesConsole = 'VotesConsole',
+    CommentsConsole = 'CommentsConsole'
+}
 
 enum PaginationOption {
     GetNext = 'Next',
@@ -23,6 +30,7 @@ export interface RetrievedComment {
 }
 
 export default function Dashboard() {
+    const [consoleChoice, setConsoleChoice] = useState<ConsoleChoice | undefined>(undefined)
     const [isLoading, setLoading] = useState(false)
     const [queryInProgress, setQueryInProgress] = useState(false)
     const [pageUIDs, setPageUIDs] = useState<string[]>()
@@ -477,11 +485,23 @@ export default function Dashboard() {
         )
     }
 
+    function chooseConsoleToView(consoleChoice: ConsoleChoice){
+        setConsoleChoice(consoleChoice)
+    }
+
     return(
         <div>
-            Hello, world!
-            <RenderVotesConsole/>
-            <RenderCommentsConsole/>
+            Analytics: Dashboard
+            <div>
+                <button onClick={() => chooseConsoleToView(ConsoleChoice.VotesConsole)}>Votes</button>
+                <button onClick={() => chooseConsoleToView(ConsoleChoice.CommentsConsole)}>Comments</button>
+            </div>
+            {(consoleChoice === ConsoleChoice.VotesConsole) &&
+                <RenderVotesConsole/>
+            }
+            {(consoleChoice === ConsoleChoice.CommentsConsole) &&
+                <RenderCommentsConsole/>            
+            }
         </div>
     )
 }
