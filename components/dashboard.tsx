@@ -470,7 +470,7 @@ export default function Dashboard() {
     function RenderVotesConsole(){
         return(
             <div>
-                <button onClick={getPageURLs}>See My Analytics Data</button>
+                <button onClick={getPageURLs}>Show URLs with vote data</button>
                 <ListOfPageURLs/>
                 <RenderDailyReport/>
             </div>
