@@ -24,6 +24,7 @@ export interface RetrievedComment {
 
 export default function ConsoleOverview() {
     const [isLoading, setLoading] = useState(false)
+    const [queryInProgress, setQueryInProgress] = useState(false)
     const [pageUIDs, setPageUIDs] = useState<string[]>()
     const [pageURLUIDtoURLMap, setPageURLUIDtoURLMap] = useState<Map<string,string>>();
     const [datesWithVotes, setDatesWithVotes] = useState<number[]>()
@@ -304,14 +305,19 @@ export default function ConsoleOverview() {
 
     function RenderCommentUnderReview(){
 
-        if (retrievedComment === undefined) { 
-            return(
-                <div>
-                    No comment exists to review.
-                </div>
-            )
+        if (retrievedComment === undefined) {
+            switch (queryInProgress) {
+                case true:
+                    return(
+                        <div>No results match your search parameters.</div>
+                    )
+                case false:
+                    return(
+                        <div></div>
+                    )
+            }
         }
-
+        
         let comment:string = 'Error'
         let emailAddress:string = 'Error'
         let pageURL:string = 'Error'
@@ -382,6 +388,7 @@ export default function ConsoleOverview() {
     const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
         event.preventDefault()
         filterComments(undefined, showOnlyReadComments, showOnlyOpenCaseStatusComments, undefined)
+        setQueryInProgress(true)
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
