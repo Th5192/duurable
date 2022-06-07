@@ -523,8 +523,8 @@ export default function Dashboard() {
             <div>
                 {(consoleChoice === undefined) &&
                     <div> 
-                        <button onClick={() => chooseConsoleToView(ConsoleChoice.VotesConsole)}>Votes</button>
-                        <button onClick={() => chooseConsoleToView(ConsoleChoice.CommentsConsole)}>Comments</button>
+                        <button className={dashboardStyles.simpleButton} onClick={() => chooseConsoleToView(ConsoleChoice.VotesConsole)}>Votes</button>
+                        <button className={dashboardStyles.simpleButton} onClick={() => chooseConsoleToView(ConsoleChoice.CommentsConsole)}>Comments</button>
                     </div>
                 }
                 {(consoleChoice !== undefined) &&

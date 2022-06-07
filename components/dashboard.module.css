@@ -4,11 +4,11 @@
     border-width: 1px;
     border-radius: 12px;
     border-style: solid;
-
+    color: black;
     height: 24px;
     padding: 0px 10px 0px 10px;
     max-width: 200px;
-    margin: 20px;
+    margin: 3px 5px 3px 5px;
 }
 
 .simpleButton:hover {
