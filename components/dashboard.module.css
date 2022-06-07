@@ -33,7 +33,7 @@
     border-width: 1px;
     border-radius: 10px;
     border-style: solid;
-    padding: 10px;
+    padding: 10px 10px 20px 20px;
 }
 
 /* This is counterintuitive.  By default the width of fieldsets is the parent container.  In order 
