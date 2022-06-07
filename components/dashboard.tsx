@@ -326,11 +326,15 @@ export default function Dashboard() {
             switch (queryInProgress) {
                 case true:
                     return(
-                        <div>No results match your search parameters.</div>
+                        <div className={dashboardStyles.commentUnderReviewContainer}>
+                            No results match your search parameters.
+                        </div>
                     )
                 case false:
                     return(
-                        <div></div>
+                        <div>
+
+                        </div>
                     )
             }
         }
