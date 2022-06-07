@@ -363,18 +363,19 @@ export default function Dashboard() {
 
         return(
             <div className={dashboardStyles.commentUnderReviewContainer}>
-                <p>Comment: {comment}</p>
-                <p>{commentStatusIsOpen ? 'Case is open' : 'Case is closed'}</p>
+                <h1>Search Result</h1>
+                <p><b>Comment:</b> {comment}</p>
                 <div>
-                    <button onClick={toggleCaseOpenStatusInFirebase}>{(commentStatusIsOpen ? 'Close case' : 'Open case')}</button>
+                    <p><b>Case Status:</b> {commentStatusIsOpen ? 'Case is open' : 'Case is closed'}</p>
+                    <button className={dashboardStyles.simpleButton} onClick={toggleCaseOpenStatusInFirebase}>{(commentStatusIsOpen ? 'Close case' : 'Open case')}</button>
                 </div>
-                <p>Email Address: {emailAddress}</p>
-                <p>PageURL: {pageURL}</p>
-                <p>{(commentHasBeenRead) ? 'Read' : 'Unread'}</p>
+                <p><b>Email Address:</b> {emailAddress}</p>
+                <p><b>PageURL:</b> {pageURL}</p>
                 <div>
-                    <button onClick={toggleCommentHasBeenReadStatusInFirebase}>{commentHasBeenRead ? 'Mark as unread' : 'Mark as read'}</button>
+                    <p><b>Review Status:</b> {(commentHasBeenRead) ? 'Read' : 'Unread'}</p>
+                    <button className={dashboardStyles.simpleButton} onClick={toggleCommentHasBeenReadStatusInFirebase}>{commentHasBeenRead ? 'Mark as unread' : 'Mark as read'}</button>
                 </div>
-                <p>Timestamp: {String(timestamp.toDate())}</p>
+                <p><b>Timestamp:</b> {String(timestamp.toDate())}</p>
             </div>
             )
     }
