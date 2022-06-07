@@ -15,7 +15,7 @@
 }
 
 
-.votesConsole {
+.consoleContainer {
     margin: 20px 0px 20px 0px;
     padding: 20px;
     min-height: 300px;
@@ -27,7 +27,7 @@
 
 }
 
-.listOfPageURLs {
+.consoleItem {
     background-color: white;
     border-color: rgb(218,220,224);
     border-width: 1px;
