@@ -450,7 +450,8 @@ export default function Dashboard() {
 
     function RenderCommentsConsole(){
         return(
-            <div>
+            <div className={dashboardStyles.consoleContainer}>
+                <div className={dashboardStyles.consoleItem}>
                 <div>
                     <h1>Comments</h1>
                     <p>Use the console below to search for comments, e.g., new comments that have not been read yet or comments that created a case that have not been closed yet, etc.</p>
@@ -484,6 +485,7 @@ export default function Dashboard() {
                 </form>
                 <RenderCommentUnderReview/>
                 <RenderPaginationButtons/>
+            </div>
             </div>
         )
     }
