@@ -358,7 +358,7 @@ export default function Dashboard() {
         }
 
         return(
-            <div>
+            <div className={dashboardStyles.commentUnderReviewContainer}>
                 <p>Comment: {comment}</p>
                 <p>{commentStatusIsOpen ? 'Case is open' : 'Case is closed'}</p>
                 <div>
