@@ -163,7 +163,7 @@ export default function Dashboard() {
             <div>
                 {
                     pageUIDs.map((urlUID) => (
-                        <button key={urlUID} onClick={() => getPageData(urlUID)}>{pageURLUIDtoURLMap?.get(urlUID) ?? 'error'}</button>
+                        <button className={dashboardStyles.simpleButton} key={urlUID} onClick={() => getPageData(urlUID)}>{pageURLUIDtoURLMap?.get(urlUID) ?? 'error'}</button>
                     ))
                 }
             </div>
@@ -495,12 +495,12 @@ export default function Dashboard() {
                     <div>
                         PAGES WITH VOTE DATA
                         <ListOfPageURLs/>
-                        <button onClick={getPageURLs}>Refresh Page URLs</button>
+                        <button className={dashboardStyles.simpleButton} onClick={getPageURLs}>Refresh Page URLs</button>
                     </div>
                 }
                 {(voteReportForPageIsInView === true) &&
                 <div>
-                    <button onClick={() => setVoteReportForPageIsInView(false)}>Choose a different page</button>
+                    <button className={dashboardStyles.simpleButton} onClick={() => setVoteReportForPageIsInView(false)}>Choose a different page</button>
                     <RenderDailyReport/>
                 </div>
                 }
