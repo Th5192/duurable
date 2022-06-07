@@ -1,3 +1,21 @@
+.simpleButton {
+    background-color: transparent;
+    border-color: rgb(218,220,224);
+    border-width: 1px;
+    border-radius: 12px;
+    border-style: solid;
+
+    height: 24px;
+    padding: 0px 10px 0px 10px;
+    max-width: 200px;
+    margin: 20px;
+}
+
+.simpleButton:hover {
+    background-color: rgb(218,220,224);
+}
+
+
 .votesConsole {
     margin: 20px 0px 20px 0px;
     padding: 20px;

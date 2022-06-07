@@ -529,7 +529,7 @@ export default function Dashboard() {
                 }
                 {(consoleChoice !== undefined) &&
                     <div>
-                        <button onClick={() => chooseConsoleToView(undefined)}>Main Menu</button>
+                        <button className={dashboardStyles.simpleButton} onClick={() => chooseConsoleToView(undefined)}>Main Menu</button>
                     </div>
                 }
             </div>
