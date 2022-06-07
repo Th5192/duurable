@@ -492,14 +492,14 @@ export default function Dashboard() {
         return(
             <div className={dashboardStyles.votesConsole}>
                 {(voteReportForPageIsInView === false) && 
-                    <div>
+                    <div className={dashboardStyles.listOfPageURLs}>
                         PAGES WITH VOTE DATA
                         <ListOfPageURLs/>
                         <button className={dashboardStyles.simpleButton} onClick={getPageURLs}>Refresh Page URLs</button>
                     </div>
                 }
                 {(voteReportForPageIsInView === true) &&
-                <div>
+                <div className={dashboardStyles.listOfPageURLs}>
                     <button className={dashboardStyles.simpleButton} onClick={() => setVoteReportForPageIsInView(false)}>Choose a different page</button>
                     <RenderDailyReport/>
                 </div>
