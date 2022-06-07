@@ -452,40 +452,40 @@ export default function Dashboard() {
         return(
             <div className={dashboardStyles.consoleContainer}>
                 <div className={dashboardStyles.consoleItem}>
-                <div>
-                    <h1>Comments</h1>
-                    <p>Use the console below to search for comments, e.g., new comments that have not been read yet or comments that created a case that have not been closed yet, etc.</p>
-                </div>
-                <form onSubmit={handleSubmit}>
-                    <fieldset className={dashboardStyles.fieldSetAutoWidth}>
-                        <legend>
-                            Read / Unread / All
-                        </legend>
-                        <input type='radio' id='readStatus' name='readStatus' value='read' checked={(showOnlyReadComments === true)} onChange={handleChange}></input>
-                        <label htmlFor='read'>Read</label><br/>
-                        <input type='radio' id='readStatus' name='readStatus' value='unread'  checked={(showOnlyReadComments === false)} onChange={handleChange}></input>
-                        <label htmlFor='unread'>Unread</label><br/>
-                        <input type='radio' id='readStatus' name='readStatus' value='all' checked={(showOnlyReadComments === undefined)} onChange={handleChange}></input>
-                        <label htmlFor='all'>All</label><br/>
-                    </fieldset>
-                    <fieldset className={dashboardStyles.fieldSetAutoWidth}>
-                        <legend>
-                            Case Status: Open / Closed / All
-                        </legend>
-                        <input type='radio' id='caseStatus' name='caseStatus' value='open' checked={(showOnlyOpenCaseStatusComments === true)} onChange={handleChange}></input>
-                        <label htmlFor='read'>Open</label><br/>
-                        <input type='radio' id='caseStatus' name='caseStatus' value='closed' checked={(showOnlyOpenCaseStatusComments === false)} onChange={handleChange}></input>
-                        <label htmlFor='unread'>Closed</label><br/>
-                        <input type='radio' id='caseStatus' name='caseStatus' value='all' checked={(showOnlyOpenCaseStatusComments === undefined)} onChange={handleChange}></input>
-                        <label htmlFor='all'>All</label><br/>
-                    </fieldset>
                     <div>
-                        <button className={utilStyles.largeButton} type='submit'>Search for comments</button>
+                        <h1>Comments</h1>
+                        <p>Use the console below to search for comments, e.g., new comments that have not been read yet or comments that created a case that have not been closed yet, etc.</p>
                     </div>
-                </form>
-                <RenderCommentUnderReview/>
-                <RenderPaginationButtons/>
-            </div>
+                    <form onSubmit={handleSubmit}>
+                        <fieldset className={dashboardStyles.fieldSetAutoWidth}>
+                            <legend>
+                                Read / Unread / All
+                            </legend>
+                            <input type='radio' id='readStatus' name='readStatus' value='read' checked={(showOnlyReadComments === true)} onChange={handleChange}></input>
+                            <label htmlFor='read'>Read</label><br/>
+                            <input type='radio' id='readStatus' name='readStatus' value='unread'  checked={(showOnlyReadComments === false)} onChange={handleChange}></input>
+                            <label htmlFor='unread'>Unread</label><br/>
+                            <input type='radio' id='readStatus' name='readStatus' value='all' checked={(showOnlyReadComments === undefined)} onChange={handleChange}></input>
+                            <label htmlFor='all'>All</label><br/>
+                        </fieldset>
+                        <fieldset className={dashboardStyles.fieldSetAutoWidth}>
+                            <legend>
+                                Case Status: Open / Closed / All
+                            </legend>
+                            <input type='radio' id='caseStatus' name='caseStatus' value='open' checked={(showOnlyOpenCaseStatusComments === true)} onChange={handleChange}></input>
+                            <label htmlFor='read'>Open</label><br/>
+                            <input type='radio' id='caseStatus' name='caseStatus' value='closed' checked={(showOnlyOpenCaseStatusComments === false)} onChange={handleChange}></input>
+                            <label htmlFor='unread'>Closed</label><br/>
+                            <input type='radio' id='caseStatus' name='caseStatus' value='all' checked={(showOnlyOpenCaseStatusComments === undefined)} onChange={handleChange}></input>
+                            <label htmlFor='all'>All</label><br/>
+                        </fieldset>
+                        <div>
+                            <button className={utilStyles.largeButton} type='submit'>Search for comments</button>
+                        </div>
+                    </form>
+                    <RenderCommentUnderReview/>
+                    <RenderPaginationButtons/>
+                </div>
             </div>
         )
     }
