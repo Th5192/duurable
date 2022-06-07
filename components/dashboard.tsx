@@ -387,7 +387,7 @@ export default function Dashboard() {
                 <div>
                     <div>
                         {(nextButtonEnabled === true ) && 
-                            <button onClick={() => filterComments(undefined, showOnlyReadComments, showOnlyOpenCaseStatusComments, PaginationOption.GetNext)}>Get Next</button>
+                            <button className={dashboardStyles.simpleButton} onClick={() => filterComments(undefined, showOnlyReadComments, showOnlyOpenCaseStatusComments, PaginationOption.GetNext)}>Get Next Comment</button>
                         }
                         {(nextButtonEnabled === false) &&
                             <p>There are no further comments to review.</p>
@@ -395,7 +395,7 @@ export default function Dashboard() {
                     </div>
                     <div>
                         {(previousButtonEnabled === true) &&
-                            <button onClick={() => filterComments(undefined, showOnlyReadComments, showOnlyOpenCaseStatusComments, PaginationOption.GetPrevious)}>Get Previous</button>
+                            <button className={dashboardStyles.simpleButton} onClick={() => filterComments(undefined, showOnlyReadComments, showOnlyOpenCaseStatusComments, PaginationOption.GetPrevious)}>Get Previous Comments</button>
                         }   
                         {(previousButtonEnabled === false) &&
                             <p>There are no prior comments.</p>
