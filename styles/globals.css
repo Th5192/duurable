@@ -17,6 +17,10 @@ body {
   font-size: 18px;
 }
 
+textarea {
+  font-size: 18px;
+}
+
 html {
   box-sizing: border-box;
   background-color: white;
