@@ -1,4 +1,6 @@
 import productPageStyles from '../../../styles/product-page.module.css';
+import utilStyles from '../../../styles/utils.module.css'
+
 import { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 
@@ -192,7 +194,9 @@ function DataPointPage(props: InferGetServerSidePropsType<typeof getServerSidePr
                 </div>
             </div>
             <h3>Additional comments:</h3>
-            <p>{props.comments}</p>
+            <div className={utilStyles.preWrap}>
+                <p>{props.comments}</p>
+            </div>
             <div className={productPageStyles.productInformationContainer}>
                 <h3>Product Information</h3>
                 <p>Manufacturer: {props.brandName}</p>
