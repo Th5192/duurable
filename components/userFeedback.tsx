@@ -10,7 +10,7 @@ export default function UserFeedback() {
     const [showFeedbackSentConfirmation, setShowFeedbackSentConfirmation] = useState(false)
     const [pageURL, setPageURL] = useState<string|undefined>(undefined)
     const [hostname, setHostname] = useState<string|undefined>(undefined)
-
+    const [hostnameSavedInFirebase, setHostnameSavedInFirebase] = useState<boolean|undefined>(undefined)
     const [emailAddress, setEmailAddress] = useState('')
     const [comment, setComment] = useState('')
 
@@ -25,6 +25,34 @@ export default function UserFeedback() {
     enum Sentiment {
         Happy = "Happy",
         Sad = "Sad"
+    }
+
+    async function checkIfHostnameExistsInFirebase(sentimentValue:Sentiment) {
+        if (hostnameSavedInFirebase === true) {
+            console.log('hostnameSavedInFirebase === true so skipping to getPageURLUID.')
+            getPageURLUID(sentimentValue)
+        } else {
+            if (hostname !== undefined) {
+                console.log('hostnameSavedInFirebase === undefined so SET or GET triggered now.')
+                const hostnameRef = collection(db, 'userFeedback', 'hostnameDirectory', 'hostnameDirectory');
+                let q = query(hostnameRef, where('hostnameUID', '==', hostname));
+                const querySnapshot = await getDocs(q);
+                if (querySnapshot.empty) {
+                    try {
+                        await setDoc(doc(hostnameRef), {
+                            hostnameUID: hostname
+                        }, {merge:true} )
+                        setHostnameSavedInFirebase(true)
+                        getPageURLUID(sentimentValue)
+                    } catch (e) {
+                        setHostnameSavedInFirebase(false)
+                    }
+                } else {
+                    setHostnameSavedInFirebase(true)
+                    getPageURLUID(sentimentValue)
+                }
+            }
+        }
     }
 
     async function getPageURLUID(sentimentValue:Sentiment) {
@@ -144,7 +172,7 @@ export default function UserFeedback() {
 
     function handleHappyNotHappyClick(sentimentValue:Sentiment) {
 
-        getPageURLUID(sentimentValue)
+        checkIfHostnameExistsInFirebase(sentimentValue)
 
         setShowHappyNotHappy(false)
         setShowFeedbackForm(true)
