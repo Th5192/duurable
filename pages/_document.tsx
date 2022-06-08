@@ -1,13 +1,14 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 
-export default function Document() {
+class MyDocument extends Document {
+  render(){
   return (
     <Html>
         <Head>
             <link 
                 href="https://fonts.googleapis.com/icon?family=Material+Icons"
-                rel="stylesheet">
-            </link>
+                rel="stylesheet"
+            />
         </Head> 
       <body>
         <Main />
@@ -16,3 +17,6 @@ export default function Document() {
     </Html>
   )
 }
+}
+
+export default MyDocument
