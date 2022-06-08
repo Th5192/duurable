@@ -11,8 +11,8 @@ export default function UserFeedback() {
     const [pageURL, setPageURL] = useState<string|undefined>(undefined)
     const [hostname, setHostname] = useState<string|undefined>(undefined)
 
-    const [emailAddress, setEmailAddress] = useState('blank')
-    const [comment, setComment] = useState('blank')
+    const [emailAddress, setEmailAddress] = useState('')
+    const [comment, setComment] = useState('')
 
     useEffect(() => {
         setPageURL(window.location.href)
@@ -216,7 +216,7 @@ export default function UserFeedback() {
                     <label>Email (optional):</label>
                     <input type='text' placeholder='example@example.com' value={emailAddress} onChange={handleEmailAddressInputChange}></input>
                     <label>Comment:</label>
-                    <textarea rows={10} value={comment} onChange={handleTextAreaChange}></textarea>
+                    <textarea required placeholder='My comment goes here...' rows={10} value={comment} onChange={handleTextAreaChange}></textarea>
                     <button className={userFeedbackStyles.submitButton}>Submit</button>
                     <button className={userFeedbackStyles.closeButton} onClick={() => handleCloseButtonClick()}>Close</button>
                     </form>
