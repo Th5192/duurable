@@ -524,8 +524,9 @@ export default function Dashboard() {
         }
     }
 
-    return(
-        <div>
+    function AnalyticsDashboard() {
+        return(
+            <div>
             Analytics: Dashboard
             <div>
                 {(consoleChoice === undefined) &&
@@ -546,6 +547,13 @@ export default function Dashboard() {
             {(consoleChoice === ConsoleChoice.CommentsConsole) &&
                 <RenderCommentsConsole/>            
             }
+        </div>
+        )
+    }
+
+    return(
+        <div>
+            <AnalyticsDashboard/>
         </div>
     )
 }
