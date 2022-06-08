@@ -527,27 +527,27 @@ export default function Dashboard() {
     function AnalyticsDashboard() {
         return(
             <div>
-            Analytics: Dashboard
-            <div>
-                {(consoleChoice === undefined) &&
-                    <div> 
-                        <button className={dashboardStyles.simpleButton} onClick={() => chooseConsoleToView(ConsoleChoice.VotesConsole)}>Votes</button>
-                        <button className={dashboardStyles.simpleButton} onClick={() => chooseConsoleToView(ConsoleChoice.CommentsConsole)}>Comments</button>
-                    </div>
+                Analytics: Dashboard
+                <div>
+                    {(consoleChoice === undefined) &&
+                        <div> 
+                            <button className={dashboardStyles.simpleButton} onClick={() => chooseConsoleToView(ConsoleChoice.VotesConsole)}>Votes</button>
+                            <button className={dashboardStyles.simpleButton} onClick={() => chooseConsoleToView(ConsoleChoice.CommentsConsole)}>Comments</button>
+                        </div>
+                    }
+                    {(consoleChoice !== undefined) &&
+                        <div>
+                            <button className={dashboardStyles.simpleButton} onClick={() => chooseConsoleToView(undefined)}>Main Menu</button>
+                        </div>
+                    }
+                </div>
+                {(consoleChoice === ConsoleChoice.VotesConsole) &&
+                    <RenderVotesConsole/>
                 }
-                {(consoleChoice !== undefined) &&
-                    <div>
-                        <button className={dashboardStyles.simpleButton} onClick={() => chooseConsoleToView(undefined)}>Main Menu</button>
-                    </div>
+                {(consoleChoice === ConsoleChoice.CommentsConsole) &&
+                    <RenderCommentsConsole/>            
                 }
             </div>
-            {(consoleChoice === ConsoleChoice.VotesConsole) &&
-                <RenderVotesConsole/>
-            }
-            {(consoleChoice === ConsoleChoice.CommentsConsole) &&
-                <RenderCommentsConsole/>            
-            }
-        </div>
         )
     }
 
