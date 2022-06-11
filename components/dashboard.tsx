@@ -639,7 +639,7 @@ export default function Dashboard() {
                             <p>Please remember your hostname may require a &#39;www&#39;, e.g., &#39;www.google.com&#39; vs. &#39;google.com&#39;.</p>
                         </div>
                         <form onSubmit={handleSearchForHostnameFormSubmit}>
-                            <input key='hostnameSearchTerm' id='hostnameSearchTerm' name='hostnameSearchTerm' type='text' placeholder='www.google.com or google.com' value={hostnameSearchTerm} onChange={handleHostnameSearchTermChange}/>
+                            <input className={dashboardStyles.hostnameSearchTextInput} key='hostnameSearchTerm' id='hostnameSearchTerm' name='hostnameSearchTerm' type='text' placeholder='www.google.com or google.com' value={hostnameSearchTerm} onChange={handleHostnameSearchTermChange}/>
                             <div>
                                 <button className={utilStyles.largeButton} type='submit'>Search</button>
                             </div>

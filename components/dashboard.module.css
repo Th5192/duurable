@@ -64,3 +64,8 @@ to shrink the width to the contents of the fieldset we need to use "display: inl
     width: fit-content;
     margin: 10px 0px 10px 0px;
 }
+
+.hostnameSearchTextInput {
+    width: 300px;
+    margin: 10px 0px 30px 0px;
+}
