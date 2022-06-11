@@ -38,7 +38,7 @@ export default function Dashboard() {
     const [pageUIDs, setPageUIDs] = useState<string[]>()
     const [pageURLUIDtoURLMap, setPageURLUIDtoURLMap] = useState<Map<string,string>>();
     const [datesWithVotes, setDatesWithVotes] = useState<number[]>()
-    const [dailyReports, setDailyReports] = useState<DailyReports>()
+    const [dailyReports, setDailyReports] = useState<DailyReports | undefined>(undefined)
     const [showOnlyReadComments, setShowOnlyReadComments] = useState<boolean | undefined>(false)
     const [showOnlyOpenCaseStatusComments, setShowOnlyOpenCaseStatusComments] = useState<boolean | undefined>(true)
     const [retrievedComment, setRetrievedComment] = useState<RetrievedComment | undefined>(undefined)
@@ -586,16 +586,44 @@ export default function Dashboard() {
         return (
             <div>
                 { (hostname === undefined) && (hostnameOptions.length === 0) &&
-                    <button onClick={() => getHostnameOptions()}>Choose a hostname</button>
+                    <button onClick={() => {
+                            resetAnalyticsDashboardState()
+                            getHostnameOptions()
+                        }}>Choose a hostname</button>
                 }
                 { (hostname === undefined) && (hostnameOptions.length > 0) &&
                     <ChooseHostname/>
                 }
                 { (hostname !== undefined) &&
-                    <button onClick={(() => setHostname(undefined))}>Switch hostnames</button>
+                    <button onClick={() => {
+                            resetAnalyticsDashboardState()
+                            setHostname(undefined)}}>Switch hostnames</button>
                 }
             </div>
         )
+    }
+
+    function resetAnalyticsDashboardState(){
+
+        setConsoleChoice(undefined);
+        setVoteReportForPageIsInView(false);
+        setVoteReportIsForThisURL(undefined);
+        setLoading(false);
+        setQueryInProgress(false);
+        setPageUIDs([]);
+        setPageURLUIDtoURLMap(new Map<string,string>());
+        setDatesWithVotes([]);
+        setDailyReports(undefined);        
+        setShowOnlyReadComments(undefined);
+        setShowOnlyOpenCaseStatusComments(undefined);
+        setRetrievedComment(undefined);
+        setQueryCursor(undefined);
+        setPreviousButtonEnabled(false);
+        setNextButtonEnabled(false);
+        setCommentStatusIsOpen(undefined);
+        setCommentUnderReviewUID(undefined);
+        setCommentHasBeenRead(undefined)
+
     }
 
     return(
