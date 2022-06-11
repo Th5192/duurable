@@ -49,6 +49,7 @@ export default function Dashboard() {
     const [commentStatusIsOpen, setCommentStatusIsOpen] = useState<boolean | undefined>(undefined)
     const [commentUnderReviewUID, setCommentUnderReviewUID] = useState<string | undefined>(undefined)
     const [commentHasBeenRead, setCommentHasBeenRead] = useState<boolean | undefined>(undefined)
+    const [hostnameOptions, setHostnameOptions] = useState<string[]>([])
 
     // THIS IS HARDWIRED
     const hostname = 'localhost'
@@ -551,8 +552,40 @@ export default function Dashboard() {
         )
     }
 
+    async function getHostnameOptions() {
+        let tempHostnameOptionsArray = new Array()
+        console.log('getHostnameOptions triggered...')
+        const hostnameRef = collection(db, 'userFeedback', 'hostnameDirectory', 'hostnameDirectory')
+        const q = query(hostnameRef)
+        const snapShotDocs = await getDocs(q)
+        snapShotDocs.forEach((doc) => {
+            let data = doc.data()
+            if (data.hasOwnProperty('hostnameUID')) {
+                tempHostnameOptionsArray.push(data['hostnameUID'])
+            }
+        })
+        setHostnameOptions(tempHostnameOptionsArray)
+        console.log('End of getHostnameOptions function yields hostnameOptions of: ' + JSON.stringify(hostnameOptions))
+    }
+    
+    function ChooseHostname(){
+        return(
+            <div>
+                {hostnameOptions.map((hostnameUID) => (
+                    <button key={hostnameUID}>{hostnameUID}</button>
+                ))}
+            </div>
+        )
+    }
+
     return(
         <div>
+            { (hostnameOptions.length === 0) &&
+                <button onClick={() => getHostnameOptions()}>Choose a hostname</button>
+            }
+            { (hostnameOptions.length !== 0) &&
+                <ChooseHostname/>
+            }
             <AnalyticsDashboard/>
         </div>
     )
