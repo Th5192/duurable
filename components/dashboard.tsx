@@ -68,19 +68,19 @@ export default function Dashboard() {
         
     async function getPageURLs() {
         if (hostname !== undefined ) {
-        const pageURLsRef = collection(db, 'userFeedback', 'pageURLDirectories', hostname, 'pageURLDirectory', 'pageURLUIDs')
-        const querySnapshot = await getDocs(pageURLsRef)
-        const tempMap = new Map()
-        const tempPageUIDArray = new Array()
-        querySnapshot.forEach((doc) => {
-            console.log(doc.id, '=>', doc.data().pageURL)
-            tempMap.set(doc.id, doc.data().pageURL)    
-            tempPageUIDArray.push(doc.id)
-        });
-        console.log('tempMap.size after forEach yields: ' + JSON.stringify(tempMap.size))
-        setPageURLUIDtoURLMap(tempMap)
-        setPageUIDs(tempPageUIDArray)
-        setLoading(false)
+            const pageURLsRef = collection(db, 'userFeedback', 'pageURLDirectories', hostname, 'pageURLDirectory', 'pageURLUIDs')
+            const querySnapshot = await getDocs(pageURLsRef)
+            const tempMap = new Map()
+            const tempPageUIDArray = new Array()
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id, '=>', doc.data().pageURL)
+                tempMap.set(doc.id, doc.data().pageURL)    
+                tempPageUIDArray.push(doc.id)
+            });
+            console.log('tempMap.size after forEach yields: ' + JSON.stringify(tempMap.size))
+            setPageURLUIDtoURLMap(tempMap)
+            setPageUIDs(tempPageUIDArray)
+            setLoading(false)
         }
     }
 
@@ -174,86 +174,86 @@ export default function Dashboard() {
     }
 
     async function filterComments(pageUID: string | undefined, read: boolean | undefined, commentStatusIsOpen: boolean | undefined, paginationOption: PaginationOption | undefined) {
-    if (hostname !== undefined) {
-        let commentsRef = collection(db, 'userFeedback', 'commentsGroupedByHostname', hostname)
+        if (hostname !== undefined) {
+            let commentsRef = collection(db, 'userFeedback', 'commentsGroupedByHostname', hostname)
 
-        let commentsQuery: Query<DocumentData>
-        
-        let queryConstraints = []
+            let commentsQuery: Query<DocumentData>
+            
+            let queryConstraints = []
 
-        if (pageUID !== undefined) {
-            // NEED TO FIGURE THIS OUT
-            // IT IS NOT THIS: queryConstraints.push(where('pageURL', '==', pageUID))
-        }
-
-        if (read !== undefined) {
-            queryConstraints.push(where('read', '==', read))
-        }
-
-        if (commentStatusIsOpen !== undefined) {
-            queryConstraints.push(where('commentStatusIsOpen', '==', commentStatusIsOpen))
-        }
-
-        console.log('queryCursor yields: ' + JSON.stringify(queryCursor))
-        if (paginationOption !== undefined) {
-            switch (paginationOption) {
-                case PaginationOption.GetNext:
-                    queryConstraints.push(orderBy('timestamp'), startAfter(queryCursor), limit(1))
-                    break;
-                case PaginationOption.GetPrevious:
-                    queryConstraints.push(orderBy('timestamp'), endAt(queryCursor), limitToLast(1))
-                    break;
-            }
-        } else {
-            queryConstraints.push(orderBy('timestamp'), limit(1))
-        }
-    
-        commentsQuery =  query(commentsRef, ...queryConstraints);
-
-        const querySnapshot = await getDocs(commentsQuery)
-
-        if (querySnapshot.empty) {
-            console.log('no docs returned')
-            switch (paginationOption) {
-                case PaginationOption.GetPrevious:
-                    setPreviousButtonEnabled(false);
-                    break;
-                case PaginationOption.GetNext:
-                    setNextButtonEnabled(false);
-                    break;
-                default:
-                    setQueryCursor(undefined);
-                    setRetrievedComment(undefined);
-                    setPreviousButtonEnabled(false);
-                    setNextButtonEnabled(false);
-                    setCommentUnderReviewUID(undefined);
-                    setCommentStatusIsOpen(undefined)
-                    break;
+            if (pageUID !== undefined) {
+                // NEED TO FIGURE THIS OUT
+                // IT IS NOT THIS: queryConstraints.push(where('pageURL', '==', pageUID))
             }
 
+            if (read !== undefined) {
+                queryConstraints.push(where('read', '==', read))
+            }
 
-        } else { 
-        querySnapshot.forEach((doc) => {
-            let data = doc.data()
-            setQueryCursor(doc)
-            setRetrievedComment(data)
-            setPreviousButtonEnabled(true)
-            setNextButtonEnabled(true)
-            console.log(doc.id, '=>', doc.data())
-            setCommentUnderReviewUID(doc.id)
-            if (data.hasOwnProperty('commentStatusIsOpen')){
-                setCommentStatusIsOpen(data['commentStatusIsOpen'])
-            } 
-            if (data.hasOwnProperty('read')){
-                if (data['read'] === false){
-                    setCommentHasBeenReadInFirebase(doc.id)
+            if (commentStatusIsOpen !== undefined) {
+                queryConstraints.push(where('commentStatusIsOpen', '==', commentStatusIsOpen))
+            }
+
+            console.log('queryCursor yields: ' + JSON.stringify(queryCursor))
+            if (paginationOption !== undefined) {
+                switch (paginationOption) {
+                    case PaginationOption.GetNext:
+                        queryConstraints.push(orderBy('timestamp'), startAfter(queryCursor), limit(1))
+                        break;
+                    case PaginationOption.GetPrevious:
+                        queryConstraints.push(orderBy('timestamp'), endAt(queryCursor), limitToLast(1))
+                        break;
                 }
-            }   
+            } else {
+                queryConstraints.push(orderBy('timestamp'), limit(1))
+            }
+        
+            commentsQuery =  query(commentsRef, ...queryConstraints);
 
-        });
+            const querySnapshot = await getDocs(commentsQuery)
 
+            if (querySnapshot.empty) {
+                console.log('no docs returned')
+                switch (paginationOption) {
+                    case PaginationOption.GetPrevious:
+                        setPreviousButtonEnabled(false);
+                        break;
+                    case PaginationOption.GetNext:
+                        setNextButtonEnabled(false);
+                        break;
+                    default:
+                        setQueryCursor(undefined);
+                        setRetrievedComment(undefined);
+                        setPreviousButtonEnabled(false);
+                        setNextButtonEnabled(false);
+                        setCommentUnderReviewUID(undefined);
+                        setCommentStatusIsOpen(undefined)
+                        break;
+                }
+
+
+            } else { 
+            querySnapshot.forEach((doc) => {
+                let data = doc.data()
+                setQueryCursor(doc)
+                setRetrievedComment(data)
+                setPreviousButtonEnabled(true)
+                setNextButtonEnabled(true)
+                console.log(doc.id, '=>', doc.data())
+                setCommentUnderReviewUID(doc.id)
+                if (data.hasOwnProperty('commentStatusIsOpen')){
+                    setCommentStatusIsOpen(data['commentStatusIsOpen'])
+                } 
+                if (data.hasOwnProperty('read')){
+                    if (data['read'] === false){
+                        setCommentHasBeenReadInFirebase(doc.id)
+                    }
+                }   
+
+            });
+
+            }
         }
-    }
     }
 
     async function toggleCaseOpenStatusInFirebase() {
