@@ -575,21 +575,34 @@ export default function Dashboard() {
         return(
             <div>
                 {hostnameOptions.map((hostnameUID) => (
-                    <button key={hostnameUID}>{hostnameUID}</button>
+                    <button key={hostnameUID} onClick={() => setHostname(hostnameUID)}>{hostnameUID}</button>
                 ))}
+            </div>
+        )
+    }
+
+    function HostnameFlow(){
+        return (
+            <div>
+                { (hostname === undefined) && (hostnameOptions.length === 0) &&
+                    <button onClick={() => getHostnameOptions()}>Choose a hostname</button>
+                }
+                { (hostname === undefined) && (hostnameOptions.length > 0) &&
+                    <ChooseHostname/>
+                }
+                { (hostname !== undefined) &&
+                    <button onClick={(() => setHostname(undefined))}>Switch hostnames</button>
+                }
             </div>
         )
     }
 
     return(
         <div>
-            { (hostnameOptions.length === 0) &&
-                <button onClick={() => getHostnameOptions()}>Choose a hostname</button>
+            <HostnameFlow/>
+            { (hostname !== undefined) && 
+                <AnalyticsDashboard/>
             }
-            { (hostnameOptions.length !== 0) &&
-                <ChooseHostname/>
-            }
-            <AnalyticsDashboard/>
         </div>
     )
 }
