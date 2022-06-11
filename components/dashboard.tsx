@@ -54,6 +54,7 @@ export default function Dashboard() {
     const [hostname, setHostname] = useState<string|undefined>(undefined)
 
     const [hostnameSearchTerm, setHostnameSearchTerm] = useState<string>('')
+    const [getHostnameErrorMessage, setGetHostnameErrorMessage] = useState('')
 
     function calculatePercent(numerator:number, denominator:number):string {
 
@@ -563,12 +564,16 @@ export default function Dashboard() {
         const hostnameRef = collection(db, 'userFeedback', 'hostnameDirectory', 'hostnameDirectory')
         const q = query(hostnameRef, where('hostnameUID', '==', hostnameSearchTerm), limit(100))
         const snapShotDocs = await getDocs(q)
+        if (snapShotDocs.empty) {
+            setGetHostnameErrorMessage('Error: This hostname does not exist.  Please try again.')
+        } else {
         snapShotDocs.forEach((doc) => {
             let data = doc.data()
             if (data.hasOwnProperty('hostnameUID')) {
                 tempHostnameOptionsArray.push(data['hostnameUID'])
             }
         })
+        }
         setHostnameOptions(tempHostnameOptionsArray)
         console.log('End of getHostnameOptions function yields hostnameOptions of: ' + JSON.stringify(hostnameOptions))
     }
@@ -619,6 +624,7 @@ export default function Dashboard() {
         setCommentHasBeenRead(undefined)
         setHostnameOptions([])
         setHostname(undefined)
+        setGetHostnameErrorMessage('')
 
     }
 
@@ -643,6 +649,11 @@ export default function Dashboard() {
                     <button onClick={() => {
                             resetAnalyticsDashboardState()
                            }}>Switch hostnames</button>
+                }
+                {
+                    <div>
+                        <p>{getHostnameErrorMessage}</p>
+                    </div>
                 }
             </div>
             { (hostname !== undefined) && 
