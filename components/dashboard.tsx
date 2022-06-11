@@ -633,8 +633,12 @@ export default function Dashboard() {
                 <div>
                 { (hostname === undefined) && (hostnameOptions.length === 0) &&
                     <div>
+                        <div>
+                            <h2>Find a hostname</h2>
+                            <p>Please search for your desired hostname below.</p>  
+                            <p>Please remember your hostname may require a &#39;www&#39;, e.g., &#39;www.google.com&#39; vs. &#39;google.com&#39;.</p>
+                        </div>
                         <form onSubmit={handleSearchForHostnameFormSubmit}>
-                            <label>Hostname: </label>
                             <input key='hostnameSearchTerm' id='hostnameSearchTerm' name='hostnameSearchTerm' type='text' placeholder='www.google.com or google.com' value={hostnameSearchTerm} onChange={handleHostnameSearchTermChange}/>
                             <div>
                                 <button className={utilStyles.largeButton} type='submit'>Search</button>
