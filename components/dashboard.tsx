@@ -534,7 +534,8 @@ export default function Dashboard() {
     function AnalyticsDashboard() {
         return(
             <div>
-                Analytics: Dashboard
+                <p>Hostname: {hostname}</p>
+                <h2>Analytics: Dashboard</h2>
                 <div>
                     {(consoleChoice === undefined) &&
                         <div> 
