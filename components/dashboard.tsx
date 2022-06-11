@@ -573,9 +573,10 @@ export default function Dashboard() {
     
     function ChooseHostname(){
         return(
-            <div>
+            <div className={dashboardStyles.hostnameOptions}>
+                <h2>Choose a hostname</h2>
                 {hostnameOptions.map((hostnameUID) => (
-                    <button key={hostnameUID} onClick={() => setHostname(hostnameUID)}>{hostnameUID}</button>
+                    <button className={dashboardStyles.hostnameButton} key={hostnameUID} onClick={() => setHostname(hostnameUID)}>{hostnameUID}</button>
                 ))}
             </div>
         )

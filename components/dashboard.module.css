@@ -53,3 +53,14 @@ to shrink the width to the contents of the fieldset we need to use "display: inl
     border-radius: 10px;
     border-style: solid;
 }
+
+.hostnameOptions {
+    display: flex;
+    flex-flow: column;
+    margin: 0px 0px 200px 0px;
+}
+
+.hostnameButton {
+    width: fit-content;
+    margin: 10px 0px 10px 0px;
+}
