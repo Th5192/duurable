@@ -51,8 +51,7 @@ export default function Dashboard() {
     const [commentHasBeenRead, setCommentHasBeenRead] = useState<boolean | undefined>(undefined)
     const [hostnameOptions, setHostnameOptions] = useState<string[]>([])
 
-    // THIS IS HARDWIRED
-    const hostname = 'localhost'
+    const [hostname, setHostname] = useState<string|undefined>(undefined)
 
     function calculatePercent(numerator:number, denominator:number):string {
 
@@ -68,6 +67,7 @@ export default function Dashboard() {
     }
         
     async function getPageURLs() {
+        if (hostname !== undefined ) {
         const pageURLsRef = collection(db, 'userFeedback', 'pageURLDirectories', hostname, 'pageURLDirectory', 'pageURLUIDs')
         const querySnapshot = await getDocs(pageURLsRef)
         const tempMap = new Map()
@@ -81,6 +81,7 @@ export default function Dashboard() {
         setPageURLUIDtoURLMap(tempMap)
         setPageUIDs(tempPageUIDArray)
         setLoading(false)
+        }
     }
 
     function getPageData(pageUID:string){
@@ -173,7 +174,7 @@ export default function Dashboard() {
     }
 
     async function filterComments(pageUID: string | undefined, read: boolean | undefined, commentStatusIsOpen: boolean | undefined, paginationOption: PaginationOption | undefined) {
-        
+    if (hostname !== undefined) {
         let commentsRef = collection(db, 'userFeedback', 'commentsGroupedByHostname', hostname)
 
         let commentsQuery: Query<DocumentData>
@@ -252,12 +253,12 @@ export default function Dashboard() {
         });
 
         }
-
+    }
     }
 
     async function toggleCaseOpenStatusInFirebase() {
         let newState = !commentStatusIsOpen
-        if (commentUnderReviewUID !== undefined) {
+        if (commentUnderReviewUID !== undefined && hostname !== undefined) {
             let caseStatusRef = doc(db, 'userFeedback', 'commentsGroupedByHostname', hostname, commentUnderReviewUID)
             
             let togglePromise =  setDoc(caseStatusRef, {
@@ -282,6 +283,7 @@ export default function Dashboard() {
 
 
     async function setCommentHasBeenReadInFirebase(docID:string) {
+        if (hostname !== undefined) {
             let readStatusRef = doc(db, 'userFeedback', 'commentsGroupedByHostname', hostname, docID)
             
             let promise =  setDoc(readStatusRef, {
@@ -295,11 +297,12 @@ export default function Dashboard() {
             .catch( error => {
 
             })
+        }
     }
     
     async function toggleCommentHasBeenReadStatusInFirebase() {
         let newState = !commentHasBeenRead
-        if (commentUnderReviewUID !== undefined) {
+        if (commentUnderReviewUID !== undefined && hostname !== undefined) {
             let readStatusRef = doc(db, 'userFeedback', 'commentsGroupedByHostname', hostname, commentUnderReviewUID)
             
             let togglePromise =  setDoc(readStatusRef, {
