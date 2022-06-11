@@ -1,6 +1,6 @@
 import { collection, doc, DocumentData, endAt, getDoc, getDocs, limit, limitToLast, orderBy, query, Query, QueryDocumentSnapshot, setDoc, startAfter, Timestamp, where } from 'firebase/firestore';
 import { db } from '../pages/_app';
-import React, { useState, } from 'react';
+import React, { useState } from 'react';
 
 import dashboardStyles from './dashboard.module.css'
 import utilStyles from '../styles/utils.module.css'
@@ -52,6 +52,8 @@ export default function Dashboard() {
     const [hostnameOptions, setHostnameOptions] = useState<string[]>([])
 
     const [hostname, setHostname] = useState<string|undefined>(undefined)
+
+    const [hostnameSearchTerm, setHostnameSearchTerm] = useState<string>('')
 
     function calculatePercent(numerator:number, denominator:number):string {
 
@@ -555,11 +557,11 @@ export default function Dashboard() {
         )
     }
 
-    async function getHostnameOptions() {
+    async function getHostnameOptions(hostnameSearchTerm: string) {
         let tempHostnameOptionsArray = new Array()
         console.log('getHostnameOptions triggered...')
         const hostnameRef = collection(db, 'userFeedback', 'hostnameDirectory', 'hostnameDirectory')
-        const q = query(hostnameRef, limit(100))
+        const q = query(hostnameRef, where('hostnameUID', '==', hostnameSearchTerm), limit(100))
         const snapShotDocs = await getDocs(q)
         snapShotDocs.forEach((doc) => {
             let data = doc.data()
@@ -582,26 +584,18 @@ export default function Dashboard() {
         )
     }
 
-    function HostnameFlow(){
-        return (
-            <div>
-                { (hostname === undefined) && (hostnameOptions.length === 0) &&
-                    <button onClick={() => {
-                            resetAnalyticsDashboardState()
-                            getHostnameOptions()
-                        }}>Choose a hostname</button>
-                }
-                { (hostname === undefined) && (hostnameOptions.length > 0) &&
-                    <ChooseHostname/>
-                }
-                { (hostname !== undefined) &&
-                    <button onClick={() => {
-                            resetAnalyticsDashboardState()
-                            setHostname(undefined)}}>Switch hostnames</button>
-                }
-            </div>
-        )
+    const handleHostnameSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.persist()
+        setHostnameSearchTerm(event.target.value)
+
     }
+
+    const handleSearchForHostnameFormSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        resetAnalyticsDashboardState()
+        getHostnameOptions(hostnameSearchTerm)
+    }
+    
 
     function resetAnalyticsDashboardState(){
 
@@ -623,12 +617,34 @@ export default function Dashboard() {
         setCommentStatusIsOpen(undefined);
         setCommentUnderReviewUID(undefined);
         setCommentHasBeenRead(undefined)
+        setHostnameOptions([])
+        setHostname(undefined)
 
     }
 
     return(
-        <div>
-            <HostnameFlow/>
+            <div>
+                <div>
+                { (hostname === undefined) && (hostnameOptions.length === 0) &&
+                    <div>
+                        <form onSubmit={handleSearchForHostnameFormSubmit}>
+                            <label>Hostname: </label>
+                            <input key='hostnameSearchTerm' id='hostnameSearchTerm' name='hostnameSearchTerm' type='text' placeholder='www.google.com or google.com' value={hostnameSearchTerm} onChange={handleHostnameSearchTermChange}/>
+                            <div>
+                                <button className={utilStyles.largeButton} type='submit'>Search</button>
+                            </div>
+                        </form>
+                    </div>                
+                }
+                { (hostname === undefined) && (hostnameOptions.length > 0) &&
+                    <ChooseHostname/>
+                }
+                { (hostname !== undefined) &&
+                    <button onClick={() => {
+                            resetAnalyticsDashboardState()
+                           }}>Switch hostnames</button>
+                }
+            </div>
             { (hostname !== undefined) && 
                 <AnalyticsDashboard/>
             }
