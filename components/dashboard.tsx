@@ -559,7 +559,7 @@ export default function Dashboard() {
         let tempHostnameOptionsArray = new Array()
         console.log('getHostnameOptions triggered...')
         const hostnameRef = collection(db, 'userFeedback', 'hostnameDirectory', 'hostnameDirectory')
-        const q = query(hostnameRef)
+        const q = query(hostnameRef, limit(100))
         const snapShotDocs = await getDocs(q)
         snapShotDocs.forEach((doc) => {
             let data = doc.data()
