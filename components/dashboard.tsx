@@ -492,7 +492,7 @@ export default function Dashboard() {
                             <label htmlFor='all'>All</label><br/>
                         </fieldset>
                         <div>
-                            <button className={utilStyles.largeButton} type='submit'>Search for comments</button>
+                            <button className={dashboardStyles.simpleButton} type='submit'>Search for comments</button>
                         </div>
                     </form>
                     <RenderCommentUnderReview/>
@@ -643,7 +643,7 @@ export default function Dashboard() {
                         <form onSubmit={handleSearchForHostnameFormSubmit}>
                             <input className={dashboardStyles.hostnameSearchTextInput} key='hostnameSearchTerm' id='hostnameSearchTerm' name='hostnameSearchTerm' type='text' placeholder='www.google.com or google.com' value={hostnameSearchTerm} onChange={handleHostnameSearchTermChange}/>
                             <div>
-                                <button className={utilStyles.largeButton} type='submit'>Search</button>
+                                <button className={dashboardStyles.simpleButton} type='submit'>Search</button>
                             </div>
                         </form>
                     </div>                
@@ -652,7 +652,7 @@ export default function Dashboard() {
                     <ChooseHostname/>
                 }
                 { (hostname !== undefined) &&
-                    <button onClick={() => {
+                    <button className={dashboardStyles.simpleButton} onClick={() => {
                             resetAnalyticsDashboardState()
                            }}>Switch hostnames</button>
                 }
