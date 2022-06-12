@@ -35,7 +35,7 @@ export default function Dashboard() {
     const [voteReportIsForThisURL, setVoteReportIsForThisURL] = useState<string | undefined>(undefined)
     const [isLoading, setLoading] = useState(false)
     const [queryInProgress, setQueryInProgress] = useState(false)
-    const [pageUIDs, setPageUIDs] = useState<string[]>()
+    const [pageUIDs, setPageUIDs] = useState<string[]>([])
     const [pageURLUIDtoURLMap, setPageURLUIDtoURLMap] = useState<Map<string,string>>();
     const [datesWithVotes, setDatesWithVotes] = useState<number[]>()
     const [dailyReports, setDailyReports] = useState<DailyReports | undefined>(undefined)
@@ -74,7 +74,7 @@ export default function Dashboard() {
             const pageURLsRef = collection(db, 'userFeedback', 'pageURLDirectories', hostname, 'pageURLDirectory', 'pageURLUIDs')
             const querySnapshot = await getDocs(pageURLsRef)
             const tempMap = new Map()
-            const tempPageUIDArray = new Array()
+            const tempPageUIDArray:string[] = []
             querySnapshot.forEach((doc) => {
                 console.log(doc.id, '=>', doc.data().pageURL)
                 tempMap.set(doc.id, doc.data().pageURL)    
@@ -156,7 +156,7 @@ export default function Dashboard() {
     }
 
     function ListOfPageURLs(){
-        if (pageUIDs === undefined) {
+        if (pageUIDs.length === 0) {
             return(
                 <div>
                     No data exists
@@ -522,10 +522,11 @@ export default function Dashboard() {
         )
     }
 
-    function chooseConsoleToView(consoleChoice: ConsoleChoice | undefined){
-        setConsoleChoice(consoleChoice)
+    function chooseConsoleToView(consoleChoiceParam: ConsoleChoice | undefined){
 
-        if (consoleChoice === ConsoleChoice.VotesConsole && pageUIDs === undefined){
+        setConsoleChoice(consoleChoiceParam)
+
+        if (consoleChoiceParam === ConsoleChoice.VotesConsole && pageUIDs.length === 0){
             getPageURLs()
             console.log('getPageURLs triggered')
         }
