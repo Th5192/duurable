@@ -22,6 +22,7 @@ import { UserContext } from '../components/userContext'
 import Footer from '../components/footer'
 import CookieConsent from 'react-cookie-consent'
 import Sidebar from '../components/sidebar'
+import UserFeedback from '../components/userFeedback'
 
 
 // Your web app's Firebase configuration
@@ -267,6 +268,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Layout>
             <DuuurableAuthUI/>
              <UserContext.Provider value={ {userUIDString:userUID, userIsAdminContextValue: userIsAdmin } }>
+            <div className={utilStyles.userFeedbackComponentContainer}>
+              <UserFeedback/>
+            </div>
             <Component {...pageProps} />
             <Footer/>
             <CookieConsent buttonStyle={{background: "#686aaa", color: "#ffffff"}}>

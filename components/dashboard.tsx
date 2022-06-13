@@ -127,7 +127,6 @@ export default function Dashboard() {
         console.log('RenderDailyReport yields dailyReportObject of: ' + dailyReports?.hasOwnProperty('20220531'))
         if (dailyReports !== undefined) {
             console.log('RenderDailyReport dailyReportObject.Object.getOwnPropertyNames(): ' + Object.getOwnPropertyNames(dailyReports) )
-            console.log('dailyReportObject[20220531]: ' + dailyReports[20220531].Happy)
         
             return(
                 <div>

@@ -6,7 +6,7 @@
     justify-content: space-around;
     align-items: center;
     text-align: center;
-    margin: 20px;
+    margin: 0px;
     border-color: transparent;
     border-width: 1px;
     border-style: solid;
@@ -57,11 +57,12 @@
     border-style: solid;
     border-radius: 10px;  
     padding: 10px;
+    margin: 20px;
 
 }
 
 .feedbackSentConfirmation {
-    margin: 20px 0px 20px 0px;
+    margin: 20px;
     color: gray;
 }
 
