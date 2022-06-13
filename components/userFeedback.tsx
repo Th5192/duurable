@@ -8,14 +8,12 @@ export default function UserFeedback() {
     const [showHappyNotHappy, setShowHappyNotHappy] = useState(true)
     const [showFeedbackForm, setShowFeedbackForm] = useState(false)
     const [showFeedbackSentConfirmation, setShowFeedbackSentConfirmation] = useState(false)
-    const [pageURL, setPageURL] = useState<string|undefined>(undefined)
     const [hostname, setHostname] = useState<string|undefined>(undefined)
     const [hostnameSavedInFirebase, setHostnameSavedInFirebase] = useState<boolean|undefined>(undefined)
     const [emailAddress, setEmailAddress] = useState('')
     const [comment, setComment] = useState('')
 
     useEffect(() => {
-        setPageURL(window.location.href)
         setHostname(window.location.hostname)
         console.log('!!! useEffect/setPageURL triggered...')
     }, [])
@@ -25,6 +23,12 @@ export default function UserFeedback() {
     enum Sentiment {
         Happy = "Happy",
         Sad = "Sad"
+    }
+
+    function getPageURL():string {
+        let pageURL:string = 'errorCouldNotRetrieveWindowLocationHref'
+        pageURL = window.location.href
+        return pageURL
     }
 
     async function checkIfHostnameExistsInFirebase(sentimentValue:Sentiment) {
@@ -56,6 +60,9 @@ export default function UserFeedback() {
     }
 
     async function getPageURLUID(sentimentValue:Sentiment) {
+
+        let pageURL:string = getPageURL()
+
         if (hostname !== undefined) {
             const pageURLCollectionRef = collection(db, 'userFeedback', 'pageURLDirectories', hostname, 'pageURLDirectory', 'pageURLUIDs')
             const q = query(pageURLCollectionRef, where("pageURL", "==", pageURL), limit(1))
@@ -187,6 +194,8 @@ export default function UserFeedback() {
     }
   
     async function pushCommentToFirebase(){
+
+        let pageURL:string = getPageURL()
 
         if (hostname !== undefined) {
             const commentsGroupedByHostnameRef = doc(collection(db, 'userFeedback', 'commentsGroupedByHostname', hostname))
