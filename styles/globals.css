@@ -44,16 +44,3 @@ img {
   display: block;
 }
 
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
-
-.material-icons.very-peri { color: var(--very-peri); }
-.material-icons.very-peri-amusements-orange { color: var(--very-peri-amusements-orange); }
-.material-icons.very-peri-amusements-red { color: var(--very-peri-amusements-red); }
-
-
-.material-icons {
-  font-display: block;
-}
