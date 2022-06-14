@@ -130,10 +130,10 @@
   }
   
   .closeSignInOrSignUpFlexBoxButtonContainer button {
-    background-color:lightgray;
+    background-color:transparent;
     color: black;
     border-radius: 50%;
-    border-color: lightgray;
+    border-color: transparent;
     border-width: 1px;
     border-style: solid;
     padding: 8px;
