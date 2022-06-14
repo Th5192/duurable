@@ -2,7 +2,7 @@ import userFeedbackStyles from './userFeedback.module.css'
 import React, { useEffect, useState } from 'react'
 import { collection, doc, getDocs, limit, setDoc, query, runTransaction, where, Timestamp, DocumentReference, DocumentData, serverTimestamp } from 'firebase/firestore'
 import {db} from '../pages/_app'
-
+import Image from 'next/image'
 
 export default function UserFeedback() {
     const [showHappyNotHappy, setShowHappyNotHappy] = useState(true)
@@ -237,10 +237,10 @@ export default function UserFeedback() {
                         <p>Was this helpful?</p>
                         <div className={userFeedbackStyles.happyNotHappyContainer}>
                             <div onClick={() => handleHappyNotHappyClick(Sentiment.Happy)} className={userFeedbackStyles.happy}>
-                                <span className='material-icons'>sentiment_satisfied</span>
+                                <Image src='/thumb_up_FILL0_wght400_GRAD0_opsz48.svg' alt='happy' width='20' height='20'/> 
                             </div>
                             <div onClick={() => handleHappyNotHappyClick(Sentiment.Sad)} className={userFeedbackStyles.notHappy}>
-                                <span className='material-icons'>sentiment_dissatisfied</span>
+                                <Image src='/thumb_down_FILL0_wght400_GRAD0_opsz48.svg' alt='happy' width='20' height='20'/> 
                             </div>
                         </div>
                 </div>
