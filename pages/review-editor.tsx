@@ -714,7 +714,9 @@ interface DataPointEditingFormProps {
                  YouTube link looks good! You can see a preview at the bottom of this page.</p>
             }
             {(youTubeURL !== '') && (candidateYouTubeVideoUID === undefined) && 
-              <p><span className="material-icons">close</span> Please enter a correctly formatted YouTube link.</p>
+              <p>
+                <Image src="/dangerous_FILL0_wght400_GRAD0_opsz48.svg" alt="incorrect symbol" width="24" height="24" />
+                 Please enter a correctly formatted YouTube link.</p>
             }
           </div>
           <br></br>
