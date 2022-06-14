@@ -3,8 +3,7 @@
 import { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import type { NextPage } from 'next'
 import Link from 'next/link';
-
-import Layout from '../components/layout'
+import Image from 'next/image';
 
 import reviewEditorStyles from '../styles/review-editor.module.css'
 import utilStyles from '../styles/utils.module.css'
@@ -710,7 +709,9 @@ interface DataPointEditingFormProps {
           <input id='youTubeURL' className='form-field' type='text' placeholder='Enter YouTube URL ...' name='youTubeURL' value={youTubeURL} onChange={handleChange}/>
           <div>
             {(youTubeURL !== '') && (candidateYouTubeVideoUID !== undefined) && 
-              <p><span className="material-icons">done</span> YouTube link looks good! You can see a preview at the bottom of this page.</p>
+              <p>
+                <Image src="/done_FILL0_wght400_GRAD0_opsz48.svg" alt="done symbol" width="24" height="24" />
+                 YouTube link looks good! You can see a preview at the bottom of this page.</p>
             }
             {(youTubeURL !== '') && (candidateYouTubeVideoUID === undefined) && 
               <p><span className="material-icons">close</span> Please enter a correctly formatted YouTube link.</p>
