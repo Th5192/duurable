@@ -118,7 +118,9 @@ const DuuurableAuthUI = () => {
                     setShowCreateAccountOrSignInUI(false), 
                     setShowSignInUI(false), 
                     setShowCreateAccountUI(false)
-                  }}><span className="material-icons">close</span></button>
+                  }}>
+                    <Image src="/close_FILL0_wght400_GRAD0_opsz48.svg" alt="close" width="30" height="30"/>
+                    </button>
                 </div>
                 <div>
                   {(showCreateAccountUI === true) && 
