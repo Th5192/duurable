@@ -66,28 +66,7 @@ function LandingPage(){
           <Link href='/brand-directory'><a>Search Durability Data</a></Link>
         </div>
       </div>
-      <div className={utilStyles.landingPageFeaturesWrapper}>
-        <div className={utilStyles.landingPageFeatureWrapper}>
-          <span className="material-icons md-48 very-peri">manage_search</span>
-          <p>Search by brand and model number.</p>
-        </div>
-        <div className={utilStyles.landingPageFeatureWrapper}>
-          <span className="material-icons md-48 very-peri">video_library</span>
-          <p>Watch wear and tear videos.</p>
-        </div>
-        <div className={utilStyles.landingPageFeatureWrapper}>
-          <span className="material-icons md-48 very-peri">insights</span>
-          <p>Analyze durability data.</p>
-        </div>
-        <div className={utilStyles.landingPageFeatureWrapper}>
-          <span className="material-icons md-48 very-peri">sentiment_satisfied</span>
-          <p>Find products that last!</p>
-        </div>
-        <div className={utilStyles.landingPageFeatureWrapper}>
-          <span className="material-icons md-48 very-peri">library_add</span>
-          <p>New videos on the way!  We&#39;re just starting out.</p>
-        </div>
-      </div>
+
       <div className={utilStyles.fullWidthContainerWhite}>
         <h2>Spend your money on products that last.</h2>
         <h2>Making durable products costs extra.  Reward brands that take on this responsibility.</h2>
