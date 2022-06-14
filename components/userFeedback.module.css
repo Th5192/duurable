@@ -11,7 +11,7 @@
     border-width: 1px;
     border-style: solid;
     border-radius: 10px;  
-    color: gray;
+    color: black;
 }
 
 .happyNotHappyContainer {
@@ -20,32 +20,42 @@
     align-items: center;
     justify-content: space-around;
     padding: 0px 0px 0px 0px;
-    color: gray;
-    width: 150px;
+    color: black;
+    width: auto;
 }
 
 .happy{
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin: 0px 20px 0px 20px;
 }
 
 .happy:hover{
-    color: blue;
-    transition: 0.3s;
+    transition: 0.0s;
     cursor: pointer;
+    background-color: lightgray;
+    border-radius: 50%;
+    padding: 5px;
 }
 
 .notHappy{
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin: 0px 20px 0px 20px;
 }
 
 .notHappy:hover{
-    color: blue;
-    transition: 0.3s;
+    transition: 0.0s;
     cursor: pointer;
+    background-color: lightgray;
+    border-radius: 50%;
+    padding: 5px;
 }
 
 .feedbackForm {
