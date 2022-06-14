@@ -3,8 +3,7 @@
 
 import type { NextPage } from 'next'
 import Link from 'next/link';
-
-import Layout from '../components/layout'
+import Image from 'next/image';
 
 import utilStyles from '../styles/utils.module.css'
 
@@ -43,7 +42,7 @@ function LandingPage(){
       <div className={utilStyles.fullWidthContainerWhite}>
         <div className={utilStyles.heroHeadline}>
           <span>Duuurable </span>
-          <span className="material-icons md-48">query_stats</span>
+          <Image src="/query_stats_FILL0_wght400_GRAD0_opsz48.svg" alt="logo image of statistics chart" width="48" height="48" />
         </div>
         <div className={utilStyles.heroSubHeadline}>
           <span>Is it durable? Will it last?</span>
